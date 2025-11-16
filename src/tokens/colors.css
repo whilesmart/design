@@ -1,0 +1,65 @@
+:root {
+  /* Primary - WhileSmart Blue #2D398E */
+  --ds-color-primary-50: #eef0f9;
+  --ds-color-primary-100: #d5d9f0;
+  --ds-color-primary-200: #b9c0e5;
+  --ds-color-primary-300: #9ca7d9;
+  --ds-color-primary-400: #8793d0;
+  --ds-color-primary-500: #727fc7;
+  --ds-color-primary-600: #5a63b0;
+  --ds-color-primary-700: #454e9a;
+  --ds-color-primary-800: #2d398e;
+  --ds-color-primary-900: #1e2761;
+  --ds-color-primary: #2d398e;
+
+  /* Secondary - WhileSmart Cyan #44C0EB */
+  --ds-color-secondary-50: #e8f7fd;
+  --ds-color-secondary-100: #c7ebf9;
+  --ds-color-secondary-200: #a1def5;
+  --ds-color-secondary-300: #7bd1f1;
+  --ds-color-secondary-400: #5ec8ee;
+  --ds-color-secondary-500: #44c0eb;
+  --ds-color-secondary-600: #3aade4;
+  --ds-color-secondary-700: #2e95d9;
+  --ds-color-secondary-800: #237dce;
+  --ds-color-secondary-900: #0f57b8;
+  --ds-color-secondary: #44c0eb;
+
+  /* Neutral */
+  --ds-color-neutral-0: #ffffff;
+  --ds-color-neutral-50: #f8fafc;
+  --ds-color-neutral-100: #f1f5f9;
+  --ds-color-neutral-200: #e2e8f0;
+  --ds-color-neutral-300: #cbd5e1;
+  --ds-color-neutral-400: #94a3b8;
+  --ds-color-neutral-500: #64748b;
+  --ds-color-neutral-600: #475569;
+  --ds-color-neutral-700: #334155;
+  --ds-color-neutral-800: #1e293b;
+  --ds-color-neutral-900: #0f172a;
+
+  /* Semantic */
+  --ds-color-success-50: #ecfdf5;
+  --ds-color-success-100: #d1fae5;
+  --ds-color-success-500: #10b981;
+  --ds-color-success-600: #059669;
+  --ds-color-success-700: #047857;
+
+  --ds-color-warning-50: #fffbeb;
+  --ds-color-warning-100: #fef3c7;
+  --ds-color-warning-500: #f59e0b;
+  --ds-color-warning-600: #d97706;
+  --ds-color-warning-700: #b45309;
+
+  --ds-color-error-50: #fef2f2;
+  --ds-color-error-100: #fee2e2;
+  --ds-color-error-500: #ef4444;
+  --ds-color-error-600: #dc2626;
+  --ds-color-error-700: #b91c1c;
+
+  --ds-color-info-50: #e8f7fd;
+  --ds-color-info-100: #c7ebf9;
+  --ds-color-info-500: #44c0eb;
+  --ds-color-info-600: #3aade4;
+  --ds-color-info-700: #2e95d9;
+}

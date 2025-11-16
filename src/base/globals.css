@@ -1,0 +1,73 @@
+body {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-base);
+  color: var(--ds-text-primary);
+  background-color: var(--ds-bg-base);
+}
+
+#app {
+  min-height: 100vh;
+  width: 100%;
+}
+
+h1 {
+  font-size: var(--ds-text-4xl);
+  font-weight: var(--ds-font-bold);
+  line-height: var(--ds-leading-tight);
+}
+
+h2 {
+  font-size: var(--ds-text-3xl);
+  font-weight: var(--ds-font-bold);
+  line-height: var(--ds-leading-tight);
+}
+
+h3 {
+  font-size: var(--ds-text-2xl);
+  font-weight: var(--ds-font-semibold);
+  line-height: var(--ds-leading-snug);
+}
+
+h4 {
+  font-size: var(--ds-text-xl);
+  font-weight: var(--ds-font-semibold);
+  line-height: var(--ds-leading-snug);
+}
+
+h5 {
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-font-medium);
+  line-height: var(--ds-leading-normal);
+}
+
+h6 {
+  font-size: var(--ds-text-base);
+  font-weight: var(--ds-font-medium);
+  line-height: var(--ds-leading-normal);
+}
+
+p {
+  margin-bottom: var(--ds-space-4);
+}
+
+a:hover {
+  color: var(--ds-interactive-primary);
+}
+
+code {
+  font-family: var(--ds-font-mono);
+  font-size: 0.875em;
+  background: var(--ds-bg-surface);
+  padding: var(--ds-space-1) var(--ds-space-2);
+  border-radius: var(--ds-radius-base);
+}
+
+::selection {
+  background: var(--ds-color-primary-200);
+  color: var(--ds-color-primary-900);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ds-border-focus);
+  outline-offset: 2px;
+}

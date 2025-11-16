@@ -1,0 +1,62 @@
+:root,
+[data-theme="light"] {
+  /* Background */
+  --ds-bg-base: var(--ds-color-neutral-0);
+  --ds-bg-surface: var(--ds-color-neutral-50);
+  --ds-bg-elevated: var(--ds-color-neutral-0);
+  --ds-bg-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Text */
+  --ds-text-primary: var(--ds-color-neutral-900);
+  --ds-text-secondary: var(--ds-color-neutral-600);
+  --ds-text-muted: var(--ds-color-neutral-500);
+  --ds-text-disabled: var(--ds-color-neutral-400);
+  --ds-text-inverse: var(--ds-color-neutral-0);
+
+  /* Border */
+  --ds-border-base: var(--ds-color-neutral-200);
+  --ds-border-strong: var(--ds-color-neutral-300);
+  --ds-border-focus: var(--ds-color-primary);
+
+  /* Interactive - Using brand primary color */
+  --ds-interactive-primary: var(--ds-color-primary);
+  --ds-interactive-primary-hover: var(--ds-color-primary-700);
+  --ds-interactive-primary-active: var(--ds-color-primary-900);
+  --ds-interactive-secondary: var(--ds-color-secondary);
+  --ds-interactive-secondary-hover: var(--ds-color-secondary-600);
+
+  /* Status */
+  --ds-status-success-bg: var(--ds-color-success-50);
+  --ds-status-success-text: var(--ds-color-success-700);
+  --ds-status-warning-bg: var(--ds-color-warning-50);
+  --ds-status-warning-text: var(--ds-color-warning-700);
+  --ds-status-error-bg: var(--ds-color-error-50);
+  --ds-status-error-text: var(--ds-color-error-700);
+  --ds-status-info-bg: var(--ds-color-info-50);
+  --ds-status-info-text: var(--ds-color-info-700);
+}
+
+[data-theme="dark"] {
+  /* Background */
+  --ds-bg-base: var(--ds-color-neutral-900);
+  --ds-bg-surface: var(--ds-color-neutral-800);
+  --ds-bg-elevated: var(--ds-color-neutral-700);
+  --ds-bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Text */
+  --ds-text-primary: var(--ds-color-neutral-50);
+  --ds-text-secondary: var(--ds-color-neutral-300);
+  --ds-text-muted: var(--ds-color-neutral-400);
+  --ds-text-disabled: var(--ds-color-neutral-600);
+  --ds-text-inverse: var(--ds-color-neutral-900);
+
+  /* Border */
+  --ds-border-base: var(--ds-color-neutral-700);
+  --ds-border-strong: var(--ds-color-neutral-600);
+  --ds-border-focus: var(--ds-color-primary-400);
+
+  /* Interactive */
+  --ds-interactive-primary: var(--ds-color-primary-400);
+  --ds-interactive-primary-hover: var(--ds-color-primary-300);
+  --ds-interactive-primary-active: var(--ds-color-primary-200);
+}
