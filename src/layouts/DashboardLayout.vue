@@ -43,21 +43,21 @@ const userInitials = computed(() => {
 })
 
 const leftNavbarItems = computed(() =>
-  layoutConfig.navbarItems.value
-    .filter((item: NavbarItem) => item.position === 'left' || !item.position)
-    .sort((a: NavbarItem, b: NavbarItem) => (a.order || 0) - (b.order || 0))
+  [...layoutConfig.navbarItems.value]
+    .filter(item => item.position === 'left' || !item.position)
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
 )
 
 const centerNavbarItems = computed(() =>
-  layoutConfig.navbarItems.value
-    .filter((item: NavbarItem) => item.position === 'center')
-    .sort((a: NavbarItem, b: NavbarItem) => (a.order || 0) - (b.order || 0))
+  [...layoutConfig.navbarItems.value]
+    .filter(item => item.position === 'center')
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
 )
 
 const rightNavbarItems = computed(() =>
-  layoutConfig.navbarItems.value
-    .filter((item: NavbarItem) => item.position === 'right')
-    .sort((a: NavbarItem, b: NavbarItem) => (a.order || 0) - (b.order || 0))
+  [...layoutConfig.navbarItems.value]
+    .filter(item => item.position === 'right')
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
 )
 
 const handleLogout = () => {
