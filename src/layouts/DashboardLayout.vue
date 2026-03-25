@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
-import { useLayoutConfig, type NavbarItem } from '../composables/useLayoutConfig'
+import { useLayoutConfig } from '../composables/useLayoutConfig'
 import { useAppSwitcher, type AppDefinition } from '../composables/useAppSwitcher'
 
 export interface User {
