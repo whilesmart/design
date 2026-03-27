@@ -158,7 +158,7 @@ onUnmounted(() => {
                 :class="{ active: app.id === currentAppId }"
               >
                 <div class="app-icon-wrapper">
-                  <span class="app-icon">{{ app.icon }}</span>
+                  <img :src="app.icon" :alt="app.name" class="app-icon" />
                 </div>
                 <span class="app-label">{{ app.name }}</span>
               </button>
@@ -366,7 +366,11 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+}
+
+.app-icon {
+  width: 2rem;
+  height: 2rem;
 }
 
 .app-label {

@@ -11,23 +11,23 @@ export interface AppDefinition {
 const defaultApps: AppDefinition[] = [
   {
     id: 'desk',
-    name: 'Dashboard',
+    name: 'Desk',
     url: import.meta.env.VITE_DESK_URL || 'https://desk.whilesmart.com',
-    icon: '🏠',
+    icon: '/desk-icon.svg',
     description: 'Your WhileSmart hub'
   },
   {
     id: 'mail',
     name: 'Mail',
     url: import.meta.env.VITE_MAIL_URL || 'https://mail.whilesmart.com',
-    icon: '📧',
+    icon: '/mail-icon.svg',
     description: 'Email management'
   },
   {
     id: 'accounts',
     name: 'Account',
     url: import.meta.env.VITE_ACCOUNTS_URL || 'https://accounts.whilesmart.com',
-    icon: '👤',
+    icon: '/whilesmart-icon.svg',
     description: 'Manage your account'
   }
 ]

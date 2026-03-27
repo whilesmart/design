@@ -64,7 +64,7 @@ defineEmits<{
 
 .ds-input {
   width: 100%;
-  padding: var(--ds-space-2) var(--ds-space-3);
+  padding: var(--ds-space-3) var(--ds-space-4);
   border: 1px solid var(--ds-border-base);
   border-radius: var(--ds-radius-md);
   font-size: var(--ds-text-sm);
