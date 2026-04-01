@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
 export interface SearchSuggestion {
   id: string
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
   (e: 'search', value: string): void
-  (e: 'select', suggestion: SearchSuggestion): void
+  (e: 'selectItem', suggestion: SearchSuggestion): void
   (e: 'expand'): void
   (e: 'clearRecent', query: string): void
   (e: 'clearAllRecent'): void
@@ -106,7 +106,7 @@ function handleKeydown(e: KeyboardEvent) {
 
 function selectAtIndex(index: number) {
   if (props.modelValue && index < props.suggestions.length) {
-    emit('select', props.suggestions[index])
+    emit('selectItem', props.suggestions[index])
   } else {
     const recentIndex = props.modelValue ? index : index
     if (!props.modelValue && recentIndex < props.recentSearches.length) {
@@ -118,7 +118,7 @@ function selectAtIndex(index: number) {
 }
 
 function selectSuggestion(suggestion: SearchSuggestion) {
-  emit('select', suggestion)
+  emit('selectItem', suggestion)
   dropdownOpen.value = false
 }
 
