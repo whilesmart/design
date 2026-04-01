@@ -24,6 +24,27 @@ const defaultApps: AppDefinition[] = [
     description: 'Email management'
   },
   {
+    id: 'admin',
+    name: 'Admin',
+    url: import.meta.env.VITE_ADMIN_URL || 'https://admin.whilesmart.com',
+    icon: '/whilesmart-icon.svg',
+    description: 'Organization management'
+  },
+  {
+    id: 'files',
+    name: 'Files',
+    url: import.meta.env.VITE_FILES_URL || 'https://files.whilesmart.com',
+    icon: '/files-icon.svg',
+    description: 'File storage and sharing'
+  },
+  {
+    id: 'calendar',
+    name: 'Calendar',
+    url: import.meta.env.VITE_CALENDAR_URL || 'https://calendar.whilesmart.com',
+    icon: '/calendar-icon.svg',
+    description: 'Events and scheduling'
+  },
+  {
     id: 'accounts',
     name: 'Account',
     url: import.meta.env.VITE_ACCOUNTS_URL || 'https://accounts.whilesmart.com',
