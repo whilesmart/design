@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   user: null,
   apps: undefined,
   currentAppId: undefined,
-  brandIconUrl: '/whilesmart-icon.svg'
+  brandIconUrl: undefined
 })
 
 const emit = defineEmits<{
@@ -36,6 +36,15 @@ const appsMenuOpen = ref(false)
 const userMenuOpen = ref(false)
 
 const displayApps = computed(() => props.apps || defaultApps.value)
+
+const resolvedBrandIconUrl = computed(() => {
+  if (props.brandIconUrl) return props.brandIconUrl
+  if (props.currentAppId) {
+    const app = displayApps.value.find(a => a.id === props.currentAppId)
+    if (app?.icon) return app.icon
+  }
+  return '/whilesmart-icon.svg'
+})
 
 const userInitials = computed(() => {
   if (!props.user) return '?'
@@ -106,7 +115,7 @@ onUnmounted(() => {
           class="brand"
           @click.prevent="handleNavigateHome"
         >
-          <img :src="brandIconUrl" alt="WhileSmart" class="brand-icon" />
+          <img :src="resolvedBrandIconUrl" alt="WhileSmart" class="brand-icon" />
           <span class="brand-text">{{ layoutConfig.appName.value }}</span>
         </a>
         <component

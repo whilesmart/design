@@ -33,6 +33,7 @@ defineEmits<{
   >
     <span v-if="loading" class="ds-button__spinner"></span>
     <span class="ds-button__content" :class="{ 'ds-button__content--hidden': loading }">
+      <span v-if="$slots.icon" class="ds-button__icon"><slot name="icon" /></span>
       <slot />
     </span>
   </button>
@@ -130,6 +131,11 @@ defineEmits<{
 
 .ds-button__content--hidden {
   visibility: hidden;
+}
+
+.ds-button__icon {
+  display: inline-flex;
+  align-items: center;
 }
 
 @keyframes ds-spin {

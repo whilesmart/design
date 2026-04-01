@@ -78,11 +78,11 @@ export function useAppSwitcher(customApps?: AppDefinition[]) {
   }
 
   const getCurrentAppId = (): string | undefined => {
-    const hostname = window.location.hostname
+    const currentOrigin = window.location.origin
     for (const app of apps.value) {
       try {
-        const appHostname = new URL(app.url).hostname
-        if (hostname === appHostname) {
+        const appOrigin = new URL(app.url).origin
+        if (currentOrigin === appOrigin) {
           return app.id
         }
       } catch {

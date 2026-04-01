@@ -2,6 +2,7 @@
   "name": "@desk/components",
   "version": "1.0.0",
   "type": "module",
+  "description": "Vue 3 component library and design system for WhileSmart Desk",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "exports": {
@@ -9,6 +10,14 @@
     "./styles": "./src/index.css",
     "./layouts": "./src/layouts/index.ts",
     "./composables": "./src/composables/index.ts"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whilesmart/design.git",
+    "directory": "components"
   },
   "peerDependencies": {
     "vue": "^3.5.0",
@@ -22,7 +31,7 @@
   "scripts": {
     "test": "vitest"
   },
-  "keywords": ["vue", "components", "design-system"],
+  "keywords": ["vue", "components", "design-system", "whilesmart"],
   "author": "WhileSmart",
-  "license": "UNLICENSED"
+  "license": "MIT"
 }
