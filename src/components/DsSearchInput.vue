@@ -30,12 +30,12 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string]
-  search: [value: string]
-  select: [suggestion: SearchSuggestion]
-  expand: []
-  clearRecent: [query: string]
-  clearAllRecent: []
+  (e: 'update:modelValue', value: string): void
+  (e: 'search', value: string): void
+  (e: 'select', suggestion: SearchSuggestion): void
+  (e: 'expand'): void
+  (e: 'clearRecent', query: string): void
+  (e: 'clearAllRecent'): void
 }>()
 
 const inputRef = ref<HTMLInputElement>()
