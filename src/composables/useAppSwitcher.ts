@@ -45,6 +45,13 @@ const defaultApps: AppDefinition[] = [
     description: 'Events and scheduling'
   },
   {
+    id: 'moments',
+    name: 'Moments',
+    url: import.meta.env.VITE_MOMENTS_URL || 'https://moments.whilesmart.com',
+    icon: '/moments-icon.svg',
+    description: 'Capture and share memories'
+  },
+  {
     id: 'accounts',
     name: 'Account',
     url: import.meta.env.VITE_ACCOUNTS_URL || 'https://accounts.whilesmart.com',
