@@ -29,14 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false
 })
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-  (e: 'search', value: string): void
-  (e: 'selectItem', suggestion: SearchSuggestion): void
-  (e: 'expand'): void
-  (e: 'clearRecent', query: string): void
-  (e: 'clearAllRecent'): void
-}>()
+const emit = defineEmits(['update:modelValue', 'search', 'selectItem', 'expand', 'clearRecent', 'clearAllRecent'])
 
 const inputRef = ref<HTMLInputElement>()
 const dropdownOpen = ref(false)
