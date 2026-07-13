@@ -24,9 +24,9 @@ const defaultApps: AppDefinition[] = [
     description: 'Email management'
   },
   {
-    id: 'admin',
-    name: 'Admin',
-    url: import.meta.env.VITE_ADMIN_URL || 'https://admin.whilesmart.com',
+    id: 'console',
+    name: 'Console',
+    url: import.meta.env.VITE_CONSOLE_URL || 'https://console.whilesmart.com',
     icon: '/whilesmart-icon.svg',
     description: 'Organization management'
   },
