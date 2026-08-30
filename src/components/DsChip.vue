@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import DsIcon from './DsIcon.vue'
+
 interface Props {
   variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger'
   size?: 'sm' | 'md'
@@ -39,9 +41,7 @@ defineEmits<{
     </span>
     <span class="ds-chip__label"><slot /></span>
     <button v-if="closable" class="ds-chip__close" @click.stop="$emit('close')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-      </svg>
+      <DsIcon name="solar:close-circle-linear" />
     </button>
   </component>
 </template>

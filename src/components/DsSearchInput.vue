@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import DsIcon from './DsIcon.vue'
 
 export interface SearchSuggestion {
   id: string
@@ -173,9 +174,7 @@ const shortcutHint = computed(() => {
       ]"
     >
       <div class="ds-search__bar">
-        <svg class="ds-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
+        <DsIcon name="solar:magnifer-line-duotone" class="ds-search__icon" />
         <input
           ref="inputRef"
           type="text"
@@ -194,9 +193,7 @@ const shortcutHint = computed(() => {
           @mousedown.prevent
           @click="handleClear"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
+          <DsIcon name="solar:close-circle-linear" />
         </button>
         <button
           v-if="expandable && !expanded"
@@ -205,10 +202,7 @@ const shortcutHint = computed(() => {
           @mousedown.prevent
           @click="handleExpand"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" />
-            <line x1="21" y1="3" x2="14" y2="10" /><line x1="3" y1="21" x2="10" y2="14" />
-          </svg>
+          <DsIcon name="solar:maximize-square-3-linear" />
         </button>
         <kbd v-if="!modelValue && !expanded" class="ds-search__kbd">{{ shortcutHint }}</kbd>
       </div>
@@ -236,9 +230,7 @@ const shortcutHint = computed(() => {
                 <span class="ds-search__item-label">{{ item.label }}</span>
                 <span v-if="item.description" class="ds-search__item-desc">{{ item.description }}</span>
               </div>
-              <svg class="ds-search__item-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="9 18 15 12 9 6" />
-              </svg>
+              <DsIcon name="solar:alt-arrow-right-linear" class="ds-search__item-arrow" />
             </button>
           </div>
 
@@ -256,9 +248,7 @@ const shortcutHint = computed(() => {
               @click="selectRecent(query)"
               @mouseenter="activeIndex = i"
             >
-              <svg class="ds-search__item-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-              </svg>
+              <DsIcon name="solar:history-linear" class="ds-search__item-icon" />
               <span class="ds-search__item-label">{{ query }}</span>
               <button
                 class="ds-search__item-remove"
@@ -266,9 +256,7 @@ const shortcutHint = computed(() => {
                 @mousedown.prevent
                 @click.stop="emit('clearRecent', query)"
               >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
+                <DsIcon name="solar:close-circle-linear" />
               </button>
             </button>
           </div>

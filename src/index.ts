@@ -9,6 +9,7 @@ import DsSidebar from './components/DsSidebar.vue'
 import DsSidebarItem from './components/DsSidebarItem.vue'
 import DsSearchInput from './components/DsSearchInput.vue'
 import DsNotFound from './components/DsNotFound.vue'
+import DsIcon from './components/DsIcon.vue'
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout.vue'
@@ -30,6 +31,7 @@ export {
   DsSidebarItem,
   DsSearchInput,
   DsNotFound,
+  DsIcon,
 }
 export { DashboardLayout, PublicLayout }
 

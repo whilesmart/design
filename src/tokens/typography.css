@@ -25,6 +25,10 @@
   --ds-font-medium: 500;
   --ds-font-semibold: 600;
   --ds-font-bold: 700;
+  --ds-font-weight-normal: var(--ds-font-normal);
+  --ds-font-weight-medium: var(--ds-font-medium);
+  --ds-font-weight-semibold: var(--ds-font-semibold);
+  --ds-font-weight-bold: var(--ds-font-bold);
 
   /* Letter spacing */
   --ds-tracking-tight: -0.025em;

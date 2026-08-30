@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import DsIcon from './DsIcon.vue'
+
 withDefaults(defineProps<{
   title?: string
   description?: string
@@ -9,7 +11,7 @@ withDefaults(defineProps<{
 }>(), {
   title: 'Page not found',
   description: 'The page you\'re looking for doesn\'t exist or has been moved.',
-  icon: '🔍',
+  icon: 'solar:magnifer-line-duotone',
   showHomeLink: true,
   homeLinkText: 'Go home',
   homeLinkUrl: '/'
@@ -19,7 +21,7 @@ withDefaults(defineProps<{
 <template>
   <div class="ds-not-found">
     <div class="ds-not-found__content">
-      <div class="ds-not-found__icon">{{ icon }}</div>
+      <DsIcon :name="icon as `solar:${string}`" class="ds-not-found__icon" />
       <h1 class="ds-not-found__title">{{ title }}</h1>
       <p class="ds-not-found__description">{{ description }}</p>
       <slot>

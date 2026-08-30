@@ -36,7 +36,7 @@ defineEmits<{
   padding: 0.625rem 1rem;
   background: none;
   border: none;
-  border-radius: 0.375rem;
+  border-radius: var(--ds-radius-xl);
   font-size: 0.875rem;
   color: var(--ds-text-primary, #1a1a1a);
   cursor: pointer;
@@ -51,8 +51,8 @@ defineEmits<{
 }
 
 .ds-sidebar-item--active {
-  background: var(--ds-color-primary-50, rgba(45, 57, 142, 0.08));
-  color: var(--ds-color-primary, #2d398e);
+  background: var(--ds-color-primary-100);
+  color: var(--ds-color-primary-900);
   font-weight: 600;
 }
 

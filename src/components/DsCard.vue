@@ -22,7 +22,7 @@ withDefaults(defineProps<Props>(), {
 <style scoped>
 .ds-card {
   background: var(--ds-bg-elevated);
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--ds-radius-xl);
   border: 1px solid var(--ds-border-base);
 }
 
@@ -47,14 +47,14 @@ withDefaults(defineProps<Props>(), {
 }
 
 .ds-card--shadow-sm {
-  box-shadow: var(--ds-shadow-sm);
+  box-shadow: var(--ds-elevation-1);
 }
 
 .ds-card--shadow-md {
-  box-shadow: var(--ds-shadow-md);
+  box-shadow: var(--ds-elevation-2);
 }
 
 .ds-card--shadow-lg {
-  box-shadow: var(--ds-shadow-lg);
+  box-shadow: var(--ds-elevation-3);
 }
 </style>

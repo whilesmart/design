@@ -2,6 +2,7 @@
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useLayoutConfig } from '../composables/useLayoutConfig'
 import { useAppSwitcher, type AppDefinition } from '../composables/useAppSwitcher'
+import DsIcon from '../components/DsIcon.vue'
 
 export interface User {
   first_name: string
@@ -141,9 +142,7 @@ onUnmounted(() => {
         />
 
         <button class="icon-btn help-btn" title="Support">
-          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <DsIcon name="solar:question-circle-linear" />
         </button>
 
         <div class="apps-menu-container">
@@ -152,9 +151,7 @@ onUnmounted(() => {
             @click.stop="appsMenuOpen = !appsMenuOpen"
             title="WhileSmart Apps"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/>
-            </svg>
+            <DsIcon name="solar:widget-4-bold-duotone" />
           </button>
 
           <div v-if="appsMenuOpen" class="apps-dropdown">
@@ -224,13 +221,7 @@ onUnmounted(() => {
 <style scoped>
 .layout {
   min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 0% 0%, rgba(45, 57, 142, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 100% 0%, rgba(68, 192, 235, 0.14) 0%, transparent 50%),
-    radial-gradient(ellipse at 100% 100%, rgba(45, 57, 142, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 0% 100%, rgba(68, 192, 235, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(45, 57, 142, 0.06) 0%, transparent 70%),
-    var(--ds-bg-surface);
+  background: var(--ds-bg-surface);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -257,13 +248,15 @@ onUnmounted(() => {
   position: sticky;
   top: 0;
   height: 64px;
-  background: var(--ds-bg-elevated);
+  background: color-mix(in srgb, var(--ds-bg-elevated) 86%, transparent);
+  backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--ds-space-6);
   z-index: var(--ds-z-fixed);
   border-bottom: 1px solid var(--ds-border-base);
+  box-shadow: var(--ds-elevation-1);
 }
 
 .navbar-left {
