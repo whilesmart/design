@@ -34,6 +34,8 @@ withDefaults(defineProps<Props>(), {
 }
 
 .ds-sidebar__action {
+  display: grid;
+  gap: var(--ds-space-2);
   margin-bottom: 1.5rem;
 }
 

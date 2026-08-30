@@ -22,7 +22,7 @@ withDefaults(defineProps<Props>(), {
 <style scoped>
 .ds-card {
   background: var(--ds-bg-elevated);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-lg);
   border: 1px solid var(--ds-border-base);
 }
 

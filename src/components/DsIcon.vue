@@ -2,7 +2,7 @@
 import { Icon } from '@iconify/vue'
 
 defineProps<{
-  name: `solar:${string}`
+  name: `solar:${string}` | `material-symbols:${string}`
   label?: string
 }>()
 </script>

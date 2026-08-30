@@ -3,11 +3,15 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useLayoutConfig } from '../composables/useLayoutConfig'
 import { useAppSwitcher, type AppDefinition } from '../composables/useAppSwitcher'
 import DsIcon from '../components/DsIcon.vue'
+import DsAvatar from '../components/DsAvatar.vue'
+import DsButton from '../components/DsButton.vue'
 
 export interface User {
   first_name: string
   last_name: string
   email: string
+  avatar?: string
+  avatar_url?: string
 }
 
 interface Props {
@@ -47,10 +51,7 @@ const resolvedBrandIconUrl = computed(() => {
   return '/whilesmart-icon.svg'
 })
 
-const userInitials = computed(() => {
-  if (!props.user) return '?'
-  return `${props.user.first_name[0]}${props.user.last_name[0]}`.toUpperCase()
-})
+const userName = computed(() => props.user ? `${props.user.first_name} ${props.user.last_name}`.trim() : 'User')
 
 const leftNavbarItems = computed(() =>
   [...layoutConfig.navbarItems.value]
@@ -119,6 +120,7 @@ onUnmounted(() => {
           <img :src="resolvedBrandIconUrl" alt="WhileSmart" class="brand-icon" />
           <span class="brand-text">{{ layoutConfig.appName.value }}</span>
         </a>
+        <slot name="navbar-left" />
         <component
           v-for="item in leftNavbarItems"
           :key="item.id"
@@ -126,7 +128,8 @@ onUnmounted(() => {
         />
       </div>
 
-      <div v-if="centerNavbarItems.length > 0" class="navbar-center">
+      <div v-if="$slots['navbar-center'] || centerNavbarItems.length > 0" class="navbar-center">
+        <slot name="navbar-center" />
         <component
           v-for="item in centerNavbarItems"
           :key="item.id"
@@ -135,6 +138,7 @@ onUnmounted(() => {
       </div>
 
       <div class="navbar-right">
+        <slot name="navbar-right" />
         <component
           v-for="item in rightNavbarItems"
           :key="item.id"
@@ -178,12 +182,12 @@ onUnmounted(() => {
             @click.stop="userMenuOpen = !userMenuOpen"
             :title="`WhileSmart Account\n${user.email}`"
           >
-            <div class="avatar">{{ userInitials }}</div>
+            <DsAvatar :src="user.avatar_url || user.avatar" :name="userName" />
           </button>
 
           <div v-if="userMenuOpen" class="user-dropdown">
             <div class="user-dropdown-header">
-              <div class="user-avatar-large">{{ userInitials }}</div>
+              <DsAvatar :src="user.avatar_url || user.avatar" :name="userName" size="lg" />
               <div class="user-info">
                 <div class="user-full-name">
                   {{ user.first_name }} {{ user.last_name }}
@@ -192,9 +196,9 @@ onUnmounted(() => {
               </div>
             </div>
             <div class="user-dropdown-actions">
-              <button class="manage-btn" @click="handleNavigateToApp('accounts')">
+              <DsButton variant="secondary" full-width @click="handleNavigateToApp('accounts')">
                 Manage your WhileSmart Account
-              </button>
+              </DsButton>
             </div>
             <div class="user-dropdown-footer">
               <button @click="handleLogout" class="sign-out-btn">Sign out</button>
@@ -272,6 +276,11 @@ onUnmounted(() => {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  width: min(43.2vw, 39.6rem);
+}
+
+.navbar-center > * {
+  width: 100%;
 }
 
 .brand {
@@ -470,23 +479,6 @@ onUnmounted(() => {
 .user-dropdown-actions {
   padding: var(--ds-space-4);
   border-bottom: 1px solid var(--ds-border-base);
-}
-
-.manage-btn {
-  width: 100%;
-  background: none;
-  border: 1px solid var(--ds-border-strong);
-  border-radius: var(--ds-radius-full);
-  padding: var(--ds-space-2) var(--ds-space-4);
-  font-size: var(--ds-text-sm);
-  font-weight: var(--ds-font-weight-medium);
-  color: var(--ds-text-primary);
-  cursor: pointer;
-  transition: all var(--ds-transition-fast);
-}
-
-.manage-btn:hover {
-  background: var(--ds-bg-surface);
 }
 
 .user-dropdown-footer {

@@ -1,23 +1,40 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import DsIcon from './DsIcon.vue'
 
 export interface SearchSuggestion {
   id: string
   label: string
   description?: string
-  icon?: string
+  icon?: `solar:${string}` | `material-symbols:${string}`
   type?: string
+  group?: string
+  href?: string
+  data?: Record<string, unknown>
+}
+
+export interface SearchProvider {
+  id: string
+  search: (query: string) => Promise<SearchSuggestion[]> | SearchSuggestion[]
+}
+
+export interface SearchFilterOption {
+  value: string
+  label: string
 }
 
 interface Props {
   modelValue?: string
   placeholder?: string
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md' | 'lg'
   suggestions?: SearchSuggestion[]
   recentSearches?: string[]
   expandable?: boolean
   loading?: boolean
+  searchProvider?: (query: string) => Promise<SearchSuggestion[]>
+  searchProviders?: SearchProvider[]
+  filterValue?: string
+  filterOptions?: SearchFilterOption[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,26 +44,46 @@ const props = withDefaults(defineProps<Props>(), {
   suggestions: () => [],
   recentSearches: () => [],
   expandable: false,
-  loading: false
+  loading: false,
+  searchProviders: () => [],
+  filterValue: '',
+  filterOptions: () => []
 })
 
-const emit = defineEmits(['update:modelValue', 'search', 'selectItem', 'expand', 'clearRecent', 'clearAllRecent'])
+const emit = defineEmits(['update:modelValue', 'update:filterValue', 'search', 'selectItem', 'expand', 'clearRecent', 'clearAllRecent'])
 
 const inputRef = ref<HTMLInputElement>()
 const dropdownOpen = ref(false)
 const activeIndex = ref(-1)
 const expanded = ref(false)
+const providerSuggestions = ref<SearchSuggestion[]>([])
+const providerLoading = ref(false)
+let searchTimer: ReturnType<typeof setTimeout> | undefined
+let searchRequest = 0
+
+const hasProvider = computed(() => Boolean(props.searchProvider) || props.searchProviders.length > 0)
+const resolvedSuggestions = computed(() => hasProvider.value ? providerSuggestions.value : props.suggestions)
+const resolvedLoading = computed(() => props.loading || providerLoading.value)
+const resultGroups = computed(() => {
+  const groups = new Map<string, Array<{ item: SearchSuggestion; index: number }>>()
+  resolvedSuggestions.value.forEach((item, index) => {
+    const label = item.group || 'Results'
+    groups.set(label, [...(groups.get(label) || []), { item, index }])
+  })
+  return [...groups.entries()].map(([label, items]) => ({ label, items }))
+})
 
 const showDropdown = computed(() => {
   if (!dropdownOpen.value) return false
-  return props.suggestions.length > 0 || props.recentSearches.length > 0 || props.loading
+  return Boolean(props.modelValue) || resolvedSuggestions.value.length > 0 || props.recentSearches.length > 0 || resolvedLoading.value
 })
 
 const totalItems = computed(() => {
-  return props.suggestions.length + (props.modelValue ? 0 : props.recentSearches.length)
+  return resolvedSuggestions.value.length + (props.modelValue ? 0 : props.recentSearches.length)
 })
 
 function handleFocus() {
+  if (props.expandable && !expanded.value) handleExpand()
   dropdownOpen.value = true
   activeIndex.value = -1
 }
@@ -54,6 +91,7 @@ function handleFocus() {
 function handleBlur() {
   setTimeout(() => {
     dropdownOpen.value = false
+    if (props.expandable) expanded.value = false
   }, 200)
 }
 
@@ -99,8 +137,8 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 function selectAtIndex(index: number) {
-  if (props.modelValue && index < props.suggestions.length) {
-    emit('selectItem', props.suggestions[index])
+  if (props.modelValue && index < resolvedSuggestions.value.length) {
+    emit('selectItem', resolvedSuggestions.value[index])
   } else {
     const recentIndex = props.modelValue ? index : index
     if (!props.modelValue && recentIndex < props.recentSearches.length) {
@@ -138,11 +176,12 @@ function handleCollapse() {
   dropdownOpen.value = false
 }
 
-function handleOverlayClick() {
-  handleCollapse()
-}
-
 function handleEscapeGlobal(e: KeyboardEvent) {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault()
+    inputRef.value?.focus()
+    return
+  }
   if (e.key === 'Escape' && expanded.value) {
     handleCollapse()
   }
@@ -154,6 +193,33 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleEscapeGlobal)
+  clearTimeout(searchTimer)
+})
+
+watch(() => [props.modelValue, props.filterValue] as const, ([query]) => {
+  if (!hasProvider.value) return
+  clearTimeout(searchTimer)
+  const value = query.trim()
+  if (!value) {
+    providerSuggestions.value = []
+    providerLoading.value = false
+    return
+  }
+  const request = ++searchRequest
+  searchTimer = setTimeout(async () => {
+    providerLoading.value = true
+    try {
+      const results = props.searchProviders.length
+        ? (await Promise.allSettled(props.searchProviders.map(provider => provider.search(value))))
+            .flatMap(result => result.status === 'fulfilled' ? result.value : [])
+        : await props.searchProvider!(value)
+      if (request === searchRequest) providerSuggestions.value = results
+    } catch {
+      if (request === searchRequest) providerSuggestions.value = []
+    } finally {
+      if (request === searchRequest) providerLoading.value = false
+    }
+  }, 220)
 })
 
 const shortcutHint = computed(() => {
@@ -164,8 +230,6 @@ const shortcutHint = computed(() => {
 
 <template>
   <div class="ds-search-wrapper" :class="{ 'ds-search-wrapper--expanded': expanded }">
-    <div v-if="expanded" class="ds-search-overlay" @click="handleOverlayClick"></div>
-
     <div
       class="ds-search"
       :class="[
@@ -186,69 +250,81 @@ const shortcutHint = computed(() => {
           @blur="handleBlur"
           @keydown="handleKeydown"
         />
-        <span v-if="loading" class="ds-search__spinner"></span>
+        <label v-if="filterOptions.length > 1" class="ds-search__filter">
+          <span class="ds-search__filter-label">Search scope</span>
+          <select
+            :value="filterValue"
+            aria-label="Search scope"
+            @change="emit('update:filterValue', ($event.target as HTMLSelectElement).value)"
+          >
+            <option v-for="option in filterOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+          </select>
+          <DsIcon name="material-symbols:keyboard-arrow-down-rounded" />
+        </label>
+        <span v-if="resolvedLoading" class="ds-search__spinner"></span>
         <button
           v-else-if="modelValue"
           class="ds-search__clear"
           @mousedown.prevent
           @click="handleClear"
         >
-          <DsIcon name="solar:close-circle-linear" />
-        </button>
-        <button
-          v-if="expandable && !expanded"
-          class="ds-search__expand"
-          title="Expand search"
-          @mousedown.prevent
-          @click="handleExpand"
-        >
-          <DsIcon name="solar:maximize-square-3-linear" />
+          <DsIcon name="material-symbols:close-rounded" />
         </button>
         <kbd v-if="!modelValue && !expanded" class="ds-search__kbd">{{ shortcutHint }}</kbd>
       </div>
 
       <div v-if="showDropdown" class="ds-search__dropdown">
-        <div v-if="loading" class="ds-search__loading">
+        <div class="ds-search__results-header">
+          <span>{{ modelValue ? `Results for “${modelValue}”` : 'Recent searches' }}</span>
+          <small v-if="modelValue && !resolvedLoading">{{ resolvedSuggestions.length }} found</small>
+        </div>
+        <div v-if="resolvedLoading" class="ds-search__loading">
           <span class="ds-search__spinner"></span>
           <span>Searching...</span>
         </div>
 
         <template v-else>
-          <div v-if="modelValue && suggestions.length > 0" class="ds-search__section">
-            <div class="ds-search__section-header">Suggestions</div>
-            <button
-              v-for="(item, i) in suggestions"
-              :key="item.id"
-              class="ds-search__item"
-              :class="{ 'ds-search__item--active': activeIndex === i }"
-              @mousedown.prevent
-              @click="selectSuggestion(item)"
-              @mouseenter="activeIndex = i"
-            >
-              <span v-if="item.type" class="ds-search__item-type">{{ item.type }}</span>
-              <div class="ds-search__item-content">
-                <span class="ds-search__item-label">{{ item.label }}</span>
-                <span v-if="item.description" class="ds-search__item-desc">{{ item.description }}</span>
-              </div>
-              <DsIcon name="solar:alt-arrow-right-linear" class="ds-search__item-arrow" />
-            </button>
-          </div>
+          <template v-if="modelValue && resolvedSuggestions.length > 0">
+            <div v-for="group in resultGroups" :key="group.label" class="ds-search__section">
+              <div class="ds-search__section-header"><span>{{ group.label }}</span><span>{{ group.items.length }}</span></div>
+              <button
+                v-for="entry in group.items"
+                :key="entry.item.id"
+                class="ds-search__item"
+                :class="{ 'ds-search__item--active': activeIndex === entry.index }"
+                @mousedown.prevent
+                @click="selectSuggestion(entry.item)"
+                @mouseenter="activeIndex = entry.index"
+              >
+                <span v-if="entry.item.icon" class="ds-search__item-icon-tile"><DsIcon :name="entry.item.icon" /></span>
+                <div class="ds-search__item-content">
+                  <span class="ds-search__item-label">{{ entry.item.label }}</span>
+                  <span v-if="entry.item.description" class="ds-search__item-desc">{{ entry.item.description }}</span>
+                </div>
+                <span v-if="entry.item.type" class="ds-search__item-type">{{ entry.item.type }}</span>
+                <DsIcon name="material-symbols:arrow-forward-rounded" class="ds-search__item-arrow" />
+              </button>
+            </div>
+          </template>
 
           <div v-if="!modelValue && recentSearches.length > 0" class="ds-search__section">
             <div class="ds-search__section-header">
               Recent
               <button class="ds-search__section-action" @mousedown.prevent @click="emit('clearAllRecent')">Clear all</button>
             </div>
-            <button
+            <div
               v-for="(query, i) in recentSearches"
               :key="query"
               class="ds-search__item"
               :class="{ 'ds-search__item--active': activeIndex === i }"
+              role="button"
+              tabindex="0"
               @mousedown.prevent
               @click="selectRecent(query)"
+              @keydown.enter="selectRecent(query)"
               @mouseenter="activeIndex = i"
             >
-              <DsIcon name="solar:history-linear" class="ds-search__item-icon" />
+              <DsIcon name="material-symbols:history-rounded" class="ds-search__item-icon" />
               <span class="ds-search__item-label">{{ query }}</span>
               <button
                 class="ds-search__item-remove"
@@ -256,12 +332,12 @@ const shortcutHint = computed(() => {
                 @mousedown.prevent
                 @click.stop="emit('clearRecent', query)"
               >
-                <DsIcon name="solar:close-circle-linear" />
+                <DsIcon name="material-symbols:close-rounded" />
               </button>
-            </button>
+            </div>
           </div>
 
-          <div v-if="modelValue && suggestions.length === 0 && !loading" class="ds-search__empty">
+          <div v-if="modelValue && resolvedSuggestions.length === 0 && !resolvedLoading" class="ds-search__empty">
             No results for "{{ modelValue }}"
           </div>
         </template>
@@ -284,20 +360,7 @@ const shortcutHint = computed(() => {
 }
 
 .ds-search-wrapper--expanded {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 10vh;
-}
-
-.ds-search-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: -1;
+  z-index: var(--ds-z-dropdown);
 }
 
 .ds-search {
@@ -306,11 +369,17 @@ const shortcutHint = computed(() => {
 }
 
 .ds-search--expanded {
-  max-width: 640px;
-  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(54vw, 49.5rem);
+  max-width: calc(100vw - var(--ds-space-8));
+  transform: translate(-50%, -50%);
 }
 
 .ds-search__bar {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -321,7 +390,7 @@ const shortcutHint = computed(() => {
 }
 
 .ds-search--expanded .ds-search__bar {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--ds-elevation-3);
 }
 
 .ds-search__bar:focus-within {
@@ -330,12 +399,7 @@ const shortcutHint = computed(() => {
 }
 
 .ds-search--expanded .ds-search__bar:focus-within {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 3px rgba(45, 57, 142, 0.1);
-}
-
-.ds-search--open .ds-search__bar {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  box-shadow: var(--ds-elevation-3);
 }
 
 .ds-search--sm .ds-search__bar {
@@ -354,12 +418,24 @@ const shortcutHint = computed(() => {
   font-size: 0.875rem;
 }
 
-.ds-search--expanded .ds-search__bar {
-  padding: 0.625rem 1rem;
+.ds-search--lg .ds-search__bar {
+  height: 2.7rem;
+  padding: 0 var(--ds-space-3);
+  border-radius: var(--ds-radius-lg);
 }
 
-.ds-search--expanded .ds-search__input {
-  font-size: 1rem;
+.ds-search--lg .ds-search__input {
+  font-size: var(--ds-text-base);
+}
+
+.ds-search--expanded .ds-search__bar {
+  padding: 0 var(--ds-space-3);
+}
+
+.ds-search--open .ds-search__bar {
+  border-bottom-color: transparent;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .ds-search__icon {
@@ -379,6 +455,42 @@ const shortcutHint = computed(() => {
 
 .ds-search__input::placeholder {
   color: var(--ds-text-muted, #9ca3af);
+}
+
+.ds-search__filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  border-left: 1px solid var(--ds-border-base);
+  color: var(--ds-text-secondary);
+}
+
+.ds-search__filter-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.ds-search__filter select {
+  min-width: 6.5rem;
+  padding: var(--ds-space-2) var(--ds-space-6) var(--ds-space-2) var(--ds-space-3);
+  border: 0;
+  outline: 0;
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--ds-text-sm);
+  cursor: pointer;
+}
+
+.ds-search__filter > :last-child {
+  position: absolute;
+  right: var(--ds-space-2);
+  pointer-events: none;
 }
 
 .ds-search__clear,
@@ -426,7 +538,7 @@ const shortcutHint = computed(() => {
 
 .ds-search__dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% - 1px);
   left: 0;
   right: 0;
   background: var(--ds-bg-elevated, #fff);
@@ -441,7 +553,7 @@ const shortcutHint = computed(() => {
 }
 
 .ds-search--expanded .ds-search__dropdown {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--ds-elevation-4);
   max-height: 480px;
 }
 
@@ -449,11 +561,28 @@ const shortcutHint = computed(() => {
   padding: 0.25rem 0;
 }
 
+.ds-search__results-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-border-base);
+  background: var(--ds-bg-elevated);
+  color: var(--ds-text-primary);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-font-weight-medium);
+}
+
+.ds-search__results-header small { color: var(--ds-text-secondary); font-weight: var(--ds-font-weight-normal); }
+
 .ds-search__section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.375rem 0.75rem;
+  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-2);
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -481,7 +610,7 @@ const shortcutHint = computed(() => {
   align-items: center;
   gap: 0.5rem;
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: var(--ds-space-3) var(--ds-space-4);
   background: none;
   border: none;
   font-size: 0.8125rem;
@@ -500,6 +629,18 @@ const shortcutHint = computed(() => {
 .ds-search__item-icon {
   color: var(--ds-text-secondary, #666);
   flex-shrink: 0;
+}
+
+.ds-search__item-icon-tile {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-primary-50);
+  color: var(--ds-color-primary-800);
+  font-size: 1.125rem;
 }
 
 .ds-search__item-type {

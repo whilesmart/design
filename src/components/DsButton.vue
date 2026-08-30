@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import DsIcon from './DsIcon.vue'
+
 interface Props {
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
   size?: 'sm' | 'md' | 'lg'
   disabled?: boolean
   loading?: boolean
   fullWidth?: boolean
+  icon?: `material-symbols:${string}` | `solar:${string}`
+  iconPosition?: 'start' | 'end'
+  align?: 'center' | 'start'
 }
 
 withDefaults(defineProps<Props>(), {
@@ -12,7 +17,9 @@ withDefaults(defineProps<Props>(), {
   size: 'md',
   disabled: false,
   loading: false,
-  fullWidth: false
+  fullWidth: false,
+  iconPosition: 'start',
+  align: 'center'
 })
 
 defineEmits<{
@@ -26,6 +33,7 @@ defineEmits<{
     :class="[
       `ds-button--${variant}`,
       `ds-button--${size}`,
+      `ds-button--${align}`,
       { 'ds-button--full-width': fullWidth, 'ds-button--loading': loading }
     ]"
     :disabled="disabled || loading"
@@ -33,8 +41,13 @@ defineEmits<{
   >
     <span v-if="loading" class="ds-button__spinner"></span>
     <span class="ds-button__content" :class="{ 'ds-button__content--hidden': loading }">
-      <span v-if="$slots.icon" class="ds-button__icon"><slot name="icon" /></span>
-      <slot />
+      <span v-if="($slots.icon || icon) && iconPosition === 'start'" class="ds-button__icon">
+        <slot name="icon"><DsIcon :name="icon!" /></slot>
+      </span>
+      <span class="ds-button__label"><slot /></span>
+      <span v-if="($slots.icon || icon) && iconPosition === 'end'" class="ds-button__icon">
+        <slot name="icon"><DsIcon :name="icon!" /></slot>
+      </span>
     </span>
   </button>
 </template>
@@ -46,7 +59,7 @@ defineEmits<{
   justify-content: center;
   gap: var(--ds-space-2);
   border: 1px solid transparent;
-  border-radius: var(--ds-radius-md);
+  border-radius: var(--ds-radius-lg);
   font-weight: var(--ds-font-medium);
   cursor: pointer;
   transition: all var(--ds-transition-fast);
@@ -59,17 +72,20 @@ defineEmits<{
 }
 
 .ds-button--sm {
+  min-height: 2rem;
   padding: var(--ds-space-1) var(--ds-space-3);
   font-size: var(--ds-text-sm);
 }
 
 .ds-button--md {
+  min-height: 2.5rem;
   padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-sm);
 }
 
 .ds-button--lg {
-  padding: var(--ds-space-3) var(--ds-space-6);
+  min-height: 2.75rem;
+  padding: var(--ds-space-2) var(--ds-space-5);
   font-size: var(--ds-text-base);
 }
 
@@ -133,10 +149,37 @@ defineEmits<{
   visibility: hidden;
 }
 
+.ds-button__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  width: 100%;
+  line-height: 1;
+}
+
+.ds-button--start .ds-button__content {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  justify-content: stretch;
+  text-align: left;
+}
+
+.ds-button--start .ds-button__label { min-width: 0; }
+
 .ds-button__icon {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  font-size: 1.125em;
+  width: 1.125em;
+  height: 1.125em;
 }
+
+.ds-button__icon :deep(svg) { display: block; width: 100%; height: 100%; }
+
+.ds-button__label { line-height: 1.2; }
 
 @keyframes ds-spin {
   to {

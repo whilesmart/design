@@ -1,4 +1,5 @@
 import { computed } from 'vue'
+import { appUrl } from './useAppUrls'
 
 export interface AppDefinition {
   id: string
@@ -12,49 +13,49 @@ const defaultApps: AppDefinition[] = [
   {
     id: 'desk',
     name: 'Desk',
-    url: import.meta.env.VITE_DESK_URL || 'https://desk.whilesmart.com',
+    url: appUrl('desk'),
     icon: '/desk-icon.svg',
     description: 'Your WhileSmart hub'
   },
   {
     id: 'mail',
     name: 'Mail',
-    url: import.meta.env.VITE_MAIL_URL || 'https://mail.whilesmart.com',
+    url: appUrl('mail'),
     icon: '/mail-icon.svg',
     description: 'Email management'
   },
   {
     id: 'console',
     name: 'Console',
-    url: import.meta.env.VITE_CONSOLE_URL || 'https://console.whilesmart.com',
+    url: appUrl('console'),
     icon: '/whilesmart-icon.svg',
     description: 'Organization management'
   },
   {
     id: 'files',
     name: 'Files',
-    url: import.meta.env.VITE_FILES_URL || 'https://files.whilesmart.com',
+    url: appUrl('files'),
     icon: '/files-icon.svg',
     description: 'File storage and sharing'
   },
   {
     id: 'calendar',
     name: 'Calendar',
-    url: import.meta.env.VITE_CALENDAR_URL || 'https://calendar.whilesmart.com',
+    url: appUrl('calendar'),
     icon: '/calendar-icon.svg',
     description: 'Events and scheduling'
   },
   {
     id: 'moments',
     name: 'Moments',
-    url: import.meta.env.VITE_MOMENTS_URL || 'https://moments.whilesmart.com',
+    url: appUrl('moments'),
     icon: '/moments-icon.svg',
     description: 'Capture and share memories'
   },
   {
     id: 'accounts',
     name: 'Account',
-    url: import.meta.env.VITE_ACCOUNTS_URL || 'https://accounts.whilesmart.com',
+    url: appUrl('accounts'),
     icon: '/whilesmart-icon.svg',
     description: 'Manage your account'
   }
@@ -77,7 +78,7 @@ export function useAppSwitcher(customApps?: AppDefinition[]) {
   }
 
   const getLoginUrl = (redirectUrl?: string): string => {
-    const accountsUrl = getAppUrl('accounts') || 'https://accounts.whilesmart.com'
+    const accountsUrl = getAppUrl('accounts') || appUrl('accounts')
     if (redirectUrl) {
       return `${accountsUrl}/login?redirect=${encodeURIComponent(redirectUrl)}`
     }
