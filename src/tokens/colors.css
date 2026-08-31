@@ -64,4 +64,32 @@
   --ds-color-info-500: #44c0eb;
   --ds-color-info-600: #3aade4;
   --ds-color-info-700: #2e95d9;
+
+  --ds-file-folder-bg: #fff4cc;
+  --ds-file-folder-ink: #8a5a00;
+  --ds-file-generic-bg: #eef0f9;
+  --ds-file-generic-ink: #454e9a;
+  --ds-file-document-bg: #e8f1ff;
+  --ds-file-document-ink: #1759a8;
+  --ds-file-sheet-bg: #e7f7ee;
+  --ds-file-sheet-ink: #087443;
+  --ds-file-slide-bg: #fff0e7;
+  --ds-file-slide-ink: #a33d0b;
+  --ds-file-pdf-bg: #ffebeb;
+  --ds-file-pdf-ink: #b4232d;
+}
+
+[data-theme="dark"] {
+  --ds-file-folder-bg: #3d3218;
+  --ds-file-folder-ink: #ffd66b;
+  --ds-file-generic-bg: #303654;
+  --ds-file-generic-ink: #c9cff8;
+  --ds-file-document-bg: #173759;
+  --ds-file-document-ink: #9bc8ff;
+  --ds-file-sheet-bg: #153d2d;
+  --ds-file-sheet-ink: #83ddb2;
+  --ds-file-slide-bg: #4a291d;
+  --ds-file-slide-ink: #ffb68d;
+  --ds-file-pdf-bg: #4c2227;
+  --ds-file-pdf-ink: #ffadb4;
 }
