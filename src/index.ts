@@ -16,6 +16,7 @@ import DsIcon from './components/DsIcon.vue'
 import DsModal from './components/DsModal.vue'
 import DsAvatar from './components/DsAvatar.vue'
 import DsDataTable from './components/DsDataTable.vue'
+import DsProductLanding from './components/DsProductLanding.vue'
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout.vue'
@@ -45,6 +46,7 @@ export {
   DsModal,
   DsAvatar,
   DsDataTable,
+  DsProductLanding,
 }
 export { DashboardLayout, PublicLayout }
 
@@ -55,3 +57,4 @@ export * from './components/DsCard.vue'
 export type { SearchFilterOption, SearchProvider, SearchSuggestion } from './components/DsSearchInput.vue'
 export type { TagInputValue } from './components/DsTagInput.vue'
 export type { DataTableColumn } from './components/DsDataTable.vue'
+export type { ProductLandingItem, ProductLandingSpecimen } from './components/DsProductLanding.vue'

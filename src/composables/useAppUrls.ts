@@ -58,3 +58,7 @@ export function appUrl(app: WhileSmartApp, hostname = window.location.hostname):
   if (configuredUrl) return configuredUrl.replace(/\/$/, '')
   return isLocalHostname(hostname) ? localUrls[app] : productionUrls[app]
 }
+
+/* Store listings for the Desk mobile app. While a key is empty the landing
+   pages render a plain availability line in place of that store's button. */
+export const mobileAppUrls: { ios?: string; android?: string } = {}

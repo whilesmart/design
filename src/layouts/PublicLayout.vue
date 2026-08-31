@@ -66,7 +66,9 @@ const handleSignIn = () => {
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow-x: hidden;
+  /* clip, not hidden: hidden forces overflow-y to auto, which makes this a
+     scroll container and stops the sticky navbar sticking to the viewport. */
+  overflow-x: clip;
 }
 
 .layout::after {
@@ -129,6 +131,10 @@ const handleSignIn = () => {
   gap: var(--ds-space-2);
 }
 
+.navbar-right :deep(.ds-button) {
+  white-space: nowrap;
+}
+
 .sign-in-btn {
   background: var(--ds-color-primary);
   color: white;
@@ -181,6 +187,12 @@ const handleSignIn = () => {
 @media (max-width: 768px) {
   .navbar {
     padding: 0 var(--ds-space-4);
+  }
+}
+
+@media (max-width: 560px) {
+  .brand-text {
+    display: none;
   }
 }
 </style>
