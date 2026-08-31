@@ -81,7 +81,7 @@ const addons = [
 
 <template>
   <main class="landing" :class="`landing--${product}`">
-    <section class="hero">
+    <section class="hero" :class="{ 'hero--shot': heroImage }">
       <p class="hero__kicker">{{ kicker }}</p>
       <h1 class="hero__title">{{ title }} <span>{{ accent }}</span></h1>
 
@@ -261,7 +261,7 @@ const addons = [
   --accent-ink: var(--ds-color-primary);
   --accent-wash: var(--ds-color-primary-50);
   --accent-on-dark: var(--ds-color-secondary-300);
-  --band-max: 74rem;
+  --band-max: 80rem;
   --hero-rail: max(var(--ds-space-8), calc((100% - var(--band-max)) / 2));
   --product-mark: url('/desk-icon.svg');
   color: var(--ds-color-neutral-900);
@@ -320,6 +320,15 @@ const addons = [
   mask: var(--product-mark) no-repeat center / contain;
   opacity: 0.16;
   pointer-events: none;
+}
+
+.hero--shot {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+}
+
+/* The mark paints behind and around a screenshot rather than beside it. */
+.hero--shot::before {
+  display: none;
 }
 
 /* Fades the hero to white so the tinted band below starts on a hard edge.
@@ -1133,17 +1142,31 @@ const addons = [
   }
 
   .outcome {
-    grid-template-columns: auto minmax(0, 1fr);
-    justify-items: start;
-    align-items: start;
-    gap: var(--ds-space-2) var(--ds-space-4);
     padding: var(--ds-space-6);
-    text-align: left;
   }
 
-  .outcome__tile {
-    grid-row: 1 / 3;
-    margin-bottom: 0;
+  .hero,
+  .band-heading,
+  .capabilities__intro,
+  .mobile__copy,
+  .closing__copy {
+    text-align: center;
+  }
+
+  .hero__trust,
+  .mobile__stores {
+    justify-content: center;
+  }
+
+  .mobile__availability {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero__lead,
+  .capabilities__lead,
+  .mobile__lead {
+    margin-inline: auto;
   }
 
   .closing {
