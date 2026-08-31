@@ -6,7 +6,7 @@ interface Props {
   modelValue: boolean
   title: string
   description?: string
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'content'
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'content' | 'screen'
   closeOnBackdrop?: boolean
   icon?: `solar:${string}`
 }
@@ -117,6 +117,8 @@ onUnmounted(() => {
 .ds-modal__panel--lg { max-width: 42rem; }
 .ds-modal__panel--xl { max-width: 72rem; }
 .ds-modal__panel--content { width: fit-content; max-width: calc(100vw - var(--ds-space-8)); }
+.ds-modal__panel--screen { width: calc(100vw - var(--ds-space-8)); height: calc(100vh - var(--ds-space-8)); max-width: none; }
+.ds-modal__panel--screen .ds-modal__body { height: calc(100% - 5.5rem); }
 
 .ds-modal__header {
   display: flex;
