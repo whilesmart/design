@@ -5,6 +5,7 @@ import { useAppSwitcher, type AppDefinition } from '../composables/useAppSwitche
 import DsIcon from '../components/DsIcon.vue'
 import DsAvatar from '../components/DsAvatar.vue'
 import DsButton from '../components/DsButton.vue'
+import DsWorkspaceBackdrop, { type WorkspaceBrandingConfig } from '../components/DsWorkspaceBackdrop.vue'
 
 export interface User {
   first_name: string
@@ -19,13 +20,15 @@ interface Props {
   apps?: AppDefinition[]
   currentAppId?: string
   brandIconUrl?: string
+  workspaceBranding?: WorkspaceBrandingConfig
 }
 
 const props = withDefaults(defineProps<Props>(), {
   user: null,
   apps: undefined,
   currentAppId: undefined,
-  brandIconUrl: undefined
+  brandIconUrl: undefined,
+  workspaceBranding: undefined
 })
 
 const emit = defineEmits<{
@@ -41,6 +44,8 @@ const appsMenuOpen = ref(false)
 const userMenuOpen = ref(false)
 
 const displayApps = computed(() => props.apps || defaultApps.value)
+const isIconifyIcon = (icon: string): icon is `solar:${string}` | `material-symbols:${string}` =>
+  icon.startsWith('solar:') || icon.startsWith('material-symbols:')
 
 const resolvedBrandIconUrl = computed(() => {
   if (props.brandIconUrl) return props.brandIconUrl
@@ -49,6 +54,25 @@ const resolvedBrandIconUrl = computed(() => {
     if (app?.icon) return app.icon
   }
   return '/whilesmart-icon.svg'
+})
+
+declare global {
+  interface Window {
+    __DESK_BRANDING__?: WorkspaceBrandingConfig
+  }
+}
+
+const runtimeBranding = computed(() => typeof window === 'undefined' ? undefined : window.__DESK_BRANDING__)
+const resolvedWorkspaceBranding = computed(() => ({
+  ...runtimeBranding.value,
+  ...props.workspaceBranding
+}))
+const resolvedWorkspaceAppMark = computed(() => {
+  const branding = resolvedWorkspaceBranding.value
+  if (branding.appMarkUrl) return branding.appMarkUrl
+  if (props.currentAppId && branding.appMarks?.[props.currentAppId]) return branding.appMarks[props.currentAppId]
+  if (props.currentAppId) return displayApps.value.find(app => app.id === props.currentAppId)?.icon
+  return undefined
 })
 
 const userName = computed(() => props.user ? `${props.user.first_name} ${props.user.last_name}`.trim() : 'User')
@@ -110,6 +134,13 @@ onUnmounted(() => {
 
 <template>
   <div class="layout">
+    <DsWorkspaceBackdrop
+      :app-mark-url="resolvedWorkspaceAppMark"
+      :organization-mark-url="resolvedWorkspaceBranding.organizationMarkUrl"
+      :organization-name="resolvedWorkspaceBranding.organizationName"
+      :show-app-mark="resolvedWorkspaceBranding.showAppMark"
+      :show-organization-mark="resolvedWorkspaceBranding.showOrganizationMark"
+    />
     <nav class="navbar">
       <div class="navbar-left">
         <a
@@ -168,7 +199,8 @@ onUnmounted(() => {
                 :class="{ active: app.id === currentAppId }"
               >
                 <div class="app-icon-wrapper">
-                  <img :src="app.icon" :alt="app.name" class="app-icon" />
+                  <DsIcon v-if="isIconifyIcon(app.icon)" :name="app.icon" class="app-icon app-icon--glyph" />
+                  <img v-else :src="app.icon" :alt="app.name" class="app-icon" />
                 </div>
                 <span class="app-label">{{ app.name }}</span>
               </button>
@@ -232,29 +264,15 @@ onUnmounted(() => {
   overflow-x: hidden;
 }
 
-.layout::after {
-  content: '';
-  position: fixed;
-  bottom: -10%;
-  right: -5%;
-  width: 40vw;
-  height: 40vw;
-  max-width: 600px;
-  max-height: 600px;
-  background: url('/whilesmart-icon.svg') no-repeat center;
-  background-size: contain;
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: 0;
-}
-
 .navbar {
   position: sticky;
   top: 0;
-  height: 64px;
+  height: var(--ds-navbar-height);
   background: color-mix(in srgb, var(--ds-bg-elevated) 86%, transparent);
   backdrop-filter: blur(16px);
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) minmax(20rem, var(--ds-header-search-max-width)) minmax(10rem, 1fr);
+  gap: clamp(var(--ds-space-3), 2vw, var(--ds-space-6));
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--ds-space-6);
@@ -264,19 +282,19 @@ onUnmounted(() => {
 }
 
 .navbar-left {
+  grid-column: 1;
   display: flex;
   align-items: center;
   gap: var(--ds-space-3);
 }
 
 .navbar-center {
+  grid-column: 2;
   display: flex;
   align-items: center;
   gap: var(--ds-space-3);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(43.2vw, 39.6rem);
+  width: 100%;
+  min-width: 0;
 }
 
 .navbar-center > * {
@@ -304,9 +322,11 @@ onUnmounted(() => {
 }
 
 .navbar-right {
+  grid-column: 3;
   display: flex;
   align-items: center;
   gap: var(--ds-space-2);
+  justify-content: flex-end;
 }
 
 .icon-btn {
@@ -382,6 +402,10 @@ onUnmounted(() => {
 .app-icon {
   width: 2rem;
   height: 2rem;
+}
+
+.app-icon--glyph {
+  color: var(--ds-interactive-primary);
 }
 
 .app-label {
@@ -550,7 +574,13 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .navbar {
+    grid-template-columns: auto minmax(10rem, 1fr) auto;
     padding: 0 var(--ds-space-4);
+  }
+
+  .brand-text,
+  .help-btn {
+    display: none;
   }
 
   .main-content {

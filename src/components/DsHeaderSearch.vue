@@ -87,6 +87,5 @@ function selectItem(item: SearchSuggestion) {
 </template>
 
 <style scoped>
-.ds-header-search { width: min(36rem, 46vw); }
-@media (max-width: 720px) { .ds-header-search { width: min(22rem, 52vw); } }
+.ds-header-search { width: 100%; min-width: 0; }
 </style>

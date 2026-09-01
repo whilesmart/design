@@ -17,6 +17,8 @@ import DsModal from './components/DsModal.vue'
 import DsAvatar from './components/DsAvatar.vue'
 import DsDataTable from './components/DsDataTable.vue'
 import DsProductLanding from './components/DsProductLanding.vue'
+import DsWorkspaceBackdrop from './components/DsWorkspaceBackdrop.vue'
+import DsCreateButton from './components/DsCreateButton.vue'
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout.vue'
@@ -47,6 +49,8 @@ export {
   DsAvatar,
   DsDataTable,
   DsProductLanding,
+  DsWorkspaceBackdrop,
+  DsCreateButton,
 }
 export { DashboardLayout, PublicLayout }
 
@@ -58,3 +62,4 @@ export type { SearchFilterOption, SearchProvider, SearchSuggestion } from './com
 export type { TagInputValue } from './components/DsTagInput.vue'
 export type { DataTableColumn } from './components/DsDataTable.vue'
 export type { ProductLandingItem, ProductLandingSpecimen } from './components/DsProductLanding.vue'
+export type { WorkspaceBrandingConfig } from './components/DsWorkspaceBackdrop.vue'

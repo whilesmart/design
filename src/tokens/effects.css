@@ -8,6 +8,7 @@
   --ds-radius-xl: 0.875rem;  /* 14px */
   --ds-radius-2xl: 1rem;     /* 16px */
   --ds-radius-full: 9999px;
+  --ds-radius-create-action: 0.25rem;
 
   /* Shadows */
   --ds-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -21,6 +22,7 @@
   --ds-elevation-4: 0 12px 28px rgba(15, 23, 42, 0.12), 0 4px 8px rgba(15, 23, 42, 0.07);
   --ds-elevation-5: 0 20px 44px rgba(15, 23, 42, 0.16), 0 8px 14px rgba(15, 23, 42, 0.08);
   --ds-welcome-gradient: linear-gradient(135deg, var(--ds-color-primary-800), var(--ds-color-secondary-600));
+  --ds-create-action-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), var(--ds-elevation-1);
 
   /* Transitions */
   --ds-transition-fast: 150ms ease;
@@ -29,6 +31,7 @@
 
   /* Z-index */
   --ds-z-base: 0;
+  --ds-z-workspace-decoration: 2;
   --ds-z-dropdown: 1000;
   --ds-z-sticky: 1020;
   --ds-z-fixed: 1030;
@@ -36,6 +39,12 @@
   --ds-z-modal: 1050;
   --ds-z-popover: 1060;
   --ds-z-tooltip: 1070;
+
+  --ds-navbar-height: 4rem;
+  --ds-header-search-max-width: 40rem;
+  --ds-viewer-toolbar-height: 2rem;
+  --ds-viewer-backdrop-blur: 18px;
+  --ds-document-page-width: 793.7px;
 }
 
 [data-theme="dark"] {
@@ -44,4 +53,5 @@
   --ds-elevation-3: 0 8px 18px rgba(0, 0, 0, 0.55);
   --ds-elevation-4: 0 14px 30px rgba(0, 0, 0, 0.6);
   --ds-elevation-5: 0 22px 48px rgba(0, 0, 0, 0.65);
+  --ds-create-action-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), var(--ds-elevation-1);
 }

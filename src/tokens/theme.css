@@ -5,6 +5,14 @@
   --ds-bg-surface: var(--ds-color-neutral-50);
   --ds-bg-elevated: var(--ds-color-neutral-0);
   --ds-bg-overlay: rgba(0, 0, 0, 0.5);
+  --ds-workspace-bg: var(--ds-color-neutral-100);
+  --ds-workspace-app-mark-opacity: 0.075;
+  --ds-workspace-organization-mark-opacity: 0.055;
+  --ds-create-action-bg: var(--ds-interactive-primary);
+  --ds-create-action-border: var(--ds-color-primary-700);
+  --ds-viewer-backdrop: rgba(15, 23, 42, 0.56);
+  --ds-viewer-toolbar-bg: rgba(255, 255, 255, 0.78);
+  --ds-viewer-toolbar-border: rgba(255, 255, 255, 0.46);
 
   /* Text */
   --ds-text-primary: var(--ds-color-neutral-900);
@@ -42,6 +50,14 @@
   --ds-bg-surface: var(--ds-color-neutral-800);
   --ds-bg-elevated: var(--ds-color-neutral-700);
   --ds-bg-overlay: rgba(0, 0, 0, 0.7);
+  --ds-workspace-bg: var(--ds-color-neutral-900);
+  --ds-workspace-app-mark-opacity: 0.11;
+  --ds-workspace-organization-mark-opacity: 0.09;
+  --ds-create-action-bg: var(--ds-interactive-primary);
+  --ds-create-action-border: var(--ds-color-primary-300);
+  --ds-viewer-backdrop: rgba(2, 6, 23, 0.74);
+  --ds-viewer-toolbar-bg: rgba(15, 23, 42, 0.72);
+  --ds-viewer-toolbar-border: rgba(255, 255, 255, 0.14);
 
   /* Text */
   --ds-text-primary: var(--ds-color-neutral-50);

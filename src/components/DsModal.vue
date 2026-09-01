@@ -9,12 +9,14 @@ interface Props {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'content' | 'screen'
   closeOnBackdrop?: boolean
   icon?: `solar:${string}`
+  variant?: 'default' | 'viewer'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   description: '',
   size: 'md',
-  closeOnBackdrop: true
+  closeOnBackdrop: true,
+  variant: 'default'
 })
 
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
@@ -54,6 +56,7 @@ onUnmounted(() => {
       <div
         v-if="modelValue"
         class="ds-modal"
+        :class="`ds-modal--${variant}`"
         role="presentation"
         @mousedown.self="closeOnBackdrop && close()"
       >
@@ -99,6 +102,47 @@ onUnmounted(() => {
   padding: var(--ds-space-4);
   background: var(--ds-bg-overlay);
 }
+
+.ds-modal--viewer {
+  padding: 0;
+  background: var(--ds-viewer-backdrop);
+  backdrop-filter: blur(var(--ds-viewer-backdrop-blur)) saturate(0.72);
+}
+
+.ds-modal--viewer .ds-modal__panel {
+  width: 100vw;
+  height: 100vh;
+  max-height: none;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ds-modal--viewer .ds-modal__header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: var(--ds-z-sticky);
+  align-items: center;
+  min-height: var(--ds-viewer-toolbar-height);
+  gap: var(--ds-space-2);
+  padding: 0 var(--ds-space-3);
+  background: var(--ds-viewer-toolbar-bg);
+  border-bottom: 1px solid var(--ds-viewer-toolbar-border);
+  backdrop-filter: blur(16px);
+}
+
+.ds-modal--viewer .ds-modal__body {
+  height: 100%;
+  padding: calc(var(--ds-viewer-toolbar-height) + var(--ds-space-2)) var(--ds-space-5) var(--ds-space-5);
+  overflow: auto;
+}
+
+.ds-modal--viewer .ds-modal__title { font-size: var(--ds-text-base); }
+.ds-modal--viewer .ds-modal__description { display: none; }
+.ds-modal--viewer .ds-modal__header-actions { gap: var(--ds-space-1); }
+.ds-modal--viewer .ds-modal__close { padding: var(--ds-space-1); }
 
 .ds-modal__panel {
   width: 100%;
