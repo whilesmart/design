@@ -11,13 +11,6 @@ export interface AppDefinition {
 
 const defaultApps: AppDefinition[] = [
   {
-    id: 'desk',
-    name: 'Desk',
-    url: appUrl('desk'),
-    icon: '/desk-icon.svg',
-    description: 'Your WhileSmart hub'
-  },
-  {
     id: 'mail',
     name: 'Mail',
     url: appUrl('mail'),
@@ -44,6 +37,13 @@ const defaultApps: AppDefinition[] = [
     url: appUrl('calendar'),
     icon: '/calendar-icon.svg',
     description: 'Events and scheduling'
+  },
+  {
+    id: 'chat',
+    name: 'Chat',
+    url: appUrl('chat'),
+    icon: '/chat-icon.svg',
+    description: 'Workplace conversations'
   },
   {
     id: 'moments',
