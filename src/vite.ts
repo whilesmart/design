@@ -61,6 +61,54 @@ const loaderMarkup = `<div class="ws-app-loader" role="status" aria-label="Loadi
   </svg>
 </div>`
 
+export interface DiscoverableSite {
+  name: string
+  canonical: string
+  title: string
+  description: string
+  heading: string
+  summary: string
+  sections: Array<{ title: string; description: string }>
+  links: Array<{ label: string; url: string }>
+}
+
+export interface AppLoaderOptions {
+  site?: DiscoverableSite
+  indexing?: boolean
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;')
+}
+
+function crawlableMarkup(site: DiscoverableSite): string {
+  const sections = site.sections
+    .map((section) => `<article><h2>${escapeHtml(section.title)}</h2><p>${escapeHtml(section.description)}</p></article>`)
+    .join('')
+  const links = site.links
+    .map((link) => `<li><a href="${escapeHtml(link.url)}">${escapeHtml(link.label)}</a></li>`)
+    .join('')
+
+  return `<div class="ws-crawl-content">
+    <header><a href="https://whilesmart.com/">WhileSmart</a></header>
+    <main><h1>${escapeHtml(site.heading)}</h1><p>${escapeHtml(site.summary)}</p>${sections}</main>
+    <nav aria-label="WhileSmart apps"><h2>Explore WhileSmart</h2><ul>${links}</ul></nav>
+  </div>`
+}
+
+function llmsText(site: DiscoverableSite, detailed: boolean): string {
+  const sections = detailed
+    ? site.sections.map((section) => `## ${section.title}\n\n${section.description}`).join('\n\n')
+    : `> ${site.summary}`
+  const links = site.links.map((link) => `- [${link.label}](${link.url})`).join('\n')
+  return `# ${site.name}\n\n${sections}\n\n## WhileSmart apps\n\n${links}\n`
+}
+
 export function localizeSetCookie(cookie: string): string {
   return cookie
     .replace(/;\s*domain=[^;]+/gi, '')
@@ -68,13 +116,47 @@ export function localizeSetCookie(cookie: string): string {
     .replace(/;\s*samesite=\w+/gi, '; SameSite=Lax')
 }
 
-export function whilesmartAppLoader() {
+export function whilesmartAppLoader(options: AppLoaderOptions = {}) {
+  const indexing = options.indexing ?? Boolean(options.site)
   return {
     name: 'whilesmart-app-loader',
     transformIndexHtml(html: string) {
+      const site = options.site
+      const fallback = site ? crawlableMarkup(site) : ''
+      const structuredData = site
+        ? `<script type="application/ld+json">${JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: site.name,
+            url: site.canonical,
+            description: site.description,
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Web'
+          }).replaceAll('<', '\\u003c')}</script>`
+        : ''
+      const noScriptStyles = site
+        ? '<noscript><style>.ws-app-loader{display:none}.ws-crawl-content{display:block;max-width:64rem;margin:auto;padding:3rem 1.5rem;font:16px/1.6 system-ui,sans-serif;color:#172033}.ws-crawl-content article{margin-top:2rem}.ws-crawl-content ul{display:flex;flex-wrap:wrap;gap:1rem;padding:0;list-style:none}.ws-crawl-content a{color:#2d398e}</style></noscript>'
+        : ''
       return html
-        .replace('</head>', `<style>${loaderStyles}</style></head>`)
-        .replace('<div id="app"></div>', `<div id="app">${loaderMarkup}</div>`)
+        .replace('</head>', `${structuredData}<style>${loaderStyles}.ws-crawl-content{display:none}</style>${noScriptStyles}</head>`)
+        .replace('<div id="app"></div>', `<div id="app">${loaderMarkup}${fallback}</div>`)
+    },
+    generateBundle(this: { emitFile: (asset: { type: 'asset'; fileName: string; source: string }) => void }) {
+      this.emitFile({
+        type: 'asset',
+        fileName: 'robots.txt',
+        source: indexing && options.site
+          ? `User-agent: *\nAllow: /\n\nSitemap: ${options.site.canonical}sitemap.xml\n`
+          : 'User-agent: *\nDisallow: /\n'
+      })
+      if (!indexing || !options.site) return
+      this.emitFile({
+        type: 'asset',
+        fileName: 'sitemap.xml',
+        source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${escapeHtml(options.site.canonical)}</loc></url></urlset>\n`
+      })
+      this.emitFile({ type: 'asset', fileName: 'llm.txt', source: llmsText(options.site, false) })
+      this.emitFile({ type: 'asset', fileName: 'llms.txt', source: llmsText(options.site, true) })
     }
   }
 }

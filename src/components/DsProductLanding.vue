@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { appUrl, mobileAppUrls } from '../composables/useAppUrls'
+import { mobileAppUrls } from '../composables/useAppUrls'
+import { whileSmartEcosystemApps } from '../ecosystem'
 import DsButton from './DsButton.vue'
+import DsEcosystemStrip from './DsEcosystemStrip.vue'
 import DsIcon from './DsIcon.vue'
 
 export interface ProductLandingItem {
@@ -49,13 +51,6 @@ const plans = [
 const productNames = { desk: 'Desk', mail: 'Mail', files: 'Files' } as const
 const productName = computed(() => productNames[props.product])
 
-const suiteApps = [
-  { id: 'desk', name: 'Desk', icon: '/desk-icon.svg', description: 'The day in one place: priority mail, recent files, and what is next.' },
-  { id: 'mail', name: 'Mail', icon: '/mail-icon.svg', description: 'Business email on the domain your customers already trust.' },
-  { id: 'files', name: 'Files', icon: '/files-icon.svg', description: 'Documents organised, reviewed, and shared without losing control.' },
-  { id: 'calendar', name: 'Calendar', icon: '/calendar-icon.svg', description: 'Meetings and plans sitting beside the work they belong to.' }
-] as const
-
 const plateCaption = computed(() =>
   props.product === 'desk' ? 'Mail, Files, and Calendar' : 'in the Desk app'
 )
@@ -65,10 +60,6 @@ const storeLinks = computed(() =>
     { key: 'ios', label: 'App Store', url: mobileAppUrls.ios },
     { key: 'android', label: 'Google Play', url: mobileAppUrls.android }
   ].filter((store): store is { key: string; label: string; url: string } => Boolean(store.url))
-)
-
-const siblingApps = computed(() =>
-  suiteApps.filter((app) => app.id !== props.product).map((app) => ({ ...app, url: appUrl(app.id) }))
 )
 
 const addons = [
@@ -126,25 +117,12 @@ const addons = [
       </div>
     </section>
 
-    <section class="suite" aria-labelledby="suite-heading">
-      <header class="band-heading">
-        <p class="band-heading__label">One account, every app</p>
-        <h2 id="suite-heading">Your work does not stop at {{ productName }}.</h2>
-        <p class="band-heading__lead">Every WhileSmart app signs in with the same account and draws on the same storage pool. Turn one on when you need it, not before.</p>
-      </header>
-      <ul class="suite-grid">
-        <li v-for="app in siblingApps" :key="app.id">
-          <a :href="app.url">
-            <img :src="app.icon" alt="" />
-            <span class="suite__text">
-              <strong>{{ app.name }}</strong>
-              <small>{{ app.description }}</small>
-            </span>
-            <DsIcon name="solar:arrow-right-up-linear" />
-          </a>
-        </li>
-      </ul>
-    </section>
+    <DsEcosystemStrip
+      :apps="whileSmartEcosystemApps"
+      :current-app="product"
+      :title="`Your work does not stop at ${productName}.`"
+      description="Every WhileSmart app uses the same account. Open one when the work calls for it."
+    />
 
     <section class="mobile" aria-labelledby="mobile-heading">
       <div class="mobile__inner">
@@ -555,64 +533,6 @@ const addons = [
 .outcome p {
   color: var(--ds-color-neutral-600);
   line-height: var(--ds-leading-relaxed);
-}
-
-.suite {
-  padding: var(--ds-space-24) var(--ds-space-8);
-  background: var(--ds-color-neutral-0);
-}
-
-.suite-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--ds-space-4);
-  max-width: var(--band-max);
-  margin: 0 auto;
-}
-
-.suite-grid a {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--ds-space-4);
-  height: 100%;
-  padding: var(--ds-space-6);
-  border: 1px solid var(--ds-border-base);
-  border-radius: var(--ds-radius-xl);
-  color: inherit;
-  text-decoration: none;
-  transition: border-color var(--ds-transition-base), box-shadow var(--ds-transition-base);
-}
-
-.suite-grid a:hover {
-  border-color: var(--accent-fill);
-  box-shadow: var(--ds-elevation-2);
-}
-
-.suite-grid img {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-.suite__text {
-  display: grid;
-  gap: var(--ds-space-1);
-}
-
-.suite__text strong {
-  font-size: var(--ds-text-lg);
-}
-
-.suite__text small {
-  color: var(--ds-color-neutral-600);
-  font-size: var(--ds-text-sm);
-  line-height: var(--ds-leading-relaxed);
-}
-
-.suite-grid a > :deep(svg) {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: var(--accent-ink);
 }
 
 /* overflow crops the phone at the band edge; without it the phone runs on
@@ -1047,8 +967,7 @@ const addons = [
 
   .outcome-grid,
   .pricing-grid,
-  .addons__list,
-  .suite-grid {
+  .addons__list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1057,7 +976,6 @@ const addons = [
   }
 
   .outcomes,
-  .suite,
   .mobile,
   .capabilities,
   .pricing,
@@ -1111,7 +1029,6 @@ const addons = [
   }
 
   .outcomes,
-  .suite,
   .capabilities,
   .pricing {
     padding-block: var(--ds-space-16);
@@ -1122,7 +1039,6 @@ const addons = [
   }
 
   .outcomes,
-  .suite,
   .mobile,
   .capabilities,
   .pricing,
@@ -1136,8 +1052,7 @@ const addons = [
 
   .outcome-grid,
   .pricing-grid,
-  .addons__list,
-  .suite-grid {
+  .addons__list {
     grid-template-columns: minmax(0, 1fr);
   }
 

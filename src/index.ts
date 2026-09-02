@@ -19,6 +19,7 @@ import DsDataTable from './components/DsDataTable.vue'
 import DsProductLanding from './components/DsProductLanding.vue'
 import DsWorkspaceBackdrop from './components/DsWorkspaceBackdrop.vue'
 import DsCreateButton from './components/DsCreateButton.vue'
+import DsEcosystemStrip from './components/DsEcosystemStrip.vue'
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout.vue'
@@ -28,6 +29,7 @@ import PublicLayout from './layouts/PublicLayout.vue'
 export { useLayoutConfig, type NavbarItem } from './composables/useLayoutConfig'
 export { useAppSwitcher, type AppDefinition } from './composables/useAppSwitcher'
 export { appUrl, isLocalHostname, type WhileSmartApp } from './composables/useAppUrls'
+export { resolveEcosystemApps, whileSmartEcosystemApps, type EcosystemApp } from './ecosystem'
 
 // Component exports
 export {
@@ -51,6 +53,7 @@ export {
   DsProductLanding,
   DsWorkspaceBackdrop,
   DsCreateButton,
+  DsEcosystemStrip,
 }
 export { DashboardLayout, PublicLayout }
 
