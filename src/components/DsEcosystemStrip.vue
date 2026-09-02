@@ -30,7 +30,8 @@ const visibleApps = computed(() => resolveEcosystemApps(props.apps, props.curren
     <ul class="ds-ecosystem__apps">
       <li v-for="app in visibleApps" :key="app.id">
         <a :href="app.url">
-          <img :src="app.icon" alt="" />
+          <DsIcon v-if="app.iconName" :name="app.iconName" class="ds-ecosystem__app-icon" />
+          <img v-else-if="app.icon" :src="app.icon" alt="" />
           <span>
             <strong>{{ app.name }}</strong>
             <small>{{ app.description }}</small>
@@ -116,9 +117,14 @@ const visibleApps = computed(() => resolveEcosystemApps(props.apps, props.curren
   transform: translateY(-2px);
 }
 
-.ds-ecosystem__apps img {
+.ds-ecosystem__apps img,
+.ds-ecosystem__app-icon {
   width: 2.5rem;
   height: 2.5rem;
+}
+
+.ds-ecosystem__app-icon {
+  color: var(--ds-color-primary-700);
 }
 
 .ds-ecosystem__apps a > span {

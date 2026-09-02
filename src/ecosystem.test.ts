@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { resolveEcosystemApps, whileSmartEcosystemApps } from './ecosystem'
 
 describe('resolveEcosystemApps', () => {
+  it('lists apps without treating the Desk suite as an app', () => {
+    expect(whileSmartEcosystemApps.map((app) => app.id)).toEqual(['mail', 'files', 'calendar', 'chat', 'moments'])
+  })
+
   it('omits the current app and resolves every remaining destination', () => {
     const apps = resolveEcosystemApps(whileSmartEcosystemApps, 'files', (app) => `/${app}`)
 

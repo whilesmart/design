@@ -1,6 +1,7 @@
 export type WhileSmartApp =
   | 'accounts'
   | 'calendar'
+  | 'chat'
   | 'console'
   | 'desk'
   | 'files'
@@ -13,6 +14,7 @@ export type WhileSmartApp =
 const productionUrls: Record<WhileSmartApp, string> = {
   accounts: 'https://accounts.whilesmart.com',
   calendar: 'https://calendar.whilesmart.com',
+  chat: 'https://chat.whilesmart.com',
   console: 'https://console.whilesmart.com',
   desk: 'https://desk.whilesmart.com',
   files: 'https://files.whilesmart.com',
@@ -26,6 +28,7 @@ const productionUrls: Record<WhileSmartApp, string> = {
 const localUrls: Record<WhileSmartApp, string> = {
   accounts: 'http://localhost:3000',
   calendar: 'http://localhost:3005',
+  chat: 'http://localhost:3007',
   console: 'http://localhost:3003',
   desk: 'http://localhost:3001',
   files: 'http://localhost:3004',
@@ -39,6 +42,7 @@ const localUrls: Record<WhileSmartApp, string> = {
 const configuredUrls: Partial<Record<WhileSmartApp, string>> = {
   accounts: import.meta.env.VITE_ACCOUNTS_URL,
   calendar: import.meta.env.VITE_CALENDAR_URL,
+  chat: import.meta.env.VITE_CHAT_URL,
   console: import.meta.env.VITE_CONSOLE_URL,
   desk: import.meta.env.VITE_DESK_URL,
   files: import.meta.env.VITE_FILES_URL,
