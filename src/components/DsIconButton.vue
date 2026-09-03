@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import DsIcon from './DsIcon.vue'
+
 interface Props {
   size?: 'sm' | 'md' | 'lg'
   variant?: 'default' | 'primary' | 'ghost'
   active?: boolean
   title?: string
   disabled?: boolean
+  icon?: `material-symbols:${string}` | `solar:${string}`
 }
 
 withDefaults(defineProps<Props>(), {
@@ -12,7 +15,8 @@ withDefaults(defineProps<Props>(), {
   variant: 'default',
   active: false,
   title: '',
-  disabled: false
+  disabled: false,
+  icon: undefined
 })
 
 defineEmits<{
@@ -32,7 +36,7 @@ defineEmits<{
     :disabled="disabled"
     @click="$emit('click', $event)"
   >
-    <slot />
+    <slot><DsIcon v-if="icon" :name="icon" /></slot>
   </button>
 </template>
 
@@ -42,10 +46,12 @@ defineEmits<{
   align-items: center;
   justify-content: center;
   background: none;
-  border: 1px solid var(--ds-border-color, #e0e0e0);
+  border: 1px solid var(--ds-border-base);
   border-radius: 0.375rem;
   cursor: pointer;
-  color: var(--ds-text-secondary, #666);
+  color: var(--ds-text-secondary);
+  font-size: 1.125rem;
+  line-height: 1;
   transition: all 0.15s ease;
 }
 
@@ -67,23 +73,23 @@ defineEmits<{
 }
 
 .ds-icon-btn--default:hover:not(:disabled) {
-  background: var(--ds-bg-hover, #f5f5f5);
+  background: var(--ds-bg-hover);
 }
 
 .ds-icon-btn--default.ds-icon-btn--active {
-  background: var(--ds-color-primary-50, rgba(45, 57, 142, 0.08));
-  color: var(--ds-color-primary, #2d398e);
-  border-color: var(--ds-color-primary, #2d398e);
+  background: var(--ds-color-primary-50);
+  color: var(--ds-interactive-primary);
+  border-color: var(--ds-interactive-primary);
 }
 
 .ds-icon-btn--primary {
-  background: var(--ds-color-primary, #2d398e);
-  color: white;
-  border-color: var(--ds-color-primary, #2d398e);
+  background: var(--ds-interactive-primary);
+  color: var(--ds-text-inverse);
+  border-color: var(--ds-interactive-primary);
 }
 
 .ds-icon-btn--primary:hover:not(:disabled) {
-  background: var(--ds-color-primary-700, #1e2a6e);
+  background: var(--ds-interactive-primary-hover);
 }
 
 .ds-icon-btn--ghost {
@@ -91,6 +97,6 @@ defineEmits<{
 }
 
 .ds-icon-btn--ghost:hover:not(:disabled) {
-  background: var(--ds-bg-hover, #f5f5f5);
+  background: var(--ds-bg-hover);
 }
 </style>

@@ -41,6 +41,9 @@
   --ds-z-tooltip: 1070;
 
   --ds-navbar-height: 4rem;
+  --ds-chat-sidebar-width: 17.5rem;
+  --ds-chat-rhs-width: 22rem;
+  --ds-chat-post-gutter: 3.25rem;
   --ds-header-search-max-width: 40rem;
   --ds-viewer-toolbar-height: 2rem;
   --ds-viewer-backdrop-blur: 18px;

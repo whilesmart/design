@@ -45,6 +45,10 @@
   --ds-status-error-text: var(--ds-color-error-700);
   --ds-status-info-bg: var(--ds-color-info-50);
   --ds-status-info-text: var(--ds-color-info-700);
+
+  --ds-chat-sidebar-ink: var(--ds-chat-sidebar-read-ink);
+  --ds-chat-sidebar-ink-unread: var(--ds-chat-unread-ink);
+  --ds-chat-header-bg: var(--ds-chat-post-bg);
 }
 
 [data-theme="dark"] {
@@ -81,4 +85,8 @@
   --ds-interactive-primary: var(--ds-color-primary-400);
   --ds-interactive-primary-hover: var(--ds-color-primary-300);
   --ds-interactive-primary-active: var(--ds-color-primary-200);
+
+  --ds-chat-sidebar-ink: var(--ds-chat-sidebar-read-ink);
+  --ds-chat-sidebar-ink-unread: var(--ds-chat-unread-ink);
+  --ds-chat-header-bg: var(--ds-chat-post-bg);
 }

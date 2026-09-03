@@ -20,10 +20,16 @@ import DsProductLanding from './components/DsProductLanding.vue'
 import DsWorkspaceBackdrop from './components/DsWorkspaceBackdrop.vue'
 import DsCreateButton from './components/DsCreateButton.vue'
 import DsEcosystemStrip from './components/DsEcosystemStrip.vue'
-import DsConversationList from './components/DsConversationList.vue'
-import DsMessageThread from './components/DsMessageThread.vue'
 import DsMessageComposer from './components/DsMessageComposer.vue'
 import DsConversationContext from './components/DsConversationContext.vue'
+import DsThreadPanel from './components/DsThreadPanel.vue'
+import DsAgentCard from './components/DsAgentCard.vue'
+import DsChannelSidebar from './components/DsChannelSidebar.vue'
+import DsPostList from './components/DsPostList.vue'
+import DsCommandPalette from './components/DsCommandPalette.vue'
+import DsEmojiPicker from './components/DsEmojiPicker.vue'
+import DsPresenceDot from './components/DsPresenceDot.vue'
+import DsConversationSheet from './components/DsConversationSheet.vue'
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout.vue'
@@ -31,9 +37,10 @@ import PublicLayout from './layouts/PublicLayout.vue'
 
 // Composables
 export { useLayoutConfig, type NavbarItem } from './composables/useLayoutConfig'
-export { useAppSwitcher, type AppDefinition } from './composables/useAppSwitcher'
+export { useAppSwitcher, resolveAppSwitcherApps, type AppDefinition, type AppSwitcherOptions } from './composables/useAppSwitcher'
 export { appUrl, conversationUrl, isLocalHostname, type ConversationLaunchOptions, type WhileSmartApp } from './composables/useAppUrls'
 export { resolveEcosystemApps, whileSmartEcosystemApps, type EcosystemApp } from './ecosystem'
+export { useConversationSheet, buildSheetRows, sheetKey, type SheetPost } from './composables/useConversationSheet'
 
 // Component exports
 export {
@@ -58,10 +65,16 @@ export {
   DsWorkspaceBackdrop,
   DsCreateButton,
   DsEcosystemStrip,
-  DsConversationList,
-  DsMessageThread,
   DsMessageComposer,
   DsConversationContext,
+  DsThreadPanel,
+  DsAgentCard,
+  DsChannelSidebar,
+  DsPostList,
+  DsCommandPalette,
+  DsEmojiPicker,
+  DsPresenceDot,
+  DsConversationSheet,
 }
 export { DashboardLayout, PublicLayout }
 
@@ -74,6 +87,10 @@ export type { TagInputValue } from './components/DsTagInput.vue'
 export type { DataTableColumn } from './components/DsDataTable.vue'
 export type { ProductLandingItem, ProductLandingSpecimen } from './components/DsProductLanding.vue'
 export type { WorkspaceBrandingConfig } from './components/DsWorkspaceBackdrop.vue'
-export type { ConversationListItem } from './components/DsConversationList.vue'
-export type { ConversationMessage } from './components/DsMessageThread.vue'
 export type { ConversationParticipant, ConversationContextItem } from './components/DsConversationContext.vue'
+export type { ChatAgent } from './components/DsAgentCard.vue'
+export type { ChannelRow, ChannelCategory } from './components/DsChannelSidebar.vue'
+export type { PostRowView, PostAuthor, PostReaction } from './components/DsPostList.vue'
+export type { CommandPaletteItem } from './components/DsCommandPalette.vue'
+export type { PresenceStatus } from './components/DsPresenceDot.vue'
+export type { ConversationSheetTarget } from './components/DsConversationSheet.vue'

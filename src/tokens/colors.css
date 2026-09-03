@@ -85,7 +85,28 @@
   --ds-chat-context-bg: #f3ecff;
   --ds-chat-context-ink: #6b35a8;
   --ds-chat-online: #0b8657;
-  --ds-chat-own-message: #e9edff;
+  --ds-chat-active-bg: #e3e7f7;
+  --ds-chat-active-ink: #25307a;
+  --ds-chat-unread-ink: #0f172a;
+  --ds-chat-mention-bg: #2d398e;
+  --ds-chat-mention-ink: #ffffff;
+  --ds-chat-mention-highlight: #fff6db;
+  --ds-chat-mention-rule: #c99700;
+  --ds-chat-post-hover: #f6f8fc;
+  --ds-chat-day-rule: #dde3ec;
+  --ds-chat-new-rule: #c0392b;
+  --ds-chat-new-ink: #a8291c;
+  --ds-chat-status-away: #d18f00;
+  --ds-chat-status-dnd: #c0392b;
+  --ds-chat-status-offline: #94a3b8;
+  --ds-chat-saved-bg: #fff6e0;
+  --ds-chat-saved-ink: #8a5a00;
+  --ds-chat-sidebar-bg: #f8fafc;
+  --ds-chat-post-bg: #ffffff;
+  --ds-chat-sidebar-read-ink: #3d4a5c;
+  --ds-chat-secondary-ink: #44536b;
+  --ds-chat-timestamp-ink: #5b6a80;
+  --ds-chat-mention-body-ink: #24303f;
 }
 
 [data-theme="dark"] {
@@ -108,5 +129,26 @@
   --ds-chat-context-bg: #3c2b52;
   --ds-chat-context-ink: #d8b7ff;
   --ds-chat-online: #56d6a0;
-  --ds-chat-own-message: #303858;
+  --ds-chat-active-bg: #2b3352;
+  --ds-chat-active-ink: #d5dbff;
+  --ds-chat-unread-ink: #f8fafc;
+  --ds-chat-mention-bg: #c9cff8;
+  --ds-chat-mention-ink: #1e2761;
+  --ds-chat-mention-highlight: #3a3118;
+  --ds-chat-mention-rule: #e0b544;
+  --ds-chat-post-hover: #273043;
+  --ds-chat-day-rule: #2c3547;
+  --ds-chat-new-rule: #f08a7e;
+  --ds-chat-new-ink: #ffb3a7;
+  --ds-chat-status-away: #f0c04a;
+  --ds-chat-status-dnd: #f08a7e;
+  --ds-chat-status-offline: #64748b;
+  --ds-chat-saved-bg: #3d3218;
+  --ds-chat-saved-ink: #ffd66b;
+  --ds-chat-sidebar-bg: #161d2b;
+  --ds-chat-post-bg: #1e2533;
+  --ds-chat-sidebar-read-ink: #adbacf;
+  --ds-chat-secondary-ink: #b6c2d8;
+  --ds-chat-timestamp-ink: #9aa8bf;
+  --ds-chat-mention-body-ink: #f2e8d0;
 }

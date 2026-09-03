@@ -61,5 +61,16 @@ describe('conversationUrl', () => {
     expect(url.searchParams.get('owner_type')).toBe('file')
     expect(url.searchParams.get('owner_id')).toBe('42')
     expect(url.searchParams.getAll('participant')).toEqual(['ada@example.com', 'sam@example.com'])
+    expect(url.searchParams.getAll('message')).toEqual([])
+  })
+
+  it('carries the whole sheet transcript in order', () => {
+    const url = new URL(conversationUrl({ ownerType: 'file', ownerId: '42', ownerName: 'Launch brief', messages: ['  Can we ship this Friday?  ', 'Blocked on the brief'] }, 'localhost'))
+    expect(url.searchParams.getAll('message')).toEqual(['Can we ship this Friday?', 'Blocked on the brief'])
+  })
+
+  it('drops messages that are only whitespace', () => {
+    const url = new URL(conversationUrl({ ownerType: 'file', ownerId: '42', ownerName: 'Launch brief', messages: ['   ', 'Real one'] }, 'localhost'))
+    expect(url.searchParams.getAll('message')).toEqual(['Real one'])
   })
 })

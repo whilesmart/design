@@ -69,6 +69,7 @@ export interface ConversationLaunchOptions {
   ownerName: string
   ownerHref?: string
   participants?: string[]
+  messages?: string[]
 }
 
 export function conversationUrl(options: ConversationLaunchOptions, hostname = window.location.hostname): string {
@@ -78,6 +79,9 @@ export function conversationUrl(options: ConversationLaunchOptions, hostname = w
   url.searchParams.set('owner_name', options.ownerName)
   if (options.ownerHref) url.searchParams.set('owner_href', options.ownerHref)
   for (const participant of options.participants || []) url.searchParams.append('participant', participant)
+  for (const message of options.messages || []) {
+    if (message.trim()) url.searchParams.append('message', message.trim())
+  }
   return url.toString()
 }
 

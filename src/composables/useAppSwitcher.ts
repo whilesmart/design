@@ -1,5 +1,7 @@
 import { computed } from 'vue'
 import { appUrl } from './useAppUrls'
+import { appIcons } from '../assets/app-icons'
+
 
 export interface AppDefinition {
   id: string
@@ -9,60 +11,82 @@ export interface AppDefinition {
   description?: string
 }
 
+export interface AppSwitcherOptions {
+  apps?: AppDefinition[]
+  additionalApps?: AppDefinition[]
+  excludeAppIds?: string[]
+  currentAppId?: string
+  includeCurrentApp?: boolean
+}
+
 const defaultApps: AppDefinition[] = [
   {
     id: 'mail',
     name: 'Mail',
     url: appUrl('mail'),
-    icon: '/mail-icon.svg',
+    icon: appIcons.mail,
     description: 'Email management'
   },
   {
     id: 'console',
     name: 'Console',
     url: appUrl('console'),
-    icon: '/whilesmart-icon.svg',
+    icon: appIcons.console,
     description: 'Organization management'
   },
   {
     id: 'files',
     name: 'Files',
     url: appUrl('files'),
-    icon: '/files-icon.svg',
+    icon: appIcons.files,
     description: 'File storage and sharing'
   },
   {
     id: 'calendar',
     name: 'Calendar',
     url: appUrl('calendar'),
-    icon: '/calendar-icon.svg',
+    icon: appIcons.calendar,
     description: 'Events and scheduling'
   },
   {
     id: 'chat',
     name: 'Chat',
     url: appUrl('chat'),
-    icon: '/chat-icon.svg',
+    icon: appIcons.chat,
     description: 'Workplace conversations'
   },
   {
     id: 'moments',
     name: 'Moments',
     url: appUrl('moments'),
-    icon: '/moments-icon.svg',
+    icon: appIcons.moments,
     description: 'Capture and share memories'
   },
   {
     id: 'accounts',
     name: 'Account',
     url: appUrl('accounts'),
-    icon: '/whilesmart-icon.svg',
+    icon: appIcons.accounts,
     description: 'Manage your account'
   }
 ]
 
-export function useAppSwitcher(customApps?: AppDefinition[]) {
-  const apps = computed(() => customApps || defaultApps)
+export function resolveAppSwitcherApps(options: AppSwitcherOptions = {}): AppDefinition[] {
+  const merged = [...(options.apps || defaultApps)]
+  for (const app of options.additionalApps || []) {
+    const existingIndex = merged.findIndex(item => item.id === app.id)
+    if (existingIndex >= 0) merged[existingIndex] = app
+    else merged.push(app)
+  }
+
+  const excluded = new Set(options.excludeAppIds || [])
+  if (!options.includeCurrentApp && options.currentAppId) excluded.add(options.currentAppId)
+  return merged.filter(app => !excluded.has(app.id))
+}
+
+export function useAppSwitcher(options: AppDefinition[] | AppSwitcherOptions = {}) {
+  const normalizedOptions = Array.isArray(options) ? { apps: options } : options
+  const apps = computed(() => resolveAppSwitcherApps(normalizedOptions))
 
   const getAppUrl = (appId: string): string | undefined => {
     const app = apps.value.find(a => a.id === appId)
