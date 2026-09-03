@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useLayoutConfig } from '../composables/useLayoutConfig'
-import { useAppSwitcher, type AppDefinition } from '../composables/useAppSwitcher'
+import { resolveAppSwitcherApps, type AppDefinition } from '../composables/useAppSwitcher'
 import DsIcon from '../components/DsIcon.vue'
 import DsAvatar from '../components/DsAvatar.vue'
 import DsButton from '../components/DsButton.vue'
@@ -18,6 +18,9 @@ export interface User {
 interface Props {
   user?: User | null
   apps?: AppDefinition[]
+  additionalApps?: AppDefinition[]
+  excludeAppIds?: string[]
+  includeCurrentApp?: boolean
   currentAppId?: string
   brandIconUrl?: string
   workspaceBranding?: WorkspaceBrandingConfig
@@ -26,6 +29,9 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   user: null,
   apps: undefined,
+  additionalApps: undefined,
+  excludeAppIds: undefined,
+  includeCurrentApp: false,
   currentAppId: undefined,
   brandIconUrl: undefined,
   workspaceBranding: undefined
@@ -38,19 +44,29 @@ const emit = defineEmits<{
 }>()
 
 const layoutConfig = useLayoutConfig()
-const { apps: defaultApps, navigateToApp: navigateToAppExternal } = useAppSwitcher(props.apps)
-
 const appsMenuOpen = ref(false)
 const userMenuOpen = ref(false)
 
-const displayApps = computed(() => props.apps || defaultApps.value)
+const displayApps = computed(() => resolveAppSwitcherApps({
+  apps: props.apps,
+  additionalApps: props.additionalApps,
+  excludeAppIds: props.excludeAppIds,
+  currentAppId: props.currentAppId,
+  includeCurrentApp: props.includeCurrentApp
+}))
+// The switcher hides the app you are already in, so brand and watermark lookups need the unfiltered list.
+const allApps = computed(() => resolveAppSwitcherApps({
+  apps: props.apps,
+  additionalApps: props.additionalApps,
+  includeCurrentApp: true
+}))
 const isIconifyIcon = (icon: string): icon is `solar:${string}` | `material-symbols:${string}` =>
   icon.startsWith('solar:') || icon.startsWith('material-symbols:')
 
 const resolvedBrandIconUrl = computed(() => {
   if (props.brandIconUrl) return props.brandIconUrl
   if (props.currentAppId) {
-    const app = displayApps.value.find(a => a.id === props.currentAppId)
+    const app = allApps.value.find(a => a.id === props.currentAppId)
     if (app?.icon) return app.icon
   }
   return '/whilesmart-icon.svg'
@@ -71,7 +87,7 @@ const resolvedWorkspaceAppMark = computed(() => {
   const branding = resolvedWorkspaceBranding.value
   if (branding.appMarkUrl) return branding.appMarkUrl
   if (props.currentAppId && branding.appMarks?.[props.currentAppId]) return branding.appMarks[props.currentAppId]
-  if (props.currentAppId) return displayApps.value.find(app => app.id === props.currentAppId)?.icon
+  if (props.currentAppId) return allApps.value.find(app => app.id === props.currentAppId)?.icon
   return undefined
 })
 
@@ -109,7 +125,8 @@ const handleNavigateToApp = (appId: string) => {
     emit('navigateHome')
   } else {
     emit('navigateToApp', appId)
-    navigateToAppExternal(appId)
+    const target = displayApps.value.find(app => app.id === appId)
+    if (target) window.location.href = target.url
   }
 }
 
