@@ -20,6 +20,10 @@ import DsProductLanding from './components/DsProductLanding.vue'
 import DsWorkspaceBackdrop from './components/DsWorkspaceBackdrop.vue'
 import DsCreateButton from './components/DsCreateButton.vue'
 import DsEcosystemStrip from './components/DsEcosystemStrip.vue'
+import DsConversationList from './components/DsConversationList.vue'
+import DsMessageThread from './components/DsMessageThread.vue'
+import DsMessageComposer from './components/DsMessageComposer.vue'
+import DsConversationContext from './components/DsConversationContext.vue'
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout.vue'
@@ -28,7 +32,7 @@ import PublicLayout from './layouts/PublicLayout.vue'
 // Composables
 export { useLayoutConfig, type NavbarItem } from './composables/useLayoutConfig'
 export { useAppSwitcher, type AppDefinition } from './composables/useAppSwitcher'
-export { appUrl, isLocalHostname, type WhileSmartApp } from './composables/useAppUrls'
+export { appUrl, conversationUrl, isLocalHostname, type ConversationLaunchOptions, type WhileSmartApp } from './composables/useAppUrls'
 export { resolveEcosystemApps, whileSmartEcosystemApps, type EcosystemApp } from './ecosystem'
 
 // Component exports
@@ -54,6 +58,10 @@ export {
   DsWorkspaceBackdrop,
   DsCreateButton,
   DsEcosystemStrip,
+  DsConversationList,
+  DsMessageThread,
+  DsMessageComposer,
+  DsConversationContext,
 }
 export { DashboardLayout, PublicLayout }
 
@@ -66,3 +74,6 @@ export type { TagInputValue } from './components/DsTagInput.vue'
 export type { DataTableColumn } from './components/DsDataTable.vue'
 export type { ProductLandingItem, ProductLandingSpecimen } from './components/DsProductLanding.vue'
 export type { WorkspaceBrandingConfig } from './components/DsWorkspaceBackdrop.vue'
+export type { ConversationListItem } from './components/DsConversationList.vue'
+export type { ConversationMessage } from './components/DsMessageThread.vue'
+export type { ConversationParticipant, ConversationContextItem } from './components/DsConversationContext.vue'

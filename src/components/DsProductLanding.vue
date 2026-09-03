@@ -23,7 +23,7 @@ const props = defineProps<{
   title: string
   accent: string
   description: string
-  product: 'desk' | 'mail' | 'files'
+  product: 'desk' | 'mail' | 'files' | 'chat'
   specimen: ProductLandingSpecimen
   heroImage?: string
   heroImageAlt?: string
@@ -48,7 +48,7 @@ const plans = [
   { name: 'Growth', mailboxes: 'Up to 50 mailboxes', storage: '200 GB shared storage', price: '$24', description: 'For an established team bringing more people and work together.' }
 ]
 
-const productNames = { desk: 'Desk', mail: 'Mail', files: 'Files' } as const
+const productNames = { desk: 'Desk', mail: 'Mail', files: 'Files', chat: 'Chat' } as const
 const productName = computed(() => productNames[props.product])
 
 const plateCaption = computed(() =>
@@ -259,6 +259,13 @@ const addons = [
   --accent-wash: var(--ds-color-success-50);
   --accent-on-dark: var(--ds-color-success-300);
   --product-mark: url('/files-icon.svg');
+}
+
+.landing--chat {
+  --product-soft: var(--ds-chat-group-bg);
+  --product-ink: var(--ds-chat-group-ink);
+  --product-accent: var(--ds-color-secondary-600);
+  --product-mark: url('/chat-icon.svg');
 }
 
 :where(.landing) :where(h1, h2, h3, p, ul, dl, dd) {

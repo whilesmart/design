@@ -77,6 +77,15 @@
   --ds-file-slide-ink: #a33d0b;
   --ds-file-pdf-bg: #ffebeb;
   --ds-file-pdf-ink: #b4232d;
+
+  --ds-chat-direct-bg: #e8f7fd;
+  --ds-chat-direct-ink: #17627f;
+  --ds-chat-group-bg: #eef0f9;
+  --ds-chat-group-ink: #35428f;
+  --ds-chat-context-bg: #f3ecff;
+  --ds-chat-context-ink: #6b35a8;
+  --ds-chat-online: #0b8657;
+  --ds-chat-own-message: #e9edff;
 }
 
 [data-theme="dark"] {
@@ -92,4 +101,12 @@
   --ds-file-slide-ink: #ffb68d;
   --ds-file-pdf-bg: #4c2227;
   --ds-file-pdf-ink: #ffadb4;
+  --ds-chat-direct-bg: #173b4a;
+  --ds-chat-direct-ink: #8eddf7;
+  --ds-chat-group-bg: #303654;
+  --ds-chat-group-ink: #c9cff8;
+  --ds-chat-context-bg: #3c2b52;
+  --ds-chat-context-ink: #d8b7ff;
+  --ds-chat-online: #56d6a0;
+  --ds-chat-own-message: #303858;
 }

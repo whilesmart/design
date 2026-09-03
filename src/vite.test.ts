@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { localizeSetCookie, whilesmartAppLoader } from './vite'
+import { conversationUrl } from './composables/useAppUrls'
 
 describe('localizeSetCookie', () => {
   it('creates a host cookie usable across local app ports', () => {
@@ -50,5 +51,15 @@ describe('whilesmartAppLoader', () => {
     plugin.generateBundle.call({ emitFile })
 
     expect(assets).toEqual(new Map([['robots.txt', 'User-agent: *\nDisallow: /\n']]))
+  })
+})
+
+describe('conversationUrl', () => {
+  it('encodes owner context and each participant', () => {
+    const url = new URL(conversationUrl({ ownerType: 'file', ownerId: '42', ownerName: 'Launch brief', ownerHref: 'http://localhost:3004/file/42', participants: ['ada@example.com', 'sam@example.com'] }, 'localhost'))
+    expect(url.origin).toBe('http://localhost:3007')
+    expect(url.searchParams.get('owner_type')).toBe('file')
+    expect(url.searchParams.get('owner_id')).toBe('42')
+    expect(url.searchParams.getAll('participant')).toEqual(['ada@example.com', 'sam@example.com'])
   })
 })

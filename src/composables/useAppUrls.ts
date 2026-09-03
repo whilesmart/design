@@ -63,6 +63,24 @@ export function appUrl(app: WhileSmartApp, hostname = window.location.hostname):
   return isLocalHostname(hostname) ? localUrls[app] : productionUrls[app]
 }
 
+export interface ConversationLaunchOptions {
+  ownerType: string
+  ownerId: string
+  ownerName: string
+  ownerHref?: string
+  participants?: string[]
+}
+
+export function conversationUrl(options: ConversationLaunchOptions, hostname = window.location.hostname): string {
+  const url = new URL('/chat', appUrl('chat', hostname))
+  url.searchParams.set('owner_type', options.ownerType)
+  url.searchParams.set('owner_id', options.ownerId)
+  url.searchParams.set('owner_name', options.ownerName)
+  if (options.ownerHref) url.searchParams.set('owner_href', options.ownerHref)
+  for (const participant of options.participants || []) url.searchParams.append('participant', participant)
+  return url.toString()
+}
+
 /* Store listings for the Desk mobile app. While a key is empty the landing
    pages render a plain availability line in place of that store's button. */
 export const mobileAppUrls: { ios?: string; android?: string } = {}

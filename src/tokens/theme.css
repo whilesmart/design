@@ -4,6 +4,9 @@
   --ds-bg-base: var(--ds-color-neutral-0);
   --ds-bg-surface: var(--ds-color-neutral-50);
   --ds-bg-elevated: var(--ds-color-neutral-0);
+  --ds-bg-hover: var(--ds-color-neutral-100);
+  --ds-bg-subtle: var(--ds-color-neutral-50);
+  --ds-bg-muted: var(--ds-color-neutral-100);
   --ds-bg-overlay: rgba(0, 0, 0, 0.5);
   --ds-workspace-bg: var(--ds-color-neutral-100);
   --ds-workspace-app-mark-opacity: 0.075;
@@ -49,6 +52,9 @@
   --ds-bg-base: var(--ds-color-neutral-900);
   --ds-bg-surface: var(--ds-color-neutral-800);
   --ds-bg-elevated: var(--ds-color-neutral-700);
+  --ds-bg-hover: var(--ds-color-neutral-700);
+  --ds-bg-subtle: var(--ds-color-neutral-800);
+  --ds-bg-muted: var(--ds-color-neutral-700);
   --ds-bg-overlay: rgba(0, 0, 0, 0.7);
   --ds-workspace-bg: var(--ds-color-neutral-900);
   --ds-workspace-app-mark-opacity: 0.11;
