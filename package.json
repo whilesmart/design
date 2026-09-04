@@ -1,52 +1,83 @@
 {
-  "name": "@desk/components",
-  "version": "1.0.0",
+  "name": "@whilesmart/design",
+  "version": "0.1.0",
   "type": "module",
-  "description": "Vue 3 component library and design system for WhileSmart Desk",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./vite": {
-      "types": "./src/vite.ts",
-      "default": "./src/vite.js"
-    },
-    "./styles": "./src/index.css",
-    "./layouts": "./src/layouts/index.ts",
-    "./composables": "./src/composables/index.ts"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
+  "description": "WhileSmart design system: Vue 3 components, layouts, composables, and design tokens",
+  "license": "MIT",
+  "author": "WhileSmart",
+  "homepage": "https://github.com/whilesmart/design",
   "repository": {
     "type": "git",
-    "url": "https://github.com/whilesmart/design.git",
-    "directory": "components"
-  },
-  "peerDependencies": {
-    "vue": "^3.5.0",
-    "vue-router": "^4.0.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.0.0",
-    "vitest": "^4.1.11",
-    "vue": "^3.5.0",
-    "vue-router": "^4.0.0"
-  },
-  "scripts": {
-    "test": "vitest"
+    "url": "git+https://github.com/whilesmart/design.git"
   },
   "keywords": [
     "vue",
     "components",
     "design-system",
+    "design-tokens",
     "whilesmart"
   ],
-  "author": "WhileSmart",
-  "license": "MIT",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./layouts": {
+      "types": "./dist/layouts/index.d.ts",
+      "default": "./dist/layouts.js"
+    },
+    "./composables": {
+      "types": "./dist/composables/index.d.ts",
+      "default": "./dist/composables.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "default": "./dist/vite.js"
+    },
+    "./styles": "./dist/design.css",
+    "./tokens/*": "./dist/css/tokens/*",
+    "./icons/*": "./dist/icons/*",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0",
+    "vue-router": "^4.0.0"
+  },
   "dependencies": {
+    "@iconify/vue": "^5.0.1"
+  },
+  "devDependencies": {
     "@iconify-json/material-symbols": "^1.2.90",
     "@iconify-json/solar": "^1.2.10",
-    "@iconify/vue": "^5.0.1"
+    "@vitejs/plugin-vue": "^6.0.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.6",
+    "vitest": "^4.1.11",
+    "vue": "^3.5.24",
+    "vue-router": "^4.6.3",
+    "vue-tsc": "^3.1.3"
+  },
+  "scripts": {
+    "build": "npm run build:lib && npm run build:types && npm run build:vite && npm run build:css",
+    "build:lib": "vite build",
+    "build:types": "vue-tsc -p tsconfig.build.json",
+    "build:vite": "tsc -p tsconfig.vite.json",
+    "build:css": "node scripts/build-css.mjs",
+    "test": "vitest run",
+    "check": "node scripts/check-tokens.mjs && npm test && npm run build",
+    "prepack": "npm run build"
   }
 }
