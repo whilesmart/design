@@ -82,4 +82,10 @@ The build produces ESM bundles, `.d.ts` declarations emitted by `vue-tsc`, a fla
 
 ## Release
 
-Publishing runs from the `Publish` workflow when a GitHub release is created. Bump the version in `package.json`, merge it, then cut the release; the workflow verifies, builds, and publishes to GitHub Packages.
+Releases run through the shared `js/publish` action in `whilesmart/workflows`, so this repository follows the same flow as every other WhileSmart package.
+
+1. Bump `version` in `package.json` and add the matching `## [version]` section to `CHANGELOG.md`. The release fails without it, because a version published without notes cannot be published again to add them.
+2. Merge that to `main`.
+3. Push the tag: `git tag v0.2.0 && git push origin v0.2.0`.
+
+The workflow verifies the tag against `package.json`, runs `npm run check`, publishes to GitHub Packages, and creates the GitHub release from the changelog entry.
