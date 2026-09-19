@@ -1,0 +1,64 @@
+/*
+ * One field surface.
+ *
+ * Input, select and textarea are the same control with a different tag, so the label, the
+ * required mark, the error line and the box itself are declared once here and shared.
+ * These are global rather than scoped so each component can reuse them without copying.
+ */
+
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+}
+
+.ds-field__label {
+  color: var(--ds-text-secondary);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-font-medium);
+}
+
+.ds-field__required {
+  color: var(--ds-color-error-500);
+}
+
+.ds-field__error {
+  color: var(--ds-color-error-600);
+  font-size: var(--ds-text-xs);
+}
+
+.ds-field__control {
+  width: 100%;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border: 1px solid var(--ds-border-base);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-bg-elevated);
+  color: var(--ds-text-primary);
+  font: inherit;
+  font-size: var(--ds-text-sm);
+  transition: border-color var(--ds-transition-fast), box-shadow var(--ds-transition-fast);
+}
+
+.ds-field__control::placeholder {
+  color: var(--ds-text-muted);
+}
+
+.ds-field__control:focus {
+  outline: none;
+  border-color: var(--ds-border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-border-focus) 18%, transparent);
+}
+
+.ds-field__control:disabled {
+  background: var(--ds-bg-base);
+  color: var(--ds-text-disabled);
+  cursor: not-allowed;
+}
+
+.ds-field__control--error {
+  border-color: var(--ds-color-error-500);
+}
+
+.ds-field__control--error:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-color-error-500) 18%, transparent);
+}

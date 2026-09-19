@@ -30,6 +30,25 @@ import DsCommandPalette from './components/DsCommandPalette.vue'
 import DsEmojiPicker from './components/DsEmojiPicker.vue'
 import DsPresenceDot from './components/DsPresenceDot.vue'
 import DsConversationSheet from './components/DsConversationSheet.vue'
+import DsSelect from './components/DsSelect.vue'
+import DsTextarea from './components/DsTextarea.vue'
+import DsPageHeader from './components/DsPageHeader.vue'
+import DsStatePanel from './components/DsStatePanel.vue'
+import DsSwitch from './components/DsSwitch.vue'
+import DsPagination from './components/DsPagination.vue'
+import DsConsoleShell from './components/DsConsoleShell.vue'
+import DsField from './components/DsField.vue'
+import DsDropdown from './components/DsDropdown.vue'
+import DsBrandMark from './components/DsBrandMark.vue'
+import DsAppTag from './components/DsAppTag.vue'
+import DsStatTile from './components/DsStatTile.vue'
+import DsRankingList from './components/DsRankingList.vue'
+import DsTrendChart from './components/DsTrendChart.vue'
+import DsSpotArt from './components/DsSpotArt.vue'
+import DsMenu from './components/DsMenu.vue'
+import DsMenuItem from './components/DsMenuItem.vue'
+import DsTabs from './components/DsTabs.vue'
+import DsInitials from './components/DsInitials.vue'
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout.vue'
@@ -39,6 +58,7 @@ import PublicLayout from './layouts/PublicLayout.vue'
 export { useLayoutConfig, type NavbarItem } from './composables/useLayoutConfig'
 export { useAppSwitcher, resolveAppSwitcherApps, type AppDefinition, type AppSwitcherOptions } from './composables/useAppSwitcher'
 export { appUrl, conversationUrl, isLocalHostname, type ConversationLaunchOptions, type WhileSmartApp } from './composables/useAppUrls'
+export { areaColors, areaStyle, type AreaColor } from './areas'
 export { resolveEcosystemApps, whileSmartEcosystemApps, type EcosystemApp } from './ecosystem'
 export { useConversationSheet, buildSheetRows, sheetKey, type SheetPost } from './composables/useConversationSheet'
 
@@ -75,6 +95,25 @@ export {
   DsEmojiPicker,
   DsPresenceDot,
   DsConversationSheet,
+  DsSelect,
+  DsTextarea,
+  DsPageHeader,
+  DsStatePanel,
+  DsSwitch,
+  DsPagination,
+  DsConsoleShell,
+  DsField,
+  DsDropdown,
+  DsBrandMark,
+  DsAppTag,
+  DsStatTile,
+  DsRankingList,
+  DsTrendChart,
+  DsSpotArt,
+  DsMenu,
+  DsMenuItem,
+  DsTabs,
+  DsInitials,
 }
 export { DashboardLayout, PublicLayout }
 
@@ -94,3 +133,8 @@ export type { PostRowView, PostAuthor, PostReaction } from './components/DsPostL
 export type { CommandPaletteItem } from './components/DsCommandPalette.vue'
 export type { PresenceStatus } from './components/DsPresenceDot.vue'
 export type { ConversationSheetTarget } from './components/DsConversationSheet.vue'
+export type { RankingRow } from './components/DsRankingList.vue'
+export type { TrendPoint, PlottedPoint } from './charts'
+export type { SpotArtName } from './components/DsSpotArt.vue'
+export type { TabOption } from './components/DsTabs.vue'
+export type { DropdownOption } from './components/DsDropdown.vue'

@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, ref, useId } from 'vue'
 import DsField from './DsField.vue'
 
 interface Props {
   modelValue?: string
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
-  placeholder?: string
-  disabled?: boolean
-  error?: string
   label?: string
   id?: string
+  placeholder?: string
+  rows?: number
+  disabled?: boolean
+  error?: string
   required?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
-  type: 'text',
   placeholder: '',
+  rows: 5,
   disabled: false,
   error: '',
   required: false
@@ -24,8 +24,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 defineEmits<{ 'update:modelValue': [value: string] }>()
 
-// One id ties the label, the control and the error description together, whether or not
-// the caller supplied one.
+const textarea = ref<HTMLTextAreaElement | null>(null)
+defineExpose({ textarea })
+
 const uid = useId()
 const controlId = computed(() => props.id ?? uid)
 const describedBy = computed(() => (props.error ? `${controlId.value}-error` : undefined))
@@ -33,18 +34,26 @@ const describedBy = computed(() => (props.error ? `${controlId.value}-error` : u
 
 <template>
   <DsField :label="label" :id="controlId" :error="error" :required="required">
-    <input
+    <textarea
       :id="controlId"
-      :type="type"
+      ref="textarea"
+      class="ds-field__control ds-textarea__control"
+      :class="{ 'ds-field__control--error': error }"
       :value="modelValue"
       :placeholder="placeholder"
+      :rows="rows"
       :disabled="disabled"
       :required="required"
-      class="ds-field__control"
-      :class="{ 'ds-field__control--error': error }"
       :aria-invalid="error ? true : undefined"
       :aria-describedby="describedBy"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
     />
   </DsField>
 </template>
+
+<style scoped>
+.ds-textarea__control {
+  resize: vertical;
+  line-height: 1.5;
+}
+</style>

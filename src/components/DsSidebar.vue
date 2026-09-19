@@ -1,15 +1,12 @@
 <script setup lang="ts">
-interface Props {
-  width?: string
-}
-
-withDefaults(defineProps<Props>(), {
-  width: '240px'
-})
+withDefaults(defineProps<{ width?: string }>(), { width: '240px' })
 </script>
 
 <template>
   <aside class="ds-sidebar" :style="{ width, minWidth: width }">
+    <div v-if="$slots.head" class="ds-sidebar__head">
+      <slot name="head" />
+    </div>
     <div v-if="$slots.action" class="ds-sidebar__action">
       <slot name="action" />
     </div>
@@ -23,42 +20,44 @@ withDefaults(defineProps<Props>(), {
 </template>
 
 <style scoped>
+/* Placement is the caller's: this owns the inside of the rail only. */
 .ds-sidebar {
-  flex-shrink: 0;
-  background: var(--ds-bg-surface, #fff);
-  border-right: 1px solid var(--ds-border-color, #e0e0e0);
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  flex-shrink: 0;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-4);
+  border-right: 1px solid var(--ds-border-base);
+  background: var(--ds-bg-elevated);
   overflow-y: auto;
+}
+
+.ds-sidebar__head {
+  display: flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+  padding: 0 var(--ds-space-2);
 }
 
 .ds-sidebar__action {
   display: grid;
   gap: var(--ds-space-2);
-  margin-bottom: 1.5rem;
 }
 
 .ds-sidebar__nav {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
   flex: 1;
+  flex-direction: column;
+  gap: var(--ds-space-1);
 }
 
 .ds-sidebar__footer {
+  display: grid;
+  gap: var(--ds-space-2);
   margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid var(--ds-border-color, #e0e0e0);
-}
-
-@media (max-width: 768px) {
-  .ds-sidebar {
-    width: 100% !important;
-    min-width: unset !important;
-    border-right: none;
-    border-bottom: 1px solid var(--ds-border-color, #e0e0e0);
-    padding: 0.75rem;
-  }
+  padding-top: var(--ds-space-3);
+  border-top: 1px solid var(--ds-border-base);
 }
 </style>

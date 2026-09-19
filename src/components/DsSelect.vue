@@ -4,19 +4,15 @@ import DsField from './DsField.vue'
 
 interface Props {
   modelValue?: string
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
-  placeholder?: string
-  disabled?: boolean
-  error?: string
   label?: string
   id?: string
+  disabled?: boolean
+  error?: string
   required?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
-  type: 'text',
-  placeholder: '',
   disabled: false,
   error: '',
   required: false
@@ -24,27 +20,33 @@ const props = withDefaults(defineProps<Props>(), {
 
 defineEmits<{ 'update:modelValue': [value: string] }>()
 
-// One id ties the label, the control and the error description together, whether or not
-// the caller supplied one.
 const uid = useId()
 const controlId = computed(() => props.id ?? uid)
 const describedBy = computed(() => (props.error ? `${controlId.value}-error` : undefined))
 </script>
 
 <template>
-  <DsField :label="label" :id="controlId" :error="error" :required="required">
-    <input
+  <DsField class="ds-select" :label="label" :id="controlId" :error="error" :required="required">
+    <select
       :id="controlId"
-      :type="type"
+      class="ds-field__control ds-select__control"
+      :class="{ 'ds-field__control--error': error }"
       :value="modelValue"
-      :placeholder="placeholder"
       :disabled="disabled"
       :required="required"
-      class="ds-field__control"
-      :class="{ 'ds-field__control--error': error }"
       :aria-invalid="error ? true : undefined"
       :aria-describedby="describedBy"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    />
+      @change="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
+    >
+      <slot />
+    </select>
   </DsField>
 </template>
+
+<style scoped>
+/* A select needs room for its own arrow, and sits at the control height of a button. */
+.ds-select__control {
+  min-height: 2.5rem;
+  padding: var(--ds-space-2) var(--ds-space-8) var(--ds-space-2) var(--ds-space-3);
+}
+</style>

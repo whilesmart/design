@@ -10,6 +10,9 @@ interface Props {
   icon?: `material-symbols:${string}` | `solar:${string}`
   iconPosition?: 'start' | 'end'
   align?: 'center' | 'start'
+  as?: 'button' | 'a'
+  href?: string
+  type?: 'button' | 'submit' | 'reset'
 }
 
 withDefaults(defineProps<Props>(), {
@@ -19,7 +22,9 @@ withDefaults(defineProps<Props>(), {
   loading: false,
   fullWidth: false,
   iconPosition: 'start',
-  align: 'center'
+  align: 'center',
+  as: 'button',
+  type: 'button'
 })
 
 defineEmits<{
@@ -28,7 +33,8 @@ defineEmits<{
 </script>
 
 <template>
-  <button
+  <component
+    :is="as"
     class="ds-button"
     :class="[
       `ds-button--${variant}`,
@@ -36,8 +42,11 @@ defineEmits<{
       `ds-button--${align}`,
       { 'ds-button--full-width': fullWidth, 'ds-button--loading': loading }
     ]"
-    :disabled="disabled || loading"
-    @click="$emit('click', $event)"
+    :disabled="as === 'button' ? disabled || loading : undefined"
+    :aria-disabled="as === 'a' && (disabled || loading) ? 'true' : undefined"
+    :href="as === 'a' && !disabled && !loading ? href : undefined"
+    :type="as === 'button' ? type : undefined"
+    @click="!disabled && !loading && $emit('click', $event)"
   >
     <span v-if="loading" class="ds-button__spinner"></span>
     <span class="ds-button__content" :class="{ 'ds-button__content--hidden': loading }">
@@ -49,7 +58,7 @@ defineEmits<{
         <slot name="icon"><DsIcon :name="icon!" /></slot>
       </span>
     </span>
-  </button>
+  </component>
 </template>
 
 <style scoped>
@@ -64,9 +73,15 @@ defineEmits<{
   cursor: pointer;
   transition: all var(--ds-transition-fast);
   position: relative;
+  text-decoration: none;
 }
 
-.ds-button:disabled {
+.ds-button[aria-disabled='true'] {
+  pointer-events: none;
+}
+
+.ds-button:disabled,
+.ds-button[aria-disabled='true'] {
   opacity: 0.5;
   cursor: not-allowed;
 }

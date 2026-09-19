@@ -1,0 +1,166 @@
+/*
+ * Brand contract.
+ *
+ * Every value here is an input a host application may redefine on :root to make the
+ * design system carry its own brand. Nothing else in the system should be overridden:
+ * components read the derived --ds-color-* tokens, never these.
+ *
+ * A host sets the whole ramp. A partial ramp leaves the remaining steps on the
+ * WhileSmart defaults below and produces a palette that shifts hue between steps.
+ */
+
+:root {
+  --ds-brand-primary-50: #eef0f9;
+  --ds-brand-primary-100: #d5d9f0;
+  --ds-brand-primary-200: #b9c0e5;
+  --ds-brand-primary-300: #9ca7d9;
+  --ds-brand-primary-400: #8793d0;
+  --ds-brand-primary-500: #727fc7;
+  --ds-brand-primary-600: #5a63b0;
+  --ds-brand-primary-700: #454e9a;
+  --ds-brand-primary-800: #2d398e;
+  --ds-brand-primary-900: #1e2761;
+
+  --ds-brand-secondary-50: #e8f7fd;
+  --ds-brand-secondary-100: #c7ebf9;
+  --ds-brand-secondary-200: #a1def5;
+  --ds-brand-secondary-300: #7bd1f1;
+  --ds-brand-secondary-400: #5ec8ee;
+  --ds-brand-secondary-500: #44c0eb;
+  --ds-brand-secondary-600: #3aade4;
+  --ds-brand-secondary-700: #2e95d9;
+  --ds-brand-secondary-800: #237dce;
+  --ds-brand-secondary-900: #0f57b8;
+
+  --ds-brand-font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ds-brand-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --ds-brand-radius-card: var(--ds-radius-lg);
+  /* Nav rows, tabs, segmented controls: the same corner as a button. */
+  --ds-brand-radius-control: var(--ds-radius-lg);
+  /* Every table in the system reads at this density. */
+  --ds-brand-table-cell-padding: 6px 10px;
+
+  --ds-color-primary-50: var(--ds-brand-primary-50);
+  --ds-color-primary-100: var(--ds-brand-primary-100);
+  --ds-color-primary-200: var(--ds-brand-primary-200);
+  --ds-color-primary-300: var(--ds-brand-primary-300);
+  --ds-color-primary-400: var(--ds-brand-primary-400);
+  --ds-color-primary-500: var(--ds-brand-primary-500);
+  --ds-color-primary-600: var(--ds-brand-primary-600);
+  --ds-color-primary-700: var(--ds-brand-primary-700);
+  --ds-color-primary-800: var(--ds-brand-primary-800);
+  --ds-color-primary-900: var(--ds-brand-primary-900);
+  --ds-color-primary: var(--ds-brand-primary-800);
+
+  --ds-color-secondary-50: var(--ds-brand-secondary-50);
+  --ds-color-secondary-100: var(--ds-brand-secondary-100);
+  --ds-color-secondary-200: var(--ds-brand-secondary-200);
+  --ds-color-secondary-300: var(--ds-brand-secondary-300);
+  --ds-color-secondary-400: var(--ds-brand-secondary-400);
+  --ds-color-secondary-500: var(--ds-brand-secondary-500);
+  --ds-color-secondary-600: var(--ds-brand-secondary-600);
+  --ds-color-secondary-700: var(--ds-brand-secondary-700);
+  --ds-color-secondary-800: var(--ds-brand-secondary-800);
+  --ds-color-secondary-900: var(--ds-brand-secondary-900);
+  --ds-color-secondary: var(--ds-brand-secondary-500);
+
+  --ds-font-sans: var(--ds-brand-font-sans);
+  --ds-font-mono: var(--ds-brand-font-mono);
+
+  --ds-radius-card: var(--ds-brand-radius-card);
+  --ds-radius-control: var(--ds-brand-radius-control);
+  --ds-table-cell-padding: var(--ds-brand-table-cell-padding);
+}
+
+/*
+ * Area colours.
+ *
+ * These name a place in the product, never a status. A navigation destination, its icon
+ * tile and its page accent all draw from one area; a row, a chip or a finding that
+ * carries meaning draws from the status tokens instead. The two never share a surface.
+ *
+ * Each area has a soft fill for pills and tiles, an ink that clears 4.5:1 on that fill,
+ * and a solid for a filled tile carrying inverse text. scripts/check-tokens.mjs holds
+ * every pair to that ratio in both themes.
+ */
+
+:root {
+  --ds-area-indigo-fill: #e4e3fc;
+  --ds-area-indigo-ink: #2820c5;
+  --ds-area-indigo-solid: #2f27ce;
+
+  --ds-area-cyan-fill: #e3f6fc;
+  --ds-area-cyan-ink: #187091;
+  --ds-area-cyan-solid: #1e7c9f;
+
+  --ds-area-green-fill: #e3fcf1;
+  --ds-area-green-ink: #147b4b;
+  --ds-area-green-solid: #198553;
+
+  --ds-area-amber-fill: #fcf3e3;
+  --ds-area-amber-ink: #8c6117;
+  --ds-area-amber-solid: #9a6c1d;
+
+  --ds-area-violet-fill: #f0e3fc;
+  --ds-area-violet-ink: #7620c5;
+  --ds-area-violet-solid: #7d27ce;
+
+  --ds-area-rose-fill: #fce3e9;
+  --ds-area-rose-ink: #c11f42;
+  --ds-area-rose-solid: #ce274b;
+
+  --ds-area-teal-fill: #e3fcfb;
+  --ds-area-teal-ink: #137670;
+  --ds-area-teal-solid: #18817a;
+
+  --ds-area-orange-fill: #fcece3;
+  --ds-area-orange-ink: #a74e1b;
+  --ds-area-orange-solid: #b85a23;
+
+  --ds-area-slate-fill: #e3eefc;
+  --ds-area-slate-ink: #2065c5;
+  --ds-area-slate-solid: #276dce;
+
+  --ds-area-on-solid: #ffffff;
+}
+
+[data-theme="dark"] {
+  --ds-area-indigo-fill: #232244;
+  --ds-area-indigo-ink: #8b86ea;
+  --ds-area-indigo-solid: #7c77df;
+
+  --ds-area-cyan-fill: #223b44;
+  --ds-area-cyan-ink: #52bae0;
+  --ds-area-cyan-solid: #62bada;
+
+  --ds-area-green-fill: #224434;
+  --ds-area-green-ink: #52e09e;
+  --ds-area-green-solid: #62daa2;
+
+  --ds-area-amber-fill: #443822;
+  --ds-area-amber-ink: #e0ac52;
+  --ds-area-amber-solid: #daae62;
+
+  --ds-area-violet-fill: #342244;
+  --ds-area-violet-ink: #b47de8;
+  --ds-area-violet-solid: #a366db;
+
+  --ds-area-rose-fill: #442229;
+  --ds-area-rose-ink: #e7748d;
+  --ds-area-rose-solid: #da627c;
+
+  --ds-area-teal-fill: #224442;
+  --ds-area-teal-ink: #52e0d7;
+  --ds-area-teal-solid: #62dad2;
+
+  --ds-area-orange-fill: #442e22;
+  --ds-area-orange-ink: #e28c5a;
+  --ds-area-orange-solid: #da8e62;
+
+  --ds-area-slate-fill: #223044;
+  --ds-area-slate-ink: #6c9ee5;
+  --ds-area-slate-solid: #6294da;
+
+  --ds-area-on-solid: #0f172a;
+}
