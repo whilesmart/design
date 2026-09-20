@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { initialsAvatar } from '../avatar'
+import { generatedAvatar } from '../avatar'
 
 interface Props {
   src?: string
@@ -8,12 +8,14 @@ interface Props {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const props = withDefaults(defineProps<Props>(), { src: '', size: 'md' })
+const props = withDefaults(defineProps<Props>(), { src: '', name: '', size: 'md' })
 const imageFailed = ref(false)
 
 watch(() => props.src, () => { imageFailed.value = false })
 
-const imageUrl = computed(() => (props.src && !imageFailed.value ? props.src : initialsAvatar(props.name)))
+const imageUrl = computed(() =>
+  props.src && !imageFailed.value ? props.src : generatedAvatar(props.name),
+)
 </script>
 
 <template>
@@ -33,7 +35,7 @@ const imageUrl = computed(() => (props.src && !imageFailed.value ? props.src : i
   flex-shrink: 0;
   border-radius: var(--ds-radius-full);
   object-fit: cover;
-  background: var(--ds-color-secondary);
+  background: var(--ds-color-primary-50);
 }
 
 .ds-avatar--sm { width: 1.5rem; height: 1.5rem; }
