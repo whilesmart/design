@@ -7,8 +7,8 @@ import DsDropdown from './DsDropdown.vue'
 import DsInput from './DsInput.vue'
 import DsButton from './DsButton.vue'
 import DsTabs from './DsTabs.vue'
-import DsInitials from './DsInitials.vue'
-import DsBrandMark from './DsBrandMark.vue'
+import DsAvatar from './DsAvatar.vue'
+import DsLogo from './DsLogo.vue'
 
 // Vue strips listeners for declared emits from $attrs. Detecting them any other way than
 // through the vnode props silently reports "nobody is listening" and drops the affordance.
@@ -183,11 +183,19 @@ describe('DsDropdown error description', () => {
   })
 })
 
-describe('DsInitials', () => {
-  it('takes the first code point, not the first code unit', async () => {
-    const html = await render(DsInitials, { name: '😀 Lovelace' })
-    expect(html).toContain('😀L')
-    expect(html).not.toContain('�')
+describe('DsAvatar', () => {
+  it('renders the image the host gave', async () => {
+    expect(await render(DsAvatar, { name: 'Ada', src: '/a.png' })).toContain('src="/a.png"')
+  })
+
+  it('draws a generated face when there is none, inline rather than fetched', async () => {
+    const html = await render(DsAvatar, { name: 'Ada' })
+    expect(html).toContain('src="data:image/svg+xml')
+    expect(html).not.toMatch(/src="https?:/)
+  })
+
+  it('draws a face rather than throwing when a host sends no name', async () => {
+    expect(await render(DsAvatar, { name: undefined })).toContain('src="data:image/svg+xml')
   })
 })
 
@@ -206,10 +214,42 @@ describe('DsTrendChart tooltip', () => {
   })
 })
 
-describe('DsBrandMark', () => {
-  it('takes the first code point of the product name', async () => {
-    const html = await render(DsBrandMark, { name: '😀 Trakli' })
-    expect(html).toContain('😀')
-    expect(html).not.toContain('�')
+describe('DsLogo', () => {
+  it('draws the product name when the host supplies no mark', async () => {
+    const html = await render(DsLogo, { name: 'Trakli' })
+    expect(html).toContain('>Trakli<')
+    expect(html).not.toContain('ds-logo__mark')
+  })
+
+  it('draws the mark alone, named once for assistive tech', async () => {
+    const html = await render(DsLogo, { name: 'Trakli', src: '/logo.svg' })
+    expect(html).toContain('<img')
+    expect(html).toMatch(/role="img"[^>]*aria-label="Trakli"|aria-label="Trakli"[^>]*role="img"/)
+    expect(html).not.toContain('ds-logo__name')
+    // The wrapper carries the name, so the image inside it must not repeat it.
+    expect(html).not.toContain('alt="Trakli"')
+  })
+
+  it('draws both when the host asks for the name beside the mark', async () => {
+    const html = await render(DsLogo, { name: 'Trakli', src: '/logo.svg', showName: true })
+    expect(html).toContain('ds-logo__mark')
+    expect(html).toContain('ds-logo__name')
+  })
+})
+
+
+describe('DsLogo variant', () => {
+  const both = { name: 'Trakli', src: '/logo.svg', markSrc: '/logo-mark.svg' }
+
+  it('draws the lockup by default and the mark on request', async () => {
+    expect(await render(DsLogo, both)).toContain('src="/logo.svg"')
+    expect(await render(DsLogo, { ...both, variant: 'mark' })).toContain('src="/logo-mark.svg"')
+  })
+
+  it('falls back to the asset the host shipped', async () => {
+    expect(await render(DsLogo, { name: 'Trakli', src: '/logo.svg', variant: 'mark' }))
+      .toContain('src="/logo.svg"')
+    expect(await render(DsLogo, { name: 'Trakli', markSrc: '/logo-mark.svg' }))
+      .toContain('src="/logo-mark.svg"')
   })
 })

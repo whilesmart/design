@@ -36,7 +36,7 @@ Nothing was removed from the public API. Three defaults changed.
 
 - Pagination rendered nothing, because its button was never imported.
 - `DsAvatar` drew its fallback by calling a hosted avatar service with the person's name in
-  the URL. The same avatar is now drawn in process, so no name leaves the application.
+  the URL. The avatar is now drawn in process, so no name leaves the application.
 - A chart given a single point drew nothing: a polyline of one point strokes nothing and the
   area collapses to zero width. It draws a marker instead.
 - A disabled `DsButton` rendered as an anchor still emitted `click`, since an anchor has no
