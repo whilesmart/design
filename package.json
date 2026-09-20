@@ -48,10 +48,6 @@
     "./icons/*": "./dist/icons/*",
     "./package.json": "./package.json"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
-  },
   "peerDependencies": {
     "vue": "^3.5.0",
     "vue-router": "^4.0.0"
