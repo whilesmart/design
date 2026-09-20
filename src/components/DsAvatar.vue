@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { initialsAvatar } from '../avatar'
 
 interface Props {
   src?: string
@@ -12,12 +13,7 @@ const imageFailed = ref(false)
 
 watch(() => props.src, () => { imageFailed.value = false })
 
-const fallbackUrl = computed(() => {
-  const seed = props.name.trim() || 'User'
-  return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(seed)}&backgroundType=gradientLinear`
-})
-
-const imageUrl = computed(() => props.src && !imageFailed.value ? props.src : fallbackUrl.value)
+const imageUrl = computed(() => (props.src && !imageFailed.value ? props.src : initialsAvatar(props.name)))
 </script>
 
 <template>

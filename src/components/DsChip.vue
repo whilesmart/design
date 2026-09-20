@@ -28,6 +28,7 @@ defineEmits<{
 <template>
   <component
     :is="clickable ? 'button' : 'span'"
+    :type="clickable ? 'button' : undefined"
     class="ds-chip"
     :class="[
       `ds-chip--${variant}`,

@@ -69,6 +69,36 @@ import '@whilesmart/design/tokens/colors.css'
 
 Component styles only ever read tokens, never literal colours. `npm run check` enforces that text pairs clear a 4.5:1 contrast ratio in both themes.
 
+### Carrying your own brand
+
+`src/tokens/brand.css` lists every token a host may redefine: the primary and secondary
+ramps, the sans and mono families, the card radius, the control radius and the table
+density. Redeclare them on `:root` in a stylesheet loaded after
+`@whilesmart/design/styles`, and the whole system follows:
+
+```css
+:root {
+  --ds-brand-primary-800: #047844;
+  /* ... the rest of the ramp ... */
+  --ds-brand-font-sans: 'Ubuntu', system-ui, sans-serif;
+}
+```
+
+Set the whole ramp. A partial one leaves the remaining steps on the WhileSmart defaults and
+shifts hue between steps. Hold your own values to the same 4.5:1 bar: the check here covers
+the defaults, not yours.
+
+### Area colours
+
+An area colour names a place in the product, never a status. A navigation destination, its
+icon tile and the accents on its own page all draw from one area, so a reader learns the
+colour once. A row, a chip or a finding that carries meaning uses the status tokens instead.
+The two never share a surface.
+
+Each area has a soft `fill`, an `ink` that clears 4.5:1 on that fill, and a `solid` for a
+filled tile carrying `--ds-area-on-solid`. Components take an `area` prop; `areaStyle()`
+resolves it for anything hand-rolled.
+
 ## Develop
 
 ```bash

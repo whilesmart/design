@@ -26,6 +26,7 @@ defineEmits<{
 
 <template>
   <button
+    type="button"
     class="ds-icon-btn"
     :class="[
       `ds-icon-btn--${size}`,

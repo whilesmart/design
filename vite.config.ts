@@ -22,6 +22,7 @@ export default defineConfig({
     emptyOutDir: true
   },
   test: {
-    include: ['src/**/*.test.ts']
+    include: ['src/**/*.test.ts'],
+    environment: 'happy-dom'
   }
 })
