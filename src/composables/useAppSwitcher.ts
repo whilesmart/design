@@ -19,7 +19,8 @@ export interface AppSwitcherOptions {
   includeCurrentApp?: boolean
 }
 
-const defaultApps: AppDefinition[] = [
+function defaultApps(): AppDefinition[] {
+  return [
   {
     id: 'mail',
     name: 'Mail',
@@ -70,9 +71,10 @@ const defaultApps: AppDefinition[] = [
     description: 'Manage your account'
   }
 ]
+}
 
 export function resolveAppSwitcherApps(options: AppSwitcherOptions = {}): AppDefinition[] {
-  const merged = [...(options.apps || defaultApps)]
+  const merged = [...(options.apps || defaultApps())]
   for (const app of options.additionalApps || []) {
     const existingIndex = merged.findIndex(item => item.id === app.id)
     if (existingIndex >= 0) merged[existingIndex] = app
