@@ -6,6 +6,9 @@ withDefaults(defineProps<{ align?: 'start' | 'end' }>(), { align: 'end' })
 const open = ref(false)
 const root = ref<HTMLElement | null>(null)
 
+// The document hears every click, including the one on this menu's own
+// trigger. Stopping that click instead would keep it from reaching the other
+// menus, and two menus in one bar would then both stand open.
 function close(event?: Event) {
   if (event && root.value?.contains(event.target as Node)) return
   open.value = false
@@ -32,7 +35,7 @@ onBeforeUnmount(() => {
       class="ds-menu__trigger"
       aria-haspopup="menu"
       :aria-expanded="open"
-      @click.stop="open = !open"
+      @click="open = !open"
     >
       <!-- The trigger slot takes a focusable control: this wrapper adds no tab stop. -->
       <slot name="trigger" :open="open" />

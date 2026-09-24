@@ -8,6 +8,8 @@ const props = withDefaults(defineProps<{
   active?: boolean
   badge?: string | number
   label?: string
+  // Absent, the item renders as it did before: one line.
+  description?: string
   icon?: `solar:${string}` | `material-symbols:${string}`
   /** Colours the row with a place in the product instead of the brand primary. */
   area?: AreaColor
@@ -19,6 +21,7 @@ const props = withDefaults(defineProps<{
   active: false,
   badge: undefined,
   label: '',
+  description: undefined,
   icon: undefined,
   area: undefined,
   tile: false,
@@ -47,7 +50,10 @@ const style = computed(() => areaStyle(props.area))
     <span v-if="$slots.icon || icon" class="ds-sidebar-item__icon">
       <slot name="icon"><DsIcon v-if="icon" :name="icon" /></slot>
     </span>
-    <span class="ds-sidebar-item__label"><slot>{{ label }}</slot></span>
+    <span class="ds-sidebar-item__said">
+      <span class="ds-sidebar-item__label"><slot>{{ label }}</slot></span>
+      <span v-if="description" class="ds-sidebar-item__description">{{ description }}</span>
+    </span>
     <span v-if="badge !== undefined" class="ds-sidebar-item__badge">{{ badge }}</span>
   </component>
 </template>
@@ -125,11 +131,34 @@ const style = computed(() => areaStyle(props.area))
   color: var(--ds-area-on-solid, var(--ds-text-inverse));
 }
 
-.ds-sidebar-item__label {
+.ds-sidebar-item__said {
   flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.ds-sidebar-item__label {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Clamped at two lines: a sentence cut after four words says nothing. */
+.ds-sidebar-item__description {
+  color: var(--ds-text-muted);
+  font-size: var(--ds-text-xs);
+  line-height: 1.35;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.ds-sidebar-item--active .ds-sidebar-item__description {
+  color: inherit;
+  opacity: 0.72;
 }
 
 .ds-sidebar-item__badge {
