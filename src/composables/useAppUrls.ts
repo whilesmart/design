@@ -57,7 +57,14 @@ export function isLocalHostname(hostname: string): boolean {
   return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
 }
 
-export function appUrl(app: WhileSmartApp, hostname = window.location.hostname): string {
+// Where this is running, asked rather than assumed. A server has no window,
+// and this is read while the module loads, so assuming one means the library
+// cannot be imported anywhere but a browser.
+export function currentHostname(): string {
+  return typeof window === 'undefined' ? '' : window.location.hostname
+}
+
+export function appUrl(app: WhileSmartApp, hostname = currentHostname()): string {
   const configuredUrl = configuredUrls[app]
   if (configuredUrl) return configuredUrl.replace(/\/$/, '')
   return isLocalHostname(hostname) ? localUrls[app] : productionUrls[app]
@@ -72,7 +79,7 @@ export interface ConversationLaunchOptions {
   messages?: string[]
 }
 
-export function conversationUrl(options: ConversationLaunchOptions, hostname = window.location.hostname): string {
+export function conversationUrl(options: ConversationLaunchOptions, hostname = currentHostname()): string {
   const url = new URL('/chat', appUrl('chat', hostname))
   url.searchParams.set('owner_type', options.ownerType)
   url.searchParams.set('owner_id', options.ownerId)

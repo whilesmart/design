@@ -5,6 +5,7 @@ import DsCard from './components/DsCard.vue'
 import DsChip from './components/DsChip.vue'
 import DsToolbar from './components/DsToolbar.vue'
 import DsIconButton from './components/DsIconButton.vue'
+import DsSegmented from './components/DsSegmented.vue'
 import DsSidebar from './components/DsSidebar.vue'
 import DsSidebarItem from './components/DsSidebarItem.vue'
 import DsSearchInput from './components/DsSearchInput.vue'
@@ -43,10 +44,15 @@ import DsStatTile from './components/DsStatTile.vue'
 import DsRankingList from './components/DsRankingList.vue'
 import DsTrendChart from './components/DsTrendChart.vue'
 import DsMenu from './components/DsMenu.vue'
+import DsPageHero from './components/DsPageHero.vue'
 import DsMenuItem from './components/DsMenuItem.vue'
+import DsMenuSeparator from './components/DsMenuSeparator.vue'
+import DsAccountMenu from './components/DsAccountMenu.vue'
+import DsWorkspaceMenu from './components/DsWorkspaceMenu.vue'
 import DsTabs from './components/DsTabs.vue'
 
 // Layouts
+import ConsoleLayout from './layouts/ConsoleLayout.vue'
 import DashboardLayout from './layouts/DashboardLayout.vue'
 import PublicLayout from './layouts/PublicLayout.vue'
 
@@ -69,6 +75,7 @@ export {
   DsSidebar,
   DsSidebarItem,
   DsSearchInput,
+  DsSegmented,
   DsHeaderSearch,
   DsAutocompleteInput,
   DsTagInput,
@@ -105,9 +112,13 @@ export {
   DsTrendChart,
   DsMenu,
   DsMenuItem,
+  DsPageHero,
+  DsMenuSeparator,
+  DsAccountMenu,
+  DsWorkspaceMenu,
   DsTabs,
 }
-export { DashboardLayout, PublicLayout }
+export { ConsoleLayout, DashboardLayout, PublicLayout }
 
 // Type re-exports from components
 export * from './components/DsButton.vue'
@@ -116,6 +127,7 @@ export * from './components/DsCard.vue'
 export type { SearchFilterOption, SearchProvider, SearchSuggestion } from './components/DsSearchInput.vue'
 export type { TagInputValue } from './components/DsTagInput.vue'
 export type { DataTableColumn } from './components/DsDataTable.vue'
+export type { WorkspaceOption } from './components/workspaceMenu'
 export type { ProductLandingItem, ProductLandingSpecimen } from './components/DsProductLanding.vue'
 export type { WorkspaceBrandingConfig } from './components/DsWorkspaceBackdrop.vue'
 export type { ConversationParticipant, ConversationContextItem } from './components/DsConversationContext.vue'
