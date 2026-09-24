@@ -148,7 +148,7 @@ const handleSignIn = () => {
 }
 
 .sign-in-btn:hover {
-  background: var(--ds-color-primary-hover);
+  background: var(--ds-interactive-primary-hover);
 }
 
 .main-content {
