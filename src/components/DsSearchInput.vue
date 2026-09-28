@@ -223,7 +223,9 @@ watch(() => [props.modelValue, props.filterValue] as const, ([query]) => {
 })
 
 const shortcutHint = computed(() => {
-  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+  // Servers can define navigator without platform (Node 21+), so read it defensively.
+  const platform = typeof navigator === 'undefined' ? '' : navigator.platform ?? ''
+  const isMac = platform.toUpperCase().includes('MAC')
   return isMac ? '⌘K' : 'Ctrl+K'
 })
 </script>
