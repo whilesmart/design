@@ -12,12 +12,15 @@ withDefaults(defineProps<{
   // Boxed: rail and bar are chrome on a ground, and the content is a card on
   // that ground which scrolls by itself.
   frame?: 'flush' | 'boxed'
+  // Contained: pages centre in at most 1400px. Full: pages use the whole content area.
+  width?: 'contained' | 'full'
 }>(), {
   navLabel: 'Sections',
   railWidth: '16rem',
   menuLabel: 'Sections',
   railClass: '',
   frame: 'flush',
+  width: 'contained',
 })
 
 const slots = useSlots()
@@ -42,7 +45,7 @@ onBeforeUnmount(() => lockScroll(false))
 <template>
   <div
     class="ds-console"
-    :class="[`ds-console--${frame}`, { 'ds-console--barred': !!slots.bar || !!slots['bar-start'] }]"
+    :class="[`ds-console--${frame}`, `ds-console--${width}`, { 'ds-console--barred': !!slots.bar || !!slots['bar-start'] }]"
     :style="{ '--rail-width': railWidth }"
   >
     <header class="ds-console__bar">
@@ -272,6 +275,16 @@ onBeforeUnmount(() => lockScroll(false))
 .ds-console--boxed .ds-console__page-inner {
   width: min(1400px, 100%);
   margin: 0 auto;
+}
+
+.ds-console--full.ds-console--flush .ds-console__page,
+.ds-console--full .ds-console__page-inner {
+  width: 100%;
+}
+
+.ds-console--full.ds-console--flush .ds-console__page,
+.ds-console--full.ds-console--boxed .ds-console__page {
+  padding: var(--ds-space-4) var(--ds-space-5);
 }
 
 @media (max-width: 900px) {

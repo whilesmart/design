@@ -14,6 +14,13 @@ describe('a console', () => {
     expect(html).not.toContain('ds-console--boxed')
   })
 
+  it('centres pages at the contained width unless told to use the whole area', async () => {
+    expect(await render({}, { nav: () => 'Home' })).toContain('ds-console--contained')
+    const full = await render({ frame: 'boxed', width: 'full' }, { nav: () => 'Home' })
+    expect(full).toContain('ds-console--full')
+    expect(full).not.toContain('ds-console--contained')
+  })
+
   it('is not barred when nothing fills the bar', async () => {
     const html = await render({}, { nav: () => 'Home' })
     expect(html).not.toContain('ds-console--barred')

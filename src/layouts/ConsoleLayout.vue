@@ -6,17 +6,19 @@ import DsConsoleShell from '../components/DsConsoleShell.vue'
 withDefaults(
   defineProps<{
     frame?: 'flush' | 'boxed'
+    width?: 'contained' | 'full'
     railWidth?: string
     navLabel?: string
     menuLabel?: string
   }>(),
-  { frame: 'flush', railWidth: '16rem', navLabel: 'Sections', menuLabel: 'Sections' },
+  { frame: 'flush', width: 'contained', railWidth: '16rem', navLabel: 'Sections', menuLabel: 'Sections' },
 )
 </script>
 
 <template>
   <DsConsoleShell
     :frame="frame"
+    :width="width"
     :rail-width="railWidth"
     :nav-label="navLabel"
     :menu-label="menuLabel"
