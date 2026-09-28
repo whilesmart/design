@@ -40,19 +40,54 @@ describe('a chat message', () => {
 })
 
 describe('a question in a chat', () => {
-  it('answers in one tap with the option picked', async () => {
-    const question = mountQuestion({ question: 'Which story?', options })
-    question.buttons[1]!.click()
+  const pick = (root: HTMLElement, i: number) => root.querySelectorAll<HTMLInputElement>('input')[i]!.click()
+  const confirmButton = (root: HTMLElement) => [...root.querySelectorAll('button')].find((b) => b.textContent?.includes('Use this'))
+
+  it('starts on the recommendation and sends it on confirm', async () => {
+    const q = mountQuestion({ question: 'Which story?', options, recommended: 'a' })
+    confirmButton(q.root)!.click()
     await nextTick()
-    expect(question.picked).toEqual(['b'])
+    expect(q.picked).toEqual(['a'])
+  })
+
+  it('sends a different pick only once it is confirmed', async () => {
+    const q = mountQuestion({ question: 'Which story?', options, recommended: 'a' })
+    pick(q.root, 1)
+    await nextTick()
+    expect(q.picked).toEqual([])
+    confirmButton(q.root)!.click()
+    await nextTick()
+    expect(q.picked).toEqual(['b'])
+  })
+
+  it('answers in one tap when asked not to confirm', async () => {
+    const q = mountQuestion({ question: 'Which?', options, confirm: false, layout: 'pills' })
+    pick(q.root, 1)
+    await nextTick()
+    expect(q.picked).toEqual(['b'])
+  })
+
+  it('takes several answers and holds to its limits', async () => {
+    const many: string[][] = []
+    const root = document.createElement('div')
+    const three = [...options, { id: 'c', label: 'Third' }]
+    createApp({
+      render: () => h(DsChatQuestion, { question: 'Which?', options: three, multiple: true, max: 2, onSelectMany: (ids: string[]) => many.push(ids) }),
+    }).mount(root)
+    pick(root, 0)
+    await nextTick()
+    pick(root, 2)
+    await nextTick()
+    expect(root.querySelectorAll<HTMLInputElement>('input')[1]!.disabled).toBe(true)
+    confirmButton(root)!.click()
+    await nextTick()
+    expect(many).toEqual([['a', 'c']])
   })
 
   it('cannot be answered twice', async () => {
-    const question = mountQuestion({ question: 'Which story?', options, answer: 'a' })
-    question.buttons[1]!.click()
-    await nextTick()
-    expect(question.picked).toEqual([])
-    expect(question.buttons.every((b) => b.disabled)).toBe(true)
+    const q = mountQuestion({ question: 'Which story?', options, answer: 'a' })
+    expect(q.root.querySelectorAll('input')[1]!.hasAttribute('disabled')).toBe(true)
+    expect(confirmButton(q.root)).toBeUndefined()
   })
 
   it('marks the recommendation until someone answers', async () => {
@@ -61,8 +96,8 @@ describe('a question in a chat', () => {
   })
 
   it('shows option details only as cards', async () => {
-    expect(await render(DsChatQuestion, { question: 'Q', options })).not.toContain('One tap, two charges.')
-    expect(await render(DsChatQuestion, { question: 'Q', options, layout: 'cards' })).toContain('One tap, two charges.')
+    expect(await render(DsChatQuestion, { question: 'Q', options, layout: 'pills' })).not.toContain('One tap, two charges.')
+    expect(await render(DsChatQuestion, { question: 'Q', options })).toContain('One tap, two charges.')
   })
 })
 
