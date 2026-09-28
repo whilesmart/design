@@ -2,6 +2,14 @@
 
 All notable changes to the WhileSmart design system are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Chat building blocks: a message with a bubble for either side and pending and failed
+  states, a question answered in one tap as pills or as cards with detail and a marked
+  recommendation, a step list for work in progress, and a feed of the latest activity.
+
 ## [0.2.0] - 2026-09-20
 
 ### Changed for existing installations
