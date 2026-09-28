@@ -53,3 +53,16 @@ describe('what the console is pointed at', () => {
     expect(html.indexOf('ds-console__bar-start')).toBeLessThan(html.indexOf('ds-console__bar-rest'))
   })
 })
+
+describe('the console rail action', () => {
+  it('draws the primary action above the nav only when one is given', async () => {
+    const { createSSRApp, h } = await import('vue')
+    const { renderToString } = await import('vue/server-renderer')
+    const { default: DsConsoleShell } = await import('./DsConsoleShell.vue')
+    const html = (slots: Record<string, () => string>) =>
+      renderToString(createSSRApp({ render: () => h(DsConsoleShell, {}, slots) }))
+    expect(await html({ nav: () => 'Home' })).not.toContain('ds-console__create')
+    const withAction = await html({ create: () => 'New film', nav: () => 'Home' })
+    expect(withAction.indexOf('New film')).toBeLessThan(withAction.indexOf('Home'))
+  })
+})

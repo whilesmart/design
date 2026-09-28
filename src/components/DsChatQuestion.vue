@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<{
   max?: number
   confirmLabel?: string
   recommendedLabel?: string
+  columns?: number
 }>(), {
   why: '',
   recommended: '',
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<{
   max: undefined,
   confirmLabel: 'Use this',
   recommendedLabel: 'Recommended',
+  columns: 1,
 })
 
 const emit = defineEmits<{ select: [id: string]; selectMany: [ids: string[]] }>()
@@ -79,7 +81,12 @@ function send(): void {
       Pick {{ max === undefined ? `at least ${min}` : min === max ? max : `${min} to ${max}` }}.
     </p>
 
-    <div class="ds-chat-question__options" :role="multiple ? 'group' : 'radiogroup'" :aria-label="question">
+    <div
+      class="ds-chat-question__options"
+      :role="multiple ? 'group' : 'radiogroup'"
+      :aria-label="question"
+      :style="layout === 'cards' ? { '--columns': String(columns) } : undefined"
+    >
       <label
         v-for="option of options"
         :key="option.id"
@@ -166,7 +173,7 @@ function send(): void {
 
 .ds-chat-question--cards .ds-chat-question__options {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(var(--columns, 1), minmax(0, 1fr));
 }
 
 .ds-chat-question__option {
@@ -260,6 +267,10 @@ function send(): void {
 @media (max-width: 640px) {
   .ds-chat-question--cards {
     padding: var(--ds-space-4);
+  }
+
+  .ds-chat-question--cards .ds-chat-question__options {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .ds-chat-question__acts > :first-child {

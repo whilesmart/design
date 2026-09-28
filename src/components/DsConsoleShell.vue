@@ -76,6 +76,10 @@ onBeforeUnmount(() => lockScroll(false))
         </button>
       </template>
 
+      <div v-if="slots.create" class="ds-console__create" @click="close">
+        <slot name="create" />
+      </div>
+
       <div class="ds-console__nav" @click="close">
         <slot name="nav" />
       </div>
@@ -98,6 +102,10 @@ onBeforeUnmount(() => lockScroll(false))
 </template>
 
 <style scoped>
+.ds-console__create {
+  padding: 0 var(--ds-space-3) var(--ds-space-3);
+}
+
 .ds-console {
   display: grid;
   min-height: 100vh;

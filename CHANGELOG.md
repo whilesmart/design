@@ -9,7 +9,10 @@ All notable changes to the WhileSmart design system are documented in this file.
 - Chat building blocks: a message with a bubble for either side and pending and failed
   states, a question that starts on its recommended option and sends the answer when it
   is confirmed (one answer or several, as cards with detail or as pills, or in one tap),
-  a step list for work in progress, and a feed of the latest activity.
+  a step list for work in progress, a feed of the latest activity, and a composer that
+  sends on Enter, grows with its text and offers attachments only when told what can be
+  attached.
+- A slot at the top of the console rail for the product's primary action.
 
 ### Fixed
 

@@ -45,6 +45,7 @@ import DsChatMessage from './components/DsChatMessage.vue'
 import DsChatQuestion from './components/DsChatQuestion.vue'
 import DsChatProgress from './components/DsChatProgress.vue'
 import DsChatActivity from './components/DsChatActivity.vue'
+import DsChatComposer from './components/DsChatComposer.vue'
 import DsRankingList from './components/DsRankingList.vue'
 import DsTrendChart from './components/DsTrendChart.vue'
 import DsMenu from './components/DsMenu.vue'
@@ -116,6 +117,7 @@ export {
   DsChatQuestion,
   DsChatProgress,
   DsChatActivity,
+  DsChatComposer,
   DsRankingList,
   DsTrendChart,
   DsMenu,
@@ -152,3 +154,4 @@ export type { DropdownOption } from './components/DsDropdown.vue'
 export type { ChatOption } from './components/DsChatQuestion.vue'
 export type { ChatStep } from './components/DsChatProgress.vue'
 export type { ChatActivityItem } from './components/DsChatActivity.vue'
+export type { ChatFileType, ChatSend } from './components/DsChatComposer.vue'
