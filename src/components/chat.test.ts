@@ -95,6 +95,26 @@ describe('a question in a chat', () => {
     expect(await render(DsChatQuestion, { question: 'Q', options, recommended: 'a', answer: 'b' })).not.toContain('Recommended')
   })
 
+  it("takes an answer in the person's own words only when asked to", async () => {
+    const written: string[] = []
+    const root = document.createElement('div')
+    createApp({
+      render: () => h(DsChatQuestion, { question: 'Use it?', options, writeIn: 'Tell me what to change', onWrite: (t: string) => written.push(t) }),
+    }).mount(root)
+    const box = root.querySelector('textarea')!
+    const send = () => root.querySelector('form')!.dispatchEvent(new Event('submit', { cancelable: true }))
+
+    send()
+    box.value = '  Open on the customer.  '
+    box.dispatchEvent(new Event('input'))
+    await nextTick()
+    send()
+
+    expect(written).toEqual(['Open on the customer.'])
+    expect(await render(DsChatQuestion, { question: 'Q', options })).not.toContain('textarea')
+    expect(await render(DsChatQuestion, { question: 'Q', options, writeIn: 'Why?', answer: 'a' })).not.toContain('textarea')
+  })
+
   it('shows option details only as cards', async () => {
     expect(await render(DsChatQuestion, { question: 'Q', options, layout: 'pills' })).not.toContain('One tap, two charges.')
     expect(await render(DsChatQuestion, { question: 'Q', options })).toContain('One tap, two charges.')

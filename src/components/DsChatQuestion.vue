@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import DsButton from './DsButton.vue'
 import DsIcon from './DsIcon.vue'
+import DsTextarea from './DsTextarea.vue'
 
 export interface ChatOption {
   id: string
@@ -24,6 +25,9 @@ const props = withDefaults(defineProps<{
   confirmLabel?: string
   recommendedLabel?: string
   columns?: number
+  /** When set, the person may answer in their own words; this labels the box. */
+  writeIn?: string
+  writeInLabel?: string
 }>(), {
   why: '',
   recommended: '',
@@ -37,9 +41,19 @@ const props = withDefaults(defineProps<{
   confirmLabel: 'Use this',
   recommendedLabel: 'Recommended',
   columns: 1,
+  writeIn: '',
+  writeInLabel: 'Send',
 })
 
-const emit = defineEmits<{ select: [id: string]; selectMany: [ids: string[]] }>()
+const emit = defineEmits<{ select: [id: string]; selectMany: [ids: string[]]; write: [text: string] }>()
+
+const words = ref('')
+
+function write(): void {
+  const text = words.value.trim()
+  if (!text || locked.value || props.busy) return
+  emit('write', text)
+}
 
 const list = (value: string | string[] | null | undefined) => (Array.isArray(value) ? value : value ? [value] : [])
 const recommendedIds = computed(() => list(props.recommended))
@@ -118,6 +132,13 @@ function send(): void {
       </label>
     </div>
 
+    <form v-if="writeIn && !locked" class="ds-chat-question__write" @submit.prevent="write">
+      <DsTextarea v-model="words" :label="writeIn" :rows="3" :disabled="busy" />
+      <DsButton type="submit" variant="secondary" icon="solar:plain-linear" :disabled="!words.trim() || busy">
+        {{ writeInLabel }}
+      </DsButton>
+    </form>
+
     <div v-if="!locked && (confirm || multiple || $slots.default)" class="ds-chat-question__acts">
       <DsButton
         v-if="confirm || multiple"
@@ -152,6 +173,16 @@ function send(): void {
   margin: 0;
   color: var(--ds-text-primary);
   font-weight: var(--ds-font-weight-semibold);
+}
+
+.ds-chat-question__write {
+  display: grid;
+  gap: var(--ds-space-2);
+  justify-items: start;
+}
+
+.ds-chat-question__write > :first-child {
+  justify-self: stretch;
 }
 
 .ds-chat-question--cards .ds-chat-question__prompt {
