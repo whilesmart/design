@@ -18,6 +18,11 @@ All notable changes to the WhileSmart design system are documented in this file.
 - `--ds-accent-fill`, `--ds-accent-fill-strong`, `--ds-accent-ink` and
   `--ds-on-interactive-primary`: a tinted surface, the accent text that reads on it, and
   the text on a primary button, each defined for both themes.
+- Brand kit building blocks: `DsColourPalette` (named swatches to copy, or to pick, rename,
+  add and remove), `DsAssetSlots` (a slot per asset variant, each shown on the ground it is
+  used on, with upload, replace and remove), `DsFontSpecimen` (a family set in its own face)
+  and `DsRuleList` (what a brand must and must not do). `--ds-ground-light` and
+  `--ds-ground-dark` are the fixed grounds assets are judged on.
 
 ### Fixed
 

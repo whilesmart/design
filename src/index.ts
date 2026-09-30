@@ -34,6 +34,10 @@ import DsConversationSheet from './components/DsConversationSheet.vue'
 import DsTextarea from './components/DsTextarea.vue'
 import DsPageHeader from './components/DsPageHeader.vue'
 import DsBarTitle from './components/DsBarTitle.vue'
+import DsColourPalette from './components/DsColourPalette.vue'
+import DsAssetSlots from './components/DsAssetSlots.vue'
+import DsFontSpecimen from './components/DsFontSpecimen.vue'
+import DsRuleList from './components/DsRuleList.vue'
 import DsStatePanel from './components/DsStatePanel.vue'
 import DsSwitch from './components/DsSwitch.vue'
 import DsPagination from './components/DsPagination.vue'
@@ -107,6 +111,10 @@ export {
   DsTextarea,
   DsPageHeader,
   DsBarTitle,
+  DsColourPalette,
+  DsAssetSlots,
+  DsFontSpecimen,
+  DsRuleList,
   DsStatePanel,
   DsSwitch,
   DsPagination,
@@ -153,6 +161,9 @@ export type { RankingRow } from './components/DsRankingList.vue'
 export type { TrendPoint, PlottedPoint } from './charts'
 export type { TabOption } from './components/DsTabs.vue'
 export type { BarTitleTone } from './components/DsBarTitle.vue'
+export type { PaletteColour } from './components/DsColourPalette.vue'
+export type { AssetSlot } from './components/DsAssetSlots.vue'
+export type { Rule as BrandRule } from './components/DsRuleList.vue'
 export type { DropdownOption } from './components/DsDropdown.vue'
 export type { ChatOption } from './components/DsChatQuestion.vue'
 export type { ChatStep } from './components/DsChatProgress.vue'

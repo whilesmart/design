@@ -53,6 +53,9 @@
 
 /* A tinted surface and the accent text that reads on it, in either theme. */
 :root {
+  /* Grounds an asset is judged on; the same in both themes, since a logo for dark grounds must be seen on one. */
+  --ds-ground-light: #ffffff;
+  --ds-ground-dark: #0f172a;
   --ds-accent-fill: var(--ds-color-primary-50);
   --ds-accent-fill-strong: var(--ds-color-primary-100);
   --ds-accent-ink: var(--ds-color-primary-800);
