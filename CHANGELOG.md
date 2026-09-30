@@ -13,10 +13,18 @@ All notable changes to the WhileSmart design system are documented in this file.
   sends on Enter, grows with its text and offers attachments only when told what can be
   attached.
 - A slot at the top of the console rail for the product's primary action.
+- `DsBarTitle`: a page's title and subtitle, with an optional status dot, sized to sit in
+  the console bar before the search.
+- `--ds-accent-fill`, `--ds-accent-fill-strong`, `--ds-accent-ink` and
+  `--ds-on-interactive-primary`: a tinted surface, the accent text that reads on it, and
+  the text on a primary button, each defined for both themes.
 
 ### Fixed
 
 - The search box renders on a server whose `navigator` has no `platform`.
+- Dark theme: table headers, primary chips, the active sidebar row, modal and search
+  icons, avatars and state panels no longer keep their light tint, and primary buttons
+  carry dark text on their light fill.
 
 ## [0.2.0] - 2026-09-20
 

@@ -51,6 +51,21 @@
   --ds-chat-header-bg: var(--ds-chat-post-bg);
 }
 
+/* A tinted surface and the accent text that reads on it, in either theme. */
+:root {
+  --ds-accent-fill: var(--ds-color-primary-50);
+  --ds-accent-fill-strong: var(--ds-color-primary-100);
+  --ds-accent-ink: var(--ds-color-primary-800);
+  --ds-on-interactive-primary: #ffffff;
+}
+
+[data-theme="dark"] {
+  --ds-accent-fill: color-mix(in srgb, var(--ds-color-primary-400) 18%, var(--ds-color-neutral-900));
+  --ds-accent-fill-strong: color-mix(in srgb, var(--ds-color-primary-400) 30%, var(--ds-color-neutral-900));
+  --ds-accent-ink: var(--ds-color-primary-200);
+  --ds-on-interactive-primary: var(--ds-color-neutral-900);
+}
+
 [data-theme="dark"] {
   /* Background */
   --ds-bg-base: var(--ds-color-neutral-900);

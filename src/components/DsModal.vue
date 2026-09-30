@@ -182,8 +182,8 @@ onUnmounted(() => {
   height: 2.5rem;
   flex: 0 0 auto;
   border-radius: var(--ds-radius-lg);
-  background: var(--ds-color-primary-50);
-  color: var(--ds-color-primary-800);
+  background: var(--ds-accent-fill);
+  color: var(--ds-accent-ink);
   font-size: 1.35rem;
 }
 

@@ -35,7 +35,7 @@ const imageUrl = computed(() =>
   flex-shrink: 0;
   border-radius: var(--ds-radius-full);
   object-fit: cover;
-  background: var(--ds-color-primary-50);
+  background: var(--ds-accent-fill);
 }
 
 .ds-avatar--sm { width: 1.5rem; height: 1.5rem; }

@@ -33,6 +33,7 @@ import DsPresenceDot from './components/DsPresenceDot.vue'
 import DsConversationSheet from './components/DsConversationSheet.vue'
 import DsTextarea from './components/DsTextarea.vue'
 import DsPageHeader from './components/DsPageHeader.vue'
+import DsBarTitle from './components/DsBarTitle.vue'
 import DsStatePanel from './components/DsStatePanel.vue'
 import DsSwitch from './components/DsSwitch.vue'
 import DsPagination from './components/DsPagination.vue'
@@ -105,6 +106,7 @@ export {
   DsConversationSheet,
   DsTextarea,
   DsPageHeader,
+  DsBarTitle,
   DsStatePanel,
   DsSwitch,
   DsPagination,
@@ -150,6 +152,7 @@ export type { ConversationSheetTarget } from './components/DsConversationSheet.v
 export type { RankingRow } from './components/DsRankingList.vue'
 export type { TrendPoint, PlottedPoint } from './charts'
 export type { TabOption } from './components/DsTabs.vue'
+export type { BarTitleTone } from './components/DsBarTitle.vue'
 export type { DropdownOption } from './components/DsDropdown.vue'
 export type { ChatOption } from './components/DsChatQuestion.vue'
 export type { ChatStep } from './components/DsChatProgress.vue'

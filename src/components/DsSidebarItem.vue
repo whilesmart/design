@@ -87,8 +87,8 @@ const style = computed(() => areaStyle(props.area))
 }
 
 .ds-sidebar-item--active {
-  background: var(--ds-color-primary-100);
-  color: var(--ds-color-primary-900);
+  background: var(--ds-accent-fill-strong);
+  color: var(--ds-accent-ink);
   font-weight: 600;
 }
 
@@ -120,7 +120,7 @@ const style = computed(() => areaStyle(props.area))
   height: 2rem;
   place-items: center;
   border-radius: var(--ds-radius-full);
-  background: var(--ds-area-fill, var(--ds-color-primary-50));
+  background: var(--ds-area-fill, var(--ds-accent-fill));
   color: var(--ds-area-ink, var(--ds-interactive-primary));
   font-size: 1.125rem;
   transition: background var(--ds-transition-fast), color var(--ds-transition-fast);

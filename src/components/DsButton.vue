@@ -106,7 +106,7 @@ defineEmits<{
 
 .ds-button--primary {
   background: var(--ds-interactive-primary);
-  color: white;
+  color: var(--ds-on-interactive-primary);
 }
 
 .ds-button--primary:hover:not(:disabled) {

@@ -640,8 +640,8 @@ const shortcutHint = computed(() => {
   height: 2rem;
   flex: 0 0 auto;
   border-radius: var(--ds-radius-md);
-  background: var(--ds-color-primary-50);
-  color: var(--ds-color-primary-800);
+  background: var(--ds-accent-fill);
+  color: var(--ds-accent-ink);
   font-size: 1.125rem;
 }
 
