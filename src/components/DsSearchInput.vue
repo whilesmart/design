@@ -223,7 +223,9 @@ watch(() => [props.modelValue, props.filterValue] as const, ([query]) => {
 })
 
 const shortcutHint = computed(() => {
-  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+  // Servers can define navigator without platform (Node 21+), so read it defensively.
+  const platform = typeof navigator === 'undefined' ? '' : navigator.platform ?? ''
+  const isMac = platform.toUpperCase().includes('MAC')
   return isMac ? '⌘K' : 'Ctrl+K'
 })
 </script>
@@ -638,8 +640,8 @@ const shortcutHint = computed(() => {
   height: 2rem;
   flex: 0 0 auto;
   border-radius: var(--ds-radius-md);
-  background: var(--ds-color-primary-50);
-  color: var(--ds-color-primary-800);
+  background: var(--ds-accent-fill);
+  color: var(--ds-accent-ink);
   font-size: 1.125rem;
 }
 

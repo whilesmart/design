@@ -41,6 +41,7 @@ defineProps<{ title: string; description?: string; eyebrow?: string }>()
   margin: 0;
   color: var(--ds-text-primary);
   font-size: var(--ds-text-2xl);
+  font-weight: var(--ds-font-bold);
   line-height: 1.15;
 }
 

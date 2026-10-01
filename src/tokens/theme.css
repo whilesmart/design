@@ -44,11 +44,28 @@
   --ds-status-error-bg: var(--ds-color-error-50);
   --ds-status-error-text: var(--ds-color-error-700);
   --ds-status-info-bg: var(--ds-color-info-50);
-  --ds-status-info-text: var(--ds-color-info-700);
+  --ds-status-info-text: var(--ds-color-info-800);
 
   --ds-chat-sidebar-ink: var(--ds-chat-sidebar-read-ink);
   --ds-chat-sidebar-ink-unread: var(--ds-chat-unread-ink);
   --ds-chat-header-bg: var(--ds-chat-post-bg);
+}
+
+:root {
+  /* Grounds an asset is judged on; the same in both themes, since a logo for dark grounds must be seen on one. */
+  --ds-ground-light: #ffffff;
+  --ds-ground-dark: #0f172a;
+  --ds-accent-fill: var(--ds-color-primary-50);
+  --ds-accent-fill-strong: var(--ds-color-primary-100);
+  --ds-accent-ink: var(--ds-color-primary-800);
+  --ds-on-interactive-primary: #ffffff;
+}
+
+[data-theme="dark"] {
+  --ds-accent-fill: color-mix(in srgb, var(--ds-color-primary-400) 18%, var(--ds-color-neutral-900));
+  --ds-accent-fill-strong: color-mix(in srgb, var(--ds-color-primary-400) 30%, var(--ds-color-neutral-900));
+  --ds-accent-ink: var(--ds-color-primary-200);
+  --ds-on-interactive-primary: var(--ds-color-neutral-900);
 }
 
 [data-theme="dark"] {

@@ -83,15 +83,15 @@ defineEmits<{
 
 .ds-chip--default.ds-chip--active,
 .ds-chip--default.ds-chip--clickable:hover {
-  background: var(--ds-color-primary-50, rgba(45, 57, 142, 0.08));
-  color: var(--ds-color-primary, #2d398e);
-  border-color: var(--ds-color-primary, #2d398e);
+  background: var(--ds-accent-fill);
+  color: var(--ds-accent-ink);
+  border-color: var(--ds-interactive-primary);
 }
 
 .ds-chip--primary {
-  background: var(--ds-color-primary-50, rgba(45, 57, 142, 0.08));
-  color: var(--ds-color-primary, #2d398e);
-  border-color: var(--ds-color-primary, #2d398e);
+  background: var(--ds-accent-fill);
+  color: var(--ds-accent-ink);
+  border-color: var(--ds-interactive-primary);
 }
 
 .ds-chip--success {

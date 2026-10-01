@@ -77,6 +77,7 @@
     "build:css": "node scripts/build-css.mjs",
     "test": "vitest run",
     "check": "node scripts/check-tokens.mjs && npm test && npm run build",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "prepare": "npm run build"
   }
 }

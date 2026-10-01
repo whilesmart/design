@@ -33,6 +33,8 @@ defineEmits<{ click: [] }>()
 
 const tag = computed(() => (props.to ? RouterLink : props.href ? 'a' : 'button'))
 const style = computed(() => areaStyle(props.area))
+// One object, so RouterLink never gets an href: even undefined, it replaces the resolved one.
+const target = computed(() => (props.to ? { to: props.to } : props.href ? { href: props.href } : {}))
 </script>
 
 <template>
@@ -41,8 +43,7 @@ const style = computed(() => areaStyle(props.area))
     class="ds-sidebar-item"
     :class="{ 'ds-sidebar-item--active': active, 'ds-sidebar-item--area': area, 'ds-sidebar-item--tile': tile }"
     :style="style"
-    :to="to || undefined"
-    :href="href || undefined"
+    v-bind="target"
     :type="tag === 'button' ? 'button' : undefined"
     :aria-current="active ? 'page' : undefined"
     @click="$emit('click')"
@@ -87,8 +88,8 @@ const style = computed(() => areaStyle(props.area))
 }
 
 .ds-sidebar-item--active {
-  background: var(--ds-color-primary-100);
-  color: var(--ds-color-primary-900);
+  background: var(--ds-accent-fill-strong);
+  color: var(--ds-accent-ink);
   font-weight: 600;
 }
 
@@ -120,7 +121,7 @@ const style = computed(() => areaStyle(props.area))
   height: 2rem;
   place-items: center;
   border-radius: var(--ds-radius-full);
-  background: var(--ds-area-fill, var(--ds-color-primary-50));
+  background: var(--ds-area-fill, var(--ds-accent-fill));
   color: var(--ds-area-ink, var(--ds-interactive-primary));
   font-size: 1.125rem;
   transition: background var(--ds-transition-fast), color var(--ds-transition-fast);

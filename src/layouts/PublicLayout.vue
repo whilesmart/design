@@ -136,8 +136,8 @@ const handleSignIn = () => {
 }
 
 .sign-in-btn {
-  background: var(--ds-color-primary);
-  color: white;
+  background: var(--ds-interactive-primary);
+  color: var(--ds-on-interactive-primary);
   border: none;
   border-radius: var(--ds-radius-base);
   padding: var(--ds-space-2) var(--ds-space-4);

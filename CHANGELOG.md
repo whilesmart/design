@@ -2,6 +2,47 @@
 
 All notable changes to the WhileSmart design system are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Chat building blocks: a message with a bubble for either side and pending and failed
+  states, a question that starts on its recommended option and sends the answer when it
+  is confirmed (one answer or several, as cards with detail or as pills, or in one tap),
+  a step list for work in progress, a feed of the latest activity, and a composer that
+  sends on Enter, grows with its text and offers attachments only when told what can be
+  attached.
+- A slot at the top of the console rail for the product's primary action.
+- `DsBarTitle`: a page's title and subtitle, with an optional status dot, sized to sit in
+  the console bar before the search.
+- `--ds-accent-fill`, `--ds-accent-fill-strong`, `--ds-accent-ink` and
+  `--ds-on-interactive-primary`: a tinted surface, the accent text that reads on it, and
+  the text on a primary button, each defined for both themes.
+- Brand kit building blocks: `DsColourPalette` (named swatches to copy, or to pick, rename,
+  add and remove), `DsAssetSlots` (a slot per asset variant, each shown on the ground it is
+  used on, with upload, replace and remove), `DsFontSpecimen` (a family set in its own face)
+  and `DsRuleList` (what a brand must and must not do). `--ds-ground-light` and
+  `--ds-ground-dark` are the fixed grounds assets are judged on.
+- `DsSidebarGroup`: a labelled group of sidebar items.
+- `DsButton` takes `to` and navigates as a router link while keeping its look.
+- `DsField` and `DsSpotArt` are exported from the package entry.
+- `--ds-brand-console-ground` and `--ds-brand-console-page`: a brand can set the fill
+  around the boxed console's content area and the content area itself.
+
+### Fixed
+
+- The search box renders on a server whose `navigator` has no `platform`.
+- A sidebar item with `to` renders its link with an `href`, so it opens in a new tab and
+  works without script.
+- Modal, page header and ecosystem strip titles keep their weight in apps whose CSS reset
+  flattens headings.
+- The create button's chevron stays at its end when the icons slot is empty.
+- Info status text meets 4.5:1 on its fill; status text and fill pairs are part of the
+  contrast check.
+- Dark theme: table headers, primary chips, the active sidebar row, modal and search
+  icons, avatars and state panels no longer keep their light tint, and primary buttons
+  carry dark text on their light fill.
+
 ## [0.2.0] - 2026-09-20
 
 ### Changed for existing installations

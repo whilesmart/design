@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
 import DsIcon from './DsIcon.vue'
 
 interface Props {
@@ -12,10 +14,12 @@ interface Props {
   align?: 'center' | 'start'
   as?: 'button' | 'a'
   href?: string
+  /** A destination inside the app: renders a router link, so no page reload. */
+  to?: string
   type?: 'button' | 'submit' | 'reset'
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',
   size: 'md',
   disabled: false,
@@ -30,11 +34,22 @@ withDefaults(defineProps<Props>(), {
 defineEmits<{
   click: [event: MouseEvent]
 }>()
+
+const inactive = computed(() => props.disabled || props.loading)
+const tag = computed(() => (props.to && !inactive.value ? RouterLink : props.to ? 'a' : props.as))
+// One object, so RouterLink never gets an href: even undefined, it replaces the resolved one.
+const target = computed(() => {
+  if (props.to) return inactive.value ? { 'aria-disabled': 'true' } : { to: props.to }
+  if (props.as === 'a') {
+    return inactive.value ? { 'aria-disabled': 'true' } : { href: props.href }
+  }
+  return { disabled: inactive.value, type: props.type }
+})
 </script>
 
 <template>
   <component
-    :is="as"
+    :is="tag"
     class="ds-button"
     :class="[
       `ds-button--${variant}`,
@@ -42,11 +57,8 @@ defineEmits<{
       `ds-button--${align}`,
       { 'ds-button--full-width': fullWidth, 'ds-button--loading': loading }
     ]"
-    :disabled="as === 'button' ? disabled || loading : undefined"
-    :aria-disabled="as === 'a' && (disabled || loading) ? 'true' : undefined"
-    :href="as === 'a' && !disabled && !loading ? href : undefined"
-    :type="as === 'button' ? type : undefined"
-    @click="!disabled && !loading && $emit('click', $event)"
+    v-bind="target"
+    @click="!inactive && $emit('click', $event)"
   >
     <span v-if="loading" class="ds-button__spinner"></span>
     <span class="ds-button__content" :class="{ 'ds-button__content--hidden': loading }">
@@ -106,7 +118,7 @@ defineEmits<{
 
 .ds-button--primary {
   background: var(--ds-interactive-primary);
-  color: white;
+  color: var(--ds-on-interactive-primary);
 }
 
 .ds-button--primary:hover:not(:disabled) {

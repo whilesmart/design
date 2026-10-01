@@ -76,6 +76,7 @@ const visibleApps = computed(() => resolveEcosystemApps(props.apps, props.curren
   max-width: 28ch;
   margin-top: var(--ds-space-3);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: var(--ds-font-bold);
   line-height: 1.14;
 }
 

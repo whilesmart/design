@@ -14,6 +14,13 @@ describe('a console', () => {
     expect(html).not.toContain('ds-console--boxed')
   })
 
+  it('centres pages at the contained width unless told to use the whole area', async () => {
+    expect(await render({}, { nav: () => 'Home' })).toContain('ds-console--contained')
+    const full = await render({ frame: 'boxed', width: 'full' }, { nav: () => 'Home' })
+    expect(full).toContain('ds-console--full')
+    expect(full).not.toContain('ds-console--contained')
+  })
+
   it('is not barred when nothing fills the bar', async () => {
     const html = await render({}, { nav: () => 'Home' })
     expect(html).not.toContain('ds-console--barred')
@@ -51,5 +58,18 @@ describe('what the console is pointed at', () => {
     expect(html).toContain('ds-console--barred')
     expect(html).toContain('ds-console__bar-start')
     expect(html.indexOf('ds-console__bar-start')).toBeLessThan(html.indexOf('ds-console__bar-rest'))
+  })
+})
+
+describe('the console rail action', () => {
+  it('draws the primary action above the nav only when one is given', async () => {
+    const { createSSRApp, h } = await import('vue')
+    const { renderToString } = await import('vue/server-renderer')
+    const { default: DsConsoleShell } = await import('./DsConsoleShell.vue')
+    const html = (slots: Record<string, () => string>) =>
+      renderToString(createSSRApp({ render: () => h(DsConsoleShell, {}, slots) }))
+    expect(await html({ nav: () => 'Home' })).not.toContain('ds-console__create')
+    const withAction = await html({ create: () => 'New film', nav: () => 'Home' })
+    expect(withAction.indexOf('New film')).toBeLessThan(withAction.indexOf('Home'))
   })
 })

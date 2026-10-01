@@ -8,6 +8,7 @@ import DsIconButton from './components/DsIconButton.vue'
 import DsSegmented from './components/DsSegmented.vue'
 import DsSidebar from './components/DsSidebar.vue'
 import DsSidebarItem from './components/DsSidebarItem.vue'
+import DsSidebarGroup from './components/DsSidebarGroup.vue'
 import DsSearchInput from './components/DsSearchInput.vue'
 import DsHeaderSearch from './components/DsHeaderSearch.vue'
 import DsAutocompleteInput from './components/DsAutocompleteInput.vue'
@@ -32,7 +33,14 @@ import DsEmojiPicker from './components/DsEmojiPicker.vue'
 import DsPresenceDot from './components/DsPresenceDot.vue'
 import DsConversationSheet from './components/DsConversationSheet.vue'
 import DsTextarea from './components/DsTextarea.vue'
+import DsField from './components/DsField.vue'
+import DsSpotArt from './components/DsSpotArt.vue'
 import DsPageHeader from './components/DsPageHeader.vue'
+import DsBarTitle from './components/DsBarTitle.vue'
+import DsColourPalette from './components/DsColourPalette.vue'
+import DsAssetSlots from './components/DsAssetSlots.vue'
+import DsFontSpecimen from './components/DsFontSpecimen.vue'
+import DsRuleList from './components/DsRuleList.vue'
 import DsStatePanel from './components/DsStatePanel.vue'
 import DsSwitch from './components/DsSwitch.vue'
 import DsPagination from './components/DsPagination.vue'
@@ -41,6 +49,11 @@ import DsDropdown from './components/DsDropdown.vue'
 import DsLogo from './components/DsLogo.vue'
 import DsAppTag from './components/DsAppTag.vue'
 import DsStatTile from './components/DsStatTile.vue'
+import DsChatMessage from './components/DsChatMessage.vue'
+import DsChatQuestion from './components/DsChatQuestion.vue'
+import DsChatProgress from './components/DsChatProgress.vue'
+import DsChatActivity from './components/DsChatActivity.vue'
+import DsChatComposer from './components/DsChatComposer.vue'
 import DsRankingList from './components/DsRankingList.vue'
 import DsTrendChart from './components/DsTrendChart.vue'
 import DsMenu from './components/DsMenu.vue'
@@ -74,6 +87,7 @@ export {
   DsIconButton,
   DsSidebar,
   DsSidebarItem,
+  DsSidebarGroup,
   DsSearchInput,
   DsSegmented,
   DsHeaderSearch,
@@ -99,7 +113,14 @@ export {
   DsPresenceDot,
   DsConversationSheet,
   DsTextarea,
+  DsField,
+  DsSpotArt,
   DsPageHeader,
+  DsBarTitle,
+  DsColourPalette,
+  DsAssetSlots,
+  DsFontSpecimen,
+  DsRuleList,
   DsStatePanel,
   DsSwitch,
   DsPagination,
@@ -108,6 +129,11 @@ export {
   DsLogo,
   DsAppTag,
   DsStatTile,
+  DsChatMessage,
+  DsChatQuestion,
+  DsChatProgress,
+  DsChatActivity,
+  DsChatComposer,
   DsRankingList,
   DsTrendChart,
   DsMenu,
@@ -140,4 +166,13 @@ export type { ConversationSheetTarget } from './components/DsConversationSheet.v
 export type { RankingRow } from './components/DsRankingList.vue'
 export type { TrendPoint, PlottedPoint } from './charts'
 export type { TabOption } from './components/DsTabs.vue'
+export type { BarTitleTone } from './components/DsBarTitle.vue'
+export type { PaletteColour } from './components/DsColourPalette.vue'
+export type { AssetSlot } from './components/DsAssetSlots.vue'
+export type { Rule as BrandRule } from './components/DsRuleList.vue'
+export type { SpotArtName } from './components/DsSpotArt.vue'
 export type { DropdownOption } from './components/DsDropdown.vue'
+export type { ChatOption } from './components/DsChatQuestion.vue'
+export type { ChatStep } from './components/DsChatProgress.vue'
+export type { ChatActivityItem } from './components/DsChatActivity.vue'
+export type { ChatFileType, ChatSend } from './components/DsChatComposer.vue'

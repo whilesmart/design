@@ -12,12 +12,14 @@ withDefaults(defineProps<{
   // Boxed: rail and bar are chrome on a ground, and the content is a card on
   // that ground which scrolls by itself.
   frame?: 'flush' | 'boxed'
+  width?: 'contained' | 'full'
 }>(), {
   navLabel: 'Sections',
   railWidth: '16rem',
   menuLabel: 'Sections',
   railClass: '',
   frame: 'flush',
+  width: 'contained',
 })
 
 const slots = useSlots()
@@ -42,7 +44,7 @@ onBeforeUnmount(() => lockScroll(false))
 <template>
   <div
     class="ds-console"
-    :class="[`ds-console--${frame}`, { 'ds-console--barred': !!slots.bar || !!slots['bar-start'] }]"
+    :class="[`ds-console--${frame}`, `ds-console--${width}`, { 'ds-console--barred': !!slots.bar || !!slots['bar-start'] }]"
     :style="{ '--rail-width': railWidth }"
   >
     <header class="ds-console__bar">
@@ -76,6 +78,10 @@ onBeforeUnmount(() => lockScroll(false))
         </button>
       </template>
 
+      <div v-if="slots.create" class="ds-console__create" @click="close">
+        <slot name="create" />
+      </div>
+
       <div class="ds-console__nav" @click="close">
         <slot name="nav" />
       </div>
@@ -98,7 +104,13 @@ onBeforeUnmount(() => lockScroll(false))
 </template>
 
 <style scoped>
+.ds-console__create {
+  padding: 0 var(--ds-space-3) var(--ds-space-3);
+}
+
 .ds-console {
+  --ds-console-ground: var(--ds-brand-console-ground, var(--ds-bg-muted));
+  --ds-console-page: var(--ds-brand-console-page, var(--ds-bg-base));
   display: grid;
   min-height: 100vh;
   grid-template-columns: var(--rail-width) minmax(0, 1fr);
@@ -226,7 +238,7 @@ onBeforeUnmount(() => lockScroll(false))
   height: 100vh;
   min-height: 0;
   overflow: hidden;
-  background: var(--ds-bg-muted);
+  background: var(--ds-console-ground);
 }
 
 .ds-console--boxed .ds-console__rail {
@@ -236,11 +248,11 @@ onBeforeUnmount(() => lockScroll(false))
   min-height: 0;
   flex-direction: column;
   align-self: stretch;
-  background: var(--ds-bg-muted);
+  background: var(--ds-console-ground);
 }
 
 .ds-console--boxed.ds-console--barred .ds-console__bar {
-  background: var(--ds-bg-muted);
+  background: var(--ds-console-ground);
   backdrop-filter: none;
 }
 
@@ -256,7 +268,7 @@ onBeforeUnmount(() => lockScroll(false))
   padding: var(--ds-space-6);
   border: 1px solid var(--ds-border-base);
   border-radius: var(--ds-shell-radius);
-  background: var(--ds-bg-base);
+  background: var(--ds-console-page);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -264,6 +276,16 @@ onBeforeUnmount(() => lockScroll(false))
 .ds-console--boxed .ds-console__page-inner {
   width: min(1400px, 100%);
   margin: 0 auto;
+}
+
+.ds-console--full.ds-console--flush .ds-console__page,
+.ds-console--full .ds-console__page-inner {
+  width: 100%;
+}
+
+.ds-console--full.ds-console--flush .ds-console__page,
+.ds-console--full.ds-console--boxed .ds-console__page {
+  padding: var(--ds-space-4) var(--ds-space-5);
 }
 
 @media (max-width: 900px) {

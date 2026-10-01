@@ -73,7 +73,7 @@ const artArea = computed<AreaColor>(() => props.area ?? artAreas[artName.value])
   height: 3rem;
   place-items: center;
   border-radius: var(--ds-radius-full);
-  background: var(--ds-color-primary-50);
+  background: var(--ds-accent-fill);
   color: var(--ds-interactive-primary);
   font-size: 1.5rem;
   animation: ds-state-spin 1s linear infinite;

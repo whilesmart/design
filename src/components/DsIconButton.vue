@@ -78,7 +78,7 @@ defineEmits<{
 }
 
 .ds-icon-btn--default.ds-icon-btn--active {
-  background: var(--ds-color-primary-50);
+  background: var(--ds-accent-fill);
   color: var(--ds-interactive-primary);
   border-color: var(--ds-interactive-primary);
 }
