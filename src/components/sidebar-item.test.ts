@@ -29,3 +29,18 @@ describe('a destination', () => {
     expect(html).toContain('19')
   })
 })
+
+describe('a destination inside the app', () => {
+  it('links to where the router resolves it', async () => {
+    const { createRouter, createMemoryHistory } = await import('vue-router')
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [{ path: '/:any(.*)*', component: { render: () => null } }],
+    })
+    const app = createSSRApp({ render: () => h(DsSidebarItem, { label: 'Orders', to: '/orders' }) })
+    app.use(router)
+    await router.push('/')
+    const html = await renderToString(app)
+    expect(html).toContain('href="/orders"')
+  })
+})

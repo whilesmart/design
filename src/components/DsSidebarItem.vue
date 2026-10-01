@@ -33,6 +33,8 @@ defineEmits<{ click: [] }>()
 
 const tag = computed(() => (props.to ? RouterLink : props.href ? 'a' : 'button'))
 const style = computed(() => areaStyle(props.area))
+// One object, so RouterLink never gets an href: even undefined, it replaces the resolved one.
+const target = computed(() => (props.to ? { to: props.to } : props.href ? { href: props.href } : {}))
 </script>
 
 <template>
@@ -41,8 +43,7 @@ const style = computed(() => areaStyle(props.area))
     class="ds-sidebar-item"
     :class="{ 'ds-sidebar-item--active': active, 'ds-sidebar-item--area': area, 'ds-sidebar-item--tile': tile }"
     :style="style"
-    :to="to || undefined"
-    :href="href || undefined"
+    v-bind="target"
     :type="tag === 'button' ? 'button' : undefined"
     :aria-current="active ? 'page' : undefined"
     @click="$emit('click')"
