@@ -23,10 +23,22 @@ All notable changes to the WhileSmart design system are documented in this file.
   used on, with upload, replace and remove), `DsFontSpecimen` (a family set in its own face)
   and `DsRuleList` (what a brand must and must not do). `--ds-ground-light` and
   `--ds-ground-dark` are the fixed grounds assets are judged on.
+- `DsSidebarGroup`: a labelled group of sidebar items.
+- `DsButton` takes `to` and navigates as a router link while keeping its look.
+- `DsField` and `DsSpotArt` are exported from the package entry.
+- `--ds-brand-console-ground` and `--ds-brand-console-page`: a brand can set the fill
+  around the boxed console's content area and the content area itself.
 
 ### Fixed
 
 - The search box renders on a server whose `navigator` has no `platform`.
+- A sidebar item with `to` renders its link with an `href`, so it opens in a new tab and
+  works without script.
+- Modal, page header and ecosystem strip titles keep their weight in apps whose CSS reset
+  flattens headings.
+- The create button's chevron stays at its end when the icons slot is empty.
+- Info status text meets 4.5:1 on its fill; status text and fill pairs are part of the
+  contrast check.
 - Dark theme: table headers, primary chips, the active sidebar row, modal and search
   icons, avatars and state panels no longer keep their light tint, and primary buttons
   carry dark text on their light fill.
