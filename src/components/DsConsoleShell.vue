@@ -110,6 +110,8 @@ onBeforeUnmount(() => lockScroll(false))
 }
 
 .ds-console {
+  --ds-console-ground: var(--ds-brand-console-ground, var(--ds-bg-muted));
+  --ds-console-page: var(--ds-brand-console-page, var(--ds-bg-base));
   display: grid;
   min-height: 100vh;
   grid-template-columns: var(--rail-width) minmax(0, 1fr);
@@ -237,7 +239,7 @@ onBeforeUnmount(() => lockScroll(false))
   height: 100vh;
   min-height: 0;
   overflow: hidden;
-  background: var(--ds-bg-muted);
+  background: var(--ds-console-ground);
 }
 
 .ds-console--boxed .ds-console__rail {
@@ -247,11 +249,11 @@ onBeforeUnmount(() => lockScroll(false))
   min-height: 0;
   flex-direction: column;
   align-self: stretch;
-  background: var(--ds-bg-muted);
+  background: var(--ds-console-ground);
 }
 
 .ds-console--boxed.ds-console--barred .ds-console__bar {
-  background: var(--ds-bg-muted);
+  background: var(--ds-console-ground);
   backdrop-filter: none;
 }
 
@@ -267,7 +269,7 @@ onBeforeUnmount(() => lockScroll(false))
   padding: var(--ds-space-6);
   border: 1px solid var(--ds-border-base);
   border-radius: var(--ds-shell-radius);
-  background: var(--ds-bg-base);
+  background: var(--ds-console-page);
   overflow-y: auto;
   overflow-x: hidden;
 }

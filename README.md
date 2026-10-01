@@ -72,8 +72,8 @@ Component styles only ever read tokens, never literal colours. `npm run check` e
 ### Carrying your own brand
 
 `src/tokens/brand.css` lists every token a host may redefine: the primary and secondary
-ramps, the sans and mono families, the card radius, the control radius and the table
-density. Redeclare them on `:root` in a stylesheet loaded after
+ramps, the sans and mono families, the card radius, the control radius, the table
+density, and the boxed console's ground and page fills. Redeclare them on `:root` in a stylesheet loaded after
 `@whilesmart/design/styles`, and the whole system follows:
 
 ```css

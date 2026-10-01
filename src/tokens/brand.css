@@ -40,6 +40,7 @@
   --ds-brand-radius-control: var(--ds-radius-lg);
   /* Every table in the system reads at this density. */
   --ds-brand-table-cell-padding: 6px 10px;
+  /* Unset so they follow the theme: --ds-brand-console-ground and --ds-brand-console-page. */
 
   --ds-color-primary-50: var(--ds-brand-primary-50);
   --ds-color-primary-100: var(--ds-brand-primary-100);
