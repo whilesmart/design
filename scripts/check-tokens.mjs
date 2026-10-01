@@ -83,6 +83,11 @@ const textPairs = [
   ['ds-color-neutral-600', 'ds-color-neutral-0'],
   ['ds-color-neutral-50', 'ds-color-neutral-900'],
   ['ds-color-neutral-300', 'ds-color-neutral-900'],
+  // The status chips, notices and tiles: each text step on its own fill.
+  ['ds-color-success-700', 'ds-color-success-50'],
+  ['ds-color-warning-700', 'ds-color-warning-50'],
+  ['ds-color-error-700', 'ds-color-error-50'],
+  ['ds-color-info-800', 'ds-color-info-50'],
 ]
 
 const chatPairs = [
