@@ -83,6 +83,9 @@ defineEmits<{
 }
 
 .ds-create-button__chevron {
+  /* Pinned to the last track: without the icons slot it would fall into the stretching one. */
+  grid-column: 4;
+  justify-self: end;
   color: var(--ds-text-secondary);
 }
 </style>
