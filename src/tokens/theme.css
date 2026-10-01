@@ -51,7 +51,6 @@
   --ds-chat-header-bg: var(--ds-chat-post-bg);
 }
 
-/* A tinted surface and the accent text that reads on it, in either theme. */
 :root {
   /* Grounds an asset is judged on; the same in both themes, since a logo for dark grounds must be seen on one. */
   --ds-ground-light: #ffffff;

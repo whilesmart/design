@@ -60,7 +60,6 @@ const recommendedIds = computed(() => list(props.recommended))
 const answered = computed(() => list(props.answer))
 const locked = computed(() => answered.value.length > 0)
 
-// The recommendation starts selected, so confirming it is one tap.
 const picked = ref<string[]>(recommendedIds.value.slice(0, props.multiple ? undefined : 1))
 watch(() => props.recommended, () => {
   if (!locked.value) picked.value = recommendedIds.value.slice(0, props.multiple ? undefined : 1)

@@ -14,7 +14,6 @@ const props = withDefaults(defineProps<{ items: ChatActivityItem[]; limit?: numb
   label: 'What is happening now',
 })
 
-// Newest first, so the line that is moving sits where the eye already is.
 const shown = computed(() => [...props.items].reverse().slice(0, props.limit))
 </script>
 

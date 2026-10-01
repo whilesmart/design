@@ -5,7 +5,6 @@ export interface AssetSlot {
   id: string
   label: string
   hint?: string
-  /** The file shown in the slot; empty when nothing is there yet. */
   src?: string | null
   /** What the asset is seen on: a light ground, a dark one, or a checkerboard when it could be either. */
   ground?: 'light' | 'dark' | 'check'

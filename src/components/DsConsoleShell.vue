@@ -12,7 +12,6 @@ withDefaults(defineProps<{
   // Boxed: rail and bar are chrome on a ground, and the content is a card on
   // that ground which scrolls by itself.
   frame?: 'flush' | 'boxed'
-  // Contained: pages centre in at most 1400px. Full: pages use the whole content area.
   width?: 'contained' | 'full'
 }>(), {
   navLabel: 'Sections',
