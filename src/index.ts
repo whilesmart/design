@@ -8,6 +8,7 @@ import DsIconButton from './components/DsIconButton.vue'
 import DsSegmented from './components/DsSegmented.vue'
 import DsSidebar from './components/DsSidebar.vue'
 import DsSidebarItem from './components/DsSidebarItem.vue'
+import DsSidebarGroup from './components/DsSidebarGroup.vue'
 import DsSearchInput from './components/DsSearchInput.vue'
 import DsHeaderSearch from './components/DsHeaderSearch.vue'
 import DsAutocompleteInput from './components/DsAutocompleteInput.vue'
@@ -32,6 +33,8 @@ import DsEmojiPicker from './components/DsEmojiPicker.vue'
 import DsPresenceDot from './components/DsPresenceDot.vue'
 import DsConversationSheet from './components/DsConversationSheet.vue'
 import DsTextarea from './components/DsTextarea.vue'
+import DsField from './components/DsField.vue'
+import DsSpotArt from './components/DsSpotArt.vue'
 import DsPageHeader from './components/DsPageHeader.vue'
 import DsBarTitle from './components/DsBarTitle.vue'
 import DsColourPalette from './components/DsColourPalette.vue'
@@ -84,6 +87,7 @@ export {
   DsIconButton,
   DsSidebar,
   DsSidebarItem,
+  DsSidebarGroup,
   DsSearchInput,
   DsSegmented,
   DsHeaderSearch,
@@ -109,6 +113,8 @@ export {
   DsPresenceDot,
   DsConversationSheet,
   DsTextarea,
+  DsField,
+  DsSpotArt,
   DsPageHeader,
   DsBarTitle,
   DsColourPalette,
@@ -164,6 +170,7 @@ export type { BarTitleTone } from './components/DsBarTitle.vue'
 export type { PaletteColour } from './components/DsColourPalette.vue'
 export type { AssetSlot } from './components/DsAssetSlots.vue'
 export type { Rule as BrandRule } from './components/DsRuleList.vue'
+export type { SpotArtName } from './components/DsSpotArt.vue'
 export type { DropdownOption } from './components/DsDropdown.vue'
 export type { ChatOption } from './components/DsChatQuestion.vue'
 export type { ChatStep } from './components/DsChatProgress.vue'
