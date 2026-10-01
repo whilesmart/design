@@ -187,7 +187,7 @@ onUnmounted(() => {
   font-size: 1.35rem;
 }
 
-.ds-modal__title { margin: 0; font-size: var(--ds-text-xl); }
+.ds-modal__title { margin: 0; font-size: var(--ds-text-xl); font-weight: var(--ds-font-bold); }
 .ds-modal__description { margin: var(--ds-space-1) 0 0; color: var(--ds-text-secondary); font-size: var(--ds-text-sm); }
 .ds-modal__body { padding: 0 var(--ds-space-6) var(--ds-space-6); }
 .ds-modal__footer { display: flex; justify-content: flex-end; gap: var(--ds-space-2); padding: var(--ds-space-4) var(--ds-space-6); border-top: 1px solid var(--ds-border-base); }
