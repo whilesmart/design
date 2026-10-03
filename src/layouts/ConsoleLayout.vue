@@ -25,6 +25,7 @@ withDefaults(
   >
     <template #brand><slot name="brand" /></template>
     <template v-if="$slots['bar-start']" #bar-start><slot name="bar-start" /></template>
+    <template v-if="$slots['bar-search']" #bar-search><slot name="bar-search" /></template>
     <template v-if="$slots.bar" #bar><slot name="bar" /></template>
     <template v-if="$slots.create" #create><slot name="create" /></template>
     <template #nav><slot name="nav" /></template>

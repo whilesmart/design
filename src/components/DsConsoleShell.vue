@@ -44,7 +44,11 @@ onBeforeUnmount(() => lockScroll(false))
 <template>
   <div
     class="ds-console"
-    :class="[`ds-console--${frame}`, `ds-console--${width}`, { 'ds-console--barred': !!slots.bar || !!slots['bar-start'] }]"
+    :class="[
+      `ds-console--${frame}`,
+      `ds-console--${width}`,
+      { 'ds-console--barred': !!slots.bar || !!slots['bar-start'] || !!slots['bar-search'], 'ds-console--searched': !!slots['bar-search'] },
+    ]"
     :style="{ '--rail-width': railWidth }"
   >
     <header class="ds-console__bar">
@@ -58,6 +62,11 @@ onBeforeUnmount(() => lockScroll(false))
 
       <div v-if="slots['bar-start']" class="ds-console__bar-start">
         <slot name="bar-start" />
+      </div>
+
+      <!-- Centred on the screen, not on the bar, which starts after the rail. -->
+      <div v-if="slots['bar-search']" class="ds-console__bar-search">
+        <slot name="bar-search" />
       </div>
 
       <div class="ds-console__bar-rest"><slot name="bar" /></div>
@@ -150,6 +159,40 @@ onBeforeUnmount(() => lockScroll(false))
   min-width: 0;
   align-items: center;
   gap: var(--ds-space-2);
+}
+
+.ds-console--searched {
+  --ds-console-search-width: min(560px, 44vw);
+}
+
+/* The lead column is whatever puts the search on the middle of the screen: half
+   the screen less half the search, less the rail and the bar's own inset. When
+   what sits in it is wider, the column grows and the search moves right only as
+   far as it must. */
+.ds-console--searched.ds-console--barred .ds-console__bar {
+  display: grid;
+  grid-template-columns:
+    minmax(max-content, calc((100vw - var(--ds-console-search-width)) / 2 - var(--rail-width) - var(--ds-space-6) - var(--ds-space-3)))
+    minmax(0, var(--ds-console-search-width))
+    minmax(max-content, 1fr);
+}
+
+.ds-console--searched .ds-console__bar-start {
+  grid-column: 1;
+}
+
+.ds-console__bar-search {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.ds-console--searched .ds-console__bar-search {
+  grid-column: 2;
+}
+
+.ds-console--searched .ds-console__bar-rest {
+  grid-column: 3;
 }
 
 .ds-console__bar-rest {
@@ -315,6 +358,14 @@ onBeforeUnmount(() => lockScroll(false))
     background: color-mix(in srgb, var(--ds-bg-elevated) 86%, transparent);
     backdrop-filter: blur(16px);
     z-index: var(--ds-z-sticky);
+  }
+
+  .ds-console--searched.ds-console--barred .ds-console__bar {
+    display: flex;
+  }
+
+  .ds-console__bar-search {
+    flex: 1;
   }
 
   .ds-console__bar-brand {
