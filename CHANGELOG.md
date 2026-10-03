@@ -6,6 +6,7 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Added
 
+- A `bar-search` slot on the console bar that keeps a search on the middle of the screen.
 - Chat building blocks: a message with a bubble for either side and pending and failed
   states, a question that starts on its recommended option and sends the answer when it
   is confirmed (one answer or several, as cards with detail or as pills, or in one tap),
@@ -31,6 +32,7 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Fixed
 
+- The console's create action lines up with the navigation items below it.
 - The search box renders on a server whose `navigator` has no `platform`.
 - A sidebar item with `to` renders its link with an `href`, so it opens in a new tab and
   works without script.

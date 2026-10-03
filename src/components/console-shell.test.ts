@@ -73,3 +73,21 @@ describe('the console rail action', () => {
     expect(withAction.indexOf('New film')).toBeLessThan(withAction.indexOf('Home'))
   })
 })
+
+describe('a search on the bar', () => {
+  it('sits between what the bar starts with and what it ends with, and marks the console as searched', async () => {
+    const html = await render({}, { 'bar-start': () => 'Films', 'bar-search': () => 'Search', bar: () => 'Bell', nav: () => 'Home' })
+    expect(html).toContain('ds-console--searched')
+    expect(html).toContain('ds-console--barred')
+    const at = (name: string) => html.indexOf(name)
+    expect(at('ds-console__bar-start')).toBeLessThan(at('ds-console__bar-search'))
+    expect(at('ds-console__bar-search')).toBeLessThan(at('ds-console__bar-rest'))
+  })
+
+  it('leaves a console without one as it was', async () => {
+    const html = await render({}, { bar: () => 'Bell', nav: () => 'Home' })
+    expect(html).not.toContain('ds-console--searched')
+    expect(html).not.toContain('ds-console__bar-search')
+  })
+})
+
