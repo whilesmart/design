@@ -114,7 +114,7 @@ onBeforeUnmount(() => lockScroll(false))
 
 <style scoped>
 .ds-console__create {
-  padding: 0 var(--ds-space-3) var(--ds-space-3);
+  padding: 0 0 var(--ds-space-3);
 }
 
 .ds-console {
