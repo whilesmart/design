@@ -46,7 +46,12 @@
     "./styles": "./dist/design.css",
     "./tokens/*": "./dist/css/tokens/*",
     "./icons/*": "./dist/icons/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./viewer": {
+      "types": "./dist/viewer.d.ts",
+      "default": "./dist/viewer.js"
+    },
+    "./component-styles": "./dist/style.css"
   },
   "peerDependencies": {
     "vue": "^3.5.0",

@@ -176,3 +176,6 @@ export type { ChatOption } from './components/DsChatQuestion.vue'
 export type { ChatStep } from './components/DsChatProgress.vue'
 export type { ChatActivityItem } from './components/DsChatActivity.vue'
 export type { ChatFileType, ChatSend } from './components/DsChatComposer.vue'
+
+export { DsViewerFrame, DsViewerContent, DsPreviewFrame } from './viewer'
+export { createPreviewDocument } from './preview-document'
