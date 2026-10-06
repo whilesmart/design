@@ -1,0 +1,5 @@
+export { default as DsViewerFrame } from './components/DsViewerFrame.vue'
+export { default as DsViewerContent } from './components/DsViewerContent.vue'
+export { default as DsPreviewFrame } from './components/DsPreviewFrame.vue'
+export { default as DsModal } from './components/DsModal.vue'
+export { createPreviewDocument } from './preview-document'

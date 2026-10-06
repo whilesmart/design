@@ -119,3 +119,11 @@ Releases run through the shared `js/publish` action in `whilesmart/workflows`, s
 3. Push the tag: `git tag v0.2.0 && git push origin v0.2.0`.
 
 The workflow verifies the tag against `package.json`, runs `npm run check`, publishes to GitHub Packages, and creates the GitHub release from the changelog entry.
+
+## Viewer presentation
+
+`@whilesmart/design/viewer` exports `DsViewerFrame`, `DsViewerContent`, `DsPreviewFrame`, `DsModal`, and `createPreviewDocument`. Import `@whilesmart/design/component-styles` for the component styles without importing global tokens or resets.
+
+The document helper supplies the preview stylesheet using the shared design tokens. The frame supplies navigation, loading and error states, and a content slot. The content component displays supplied image, media, text, PDF, or HTML representations. The preview frame isolates supplied HTML in a sandbox without script execution and resizes after images load. HTML must be sanitized or trusted before it reaches the frame; sandboxing does not sanitize content.
+
+These components do not fetch files, convert documents, register renderers, or decide permissions. The calling app or viewing framework supplies content and handles emitted navigation actions.
