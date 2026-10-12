@@ -39,7 +39,7 @@ defineEmits<{
   min-height: 3rem;
   padding: var(--ds-space-2);
   border: 1px solid var(--ds-border-base);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-lg);
   background: var(--ds-bg-elevated);
   color: var(--ds-text-primary);
   box-shadow: var(--ds-elevation-2);

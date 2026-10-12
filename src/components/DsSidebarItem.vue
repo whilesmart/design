@@ -104,7 +104,11 @@ const target = computed(() => (props.to ? { to: props.to } : props.href ? { href
 }
 
 .ds-sidebar-item--area.ds-sidebar-item--active {
-  background: var(--ds-area-fill);
+  background: color-mix(in srgb, var(--ds-area-fill) 72%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--ds-area-ink) 16%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--ds-bg-elevated) 70%, transparent);
+  backdrop-filter: blur(10px) saturate(1.3);
   color: var(--ds-area-ink);
   font-weight: var(--ds-font-semibold);
 }
@@ -128,8 +132,9 @@ const target = computed(() => (props.to ? { to: props.to } : props.href ? { href
 }
 
 .ds-sidebar-item--tile.ds-sidebar-item--active .ds-sidebar-item__icon {
-  background: var(--ds-area-solid, var(--ds-interactive-primary));
-  color: var(--ds-area-on-solid, var(--ds-text-inverse));
+  background: color-mix(in srgb, var(--ds-area-solid, var(--ds-interactive-primary)) 14%, var(--ds-bg-elevated));
+  color: var(--ds-area-ink, var(--ds-interactive-primary));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ds-area-solid, var(--ds-interactive-primary)) 28%, transparent);
 }
 
 .ds-sidebar-item__said {
