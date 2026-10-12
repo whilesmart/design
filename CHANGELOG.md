@@ -45,6 +45,17 @@ All notable changes to the WhileSmart design system are documented in this file.
   icons, avatars and state panels no longer keep their light tint, and primary buttons
   carry dark text on their light fill.
 
+### Changed for existing installations
+
+Nothing was removed from the public API. Three defaults changed.
+
+- The selected sidebar item is a light, translucent fill with a thin ring, and its icon tile
+  is tinted rather than solid. Areas keep their colours.
+- The header search is 10% narrower: `--ds-header-search-max-width` defaults to `36rem`
+  rather than `40rem`. In the header it draws a stronger border and darker hint text so it
+  holds its edge on a tinted bar.
+- `DsCreateButton` uses `--ds-radius-lg` for its outer corners rather than `--ds-radius-xl`.
+
 ## [0.2.0] - 2026-09-20
 
 ### Changed for existing installations

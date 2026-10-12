@@ -88,4 +88,8 @@ function selectItem(item: SearchSuggestion) {
 
 <style scoped>
 .ds-header-search { width: 100%; min-width: 0; }
+/* The header sits on a tinted bar, where the default hairline border disappears. */
+.ds-header-search :deep(.ds-search__bar) { border-color: var(--ds-border-strong); box-shadow: var(--ds-elevation-1); }
+.ds-header-search :deep(.ds-search__icon),
+.ds-header-search :deep(.ds-search__input::placeholder) { color: var(--ds-text-secondary); }
 </style>
