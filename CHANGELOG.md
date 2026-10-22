@@ -19,6 +19,10 @@ All notable changes to the WhileSmart design system are documented in this file.
   one marked, and delete on hover (always shown on touch).
 - `DsChatCanvasCard` and `DsChatCanvas`: a document in a reply as a card, and the panel it
   opens in.
+- `DsCalendar`: a month view that always shows six weeks, empty or not, with today, previous
+  and next, keyboard movement between days, items tinted by status or area, and "+N more"
+  past a set number per day. It reports the date range it shows so the app can load just
+  that, and below 560px of width each day shows dots instead of titles.
 - A `bar-search` slot on the console bar that keeps a search on the middle of the screen.
 - Chat building blocks: a message with a bubble for either side and pending and failed
   states, a question that starts on its recommended option and sends the answer when it

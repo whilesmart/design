@@ -6,6 +6,7 @@ import DsChip from './components/DsChip.vue'
 import DsToolbar from './components/DsToolbar.vue'
 import DsIconButton from './components/DsIconButton.vue'
 import DsSegmented from './components/DsSegmented.vue'
+import DsCalendar from './components/DsCalendar.vue'
 import DsSidebar from './components/DsSidebar.vue'
 import DsSidebarItem from './components/DsSidebarItem.vue'
 import DsSidebarGroup from './components/DsSidebarGroup.vue'
@@ -80,6 +81,17 @@ export { useLayoutConfig, type NavbarItem } from './composables/useLayoutConfig'
 export { useAppSwitcher, resolveAppSwitcherApps, type AppDefinition, type AppSwitcherOptions } from './composables/useAppSwitcher'
 export { appUrl, conversationUrl, isLocalHostname, type ConversationLaunchOptions, type WhileSmartApp } from './composables/useAppUrls'
 export { areaColors, areaStyle, type AreaColor } from './areas'
+export {
+  dateKey,
+  monthGrid,
+  monthKey,
+  monthRange,
+  shiftMonth,
+  weekdayLabels,
+  type CalendarDay,
+  type CalendarEvent,
+  type CalendarTone,
+} from './calendar'
 export { resolveEcosystemApps, whileSmartEcosystemApps, type EcosystemApp } from './ecosystem'
 export { useConversationSheet, buildSheetRows, sheetKey, type SheetPost } from './composables/useConversationSheet'
 
@@ -96,6 +108,7 @@ export {
   DsSidebarGroup,
   DsSearchInput,
   DsSegmented,
+  DsCalendar,
   DsHeaderSearch,
   DsAutocompleteInput,
   DsTagInput,
