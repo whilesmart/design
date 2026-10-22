@@ -23,6 +23,9 @@ withDefaults(defineProps<{
         <span v-if="state === 'pending'" class="ds-chat-message__dots" aria-label="Working"><i /><i /><i /></span>
         <slot v-else />
       </div>
+      <div v-if="$slots.actions && state === 'ready'" class="ds-chat-message__actions">
+        <slot name="actions" />
+      </div>
       <span v-if="meta" class="ds-chat-message__meta">{{ meta }}</span>
     </div>
   </div>
@@ -101,6 +104,13 @@ withDefaults(defineProps<{
   border-color: var(--ds-status-error-text);
   background: var(--ds-status-error-bg);
   color: var(--ds-status-error-text);
+}
+
+.ds-chat-message__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+  align-items: center;
 }
 
 .ds-chat-message__meta {

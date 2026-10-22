@@ -6,6 +6,19 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Added
 
+- `DsChatQuickActions`: the things a chat can start with, as grouped cards with an icon,
+  title and detail, or as pills that wrap or keep to one scrolling row; each takes an area
+  colour and the one in use is marked.
+- `DsChatThread`: a scrolling conversation that follows new messages for a reader at the
+  end and stays put for one reading back.
+- `DsChatMessage` takes an `actions` slot under a finished answer.
+- `DsChatLayout`: a chat that fills its container, with the conversation history beside it
+  on a wide screen and a document opened beside the conversation, which takes the whole
+  chat on a narrow one.
+- `DsChatHistory`: earlier conversations to pick back up, with a new chat action, the open
+  one marked, and delete on hover (always shown on touch).
+- `DsChatCanvasCard` and `DsChatCanvas`: a document in a reply as a card, and the panel it
+  opens in.
 - A `bar-search` slot on the console bar that keeps a search on the middle of the screen.
 - Chat building blocks: a message with a bubble for either side and pending and failed
   states, a question that starts on its recommended option and sends the answer when it
@@ -32,6 +45,8 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Fixed
 
+- The chat composer shows focus on its frame, and a host's focus ring no longer draws a box
+  inside it.
 - The console's create action lines up with the navigation items below it.
 - The search box renders on a server whose `navigator` has no `platform`.
 - A sidebar item with `to` renders its link with an `href`, so it opens in a new tab and

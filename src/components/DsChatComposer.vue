@@ -204,6 +204,10 @@ defineExpose({ focus: () => box.value?.focus() })
   box-shadow: var(--ds-elevation-2);
 }
 
+.ds-chat-composer:has(.ds-chat-composer__box:focus-visible) {
+  border-color: var(--ds-border-focus);
+}
+
 .ds-chat-composer.is-disabled {
   opacity: 0.7;
 }
@@ -316,6 +320,7 @@ defineExpose({ focus: () => box.value?.focus() })
   line-height: var(--ds-leading-normal);
   resize: none;
   outline: none;
+  box-shadow: none;
 }
 
 .ds-chat-composer__backdrop {
