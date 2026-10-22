@@ -18,7 +18,8 @@ const props = withDefaults(defineProps<{
   label?: string
   disabled?: boolean
   active?: string | null
-}>(), { layout: 'cards', label: 'Quick actions', disabled: false, active: null })
+  wrap?: boolean
+}>(), { layout: 'cards', label: 'Quick actions', disabled: false, active: null, wrap: true })
 
 const emit = defineEmits<{ select: [key: string] }>()
 
@@ -33,7 +34,12 @@ const groups = computed(() => {
 </script>
 
 <template>
-  <div class="ds-chat-quick-actions" :class="`ds-chat-quick-actions--${layout}`" role="group" :aria-label="label">
+  <div
+    class="ds-chat-quick-actions"
+    :class="[`ds-chat-quick-actions--${layout}`, { 'ds-chat-quick-actions--row': layout === 'pills' && !wrap }]"
+    role="group"
+    :aria-label="label"
+  >
     <template v-if="layout === 'pills'">
       <button
         v-for="action of actions"
@@ -92,6 +98,22 @@ const groups = computed(() => {
   display: flex;
   flex-wrap: wrap;
   gap: var(--ds-space-2);
+}
+
+.ds-chat-quick-actions--row {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.ds-chat-quick-actions--row::-webkit-scrollbar {
+  display: none;
+}
+
+.ds-chat-quick-actions--row .ds-chat-quick-actions__pill {
+  flex: none;
+  scroll-snap-align: start;
 }
 
 .ds-chat-quick-actions__pill {

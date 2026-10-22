@@ -36,6 +36,11 @@ describe('quick actions in a chat', () => {
     expect(buttons.map((b) => b.getAttribute('aria-pressed'))).toEqual([null, null, 'true'])
   })
 
+  it('keeps pills on one scrolling row when asked not to wrap', () => {
+    expect(mount({ layout: 'pills', wrap: false }).root.querySelector('.ds-chat-quick-actions--row')).not.toBeNull()
+    expect(mount({ layout: 'pills' }).root.querySelector('.ds-chat-quick-actions--row')).toBeNull()
+  })
+
   it('does nothing while disabled', () => {
     const { buttons, picked } = mount({ disabled: true })
     buttons[0]!.click()
