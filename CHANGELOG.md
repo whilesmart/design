@@ -12,6 +12,13 @@ All notable changes to the WhileSmart design system are documented in this file.
 - `DsChatThread`: a scrolling conversation that follows new messages for a reader at the
   end and stays put for one reading back.
 - `DsChatMessage` takes an `actions` slot under a finished answer.
+- `DsChatLayout`: a chat that fills its container, with the conversation history beside it
+  on a wide screen and a document opened beside the conversation, which takes the whole
+  chat on a narrow one.
+- `DsChatHistory`: earlier conversations to pick back up, with a new chat action, the open
+  one marked, and delete on hover (always shown on touch).
+- `DsChatCanvasCard` and `DsChatCanvas`: a document in a reply as a card, and the panel it
+  opens in.
 - A `bar-search` slot on the console bar that keeps a search on the middle of the screen.
 - Chat building blocks: a message with a bubble for either side and pending and failed
   states, a question that starts on its recommended option and sends the answer when it
