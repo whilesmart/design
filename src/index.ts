@@ -54,6 +54,8 @@ import DsChatQuestion from './components/DsChatQuestion.vue'
 import DsChatProgress from './components/DsChatProgress.vue'
 import DsChatActivity from './components/DsChatActivity.vue'
 import DsChatComposer from './components/DsChatComposer.vue'
+import DsChatQuickActions from './components/DsChatQuickActions.vue'
+import DsChatThread from './components/DsChatThread.vue'
 import DsRankingList from './components/DsRankingList.vue'
 import DsTrendChart from './components/DsTrendChart.vue'
 import DsMenu from './components/DsMenu.vue'
@@ -134,6 +136,8 @@ export {
   DsChatProgress,
   DsChatActivity,
   DsChatComposer,
+  DsChatQuickActions,
+  DsChatThread,
   DsRankingList,
   DsTrendChart,
   DsMenu,
@@ -176,6 +180,7 @@ export type { ChatOption } from './components/DsChatQuestion.vue'
 export type { ChatStep } from './components/DsChatProgress.vue'
 export type { ChatActivityItem } from './components/DsChatActivity.vue'
 export type { ChatFileType, ChatSend } from './components/DsChatComposer.vue'
+export type { ChatQuickAction } from './components/DsChatQuickActions.vue'
 
 export { DsViewerFrame, DsViewerContent, DsPreviewFrame } from './viewer'
 export { createPreviewDocument } from './preview-document'
