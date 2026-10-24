@@ -1,3 +1,4 @@
+import DsProgress from './components/DsProgress.vue'
 // Components
 import DsButton from './components/DsButton.vue'
 import DsInput from './components/DsInput.vue'
@@ -79,6 +80,7 @@ export { useConversationSheet, buildSheetRows, sheetKey, type SheetPost } from '
 
 // Component exports
 export {
+  DsProgress,
   DsButton,
   DsInput,
   DsCard,

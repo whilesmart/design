@@ -127,3 +127,10 @@ The workflow verifies the tag against `package.json`, runs `npm run check`, publ
 The document helper supplies the preview stylesheet using the shared design tokens. The frame supplies navigation, loading and error states, and a content slot. The content component displays supplied image, media, text, PDF, or HTML representations. The preview frame isolates supplied HTML in a sandbox without script execution and resizes after images load. HTML must be sanitized or trusted before it reaches the frame; sandboxing does not sanitize content.
 
 These components do not fetch files, convert documents, register renderers, or decide permissions. The calling app or viewing framework supplies content and handles emitted navigation actions.
+
+### Progress indicator
+
+`DsProgress` displays a bounded progress bar with an accessible `label`. Pass
+`value` and an optional `max` (100 by default). Its `tone` accepts `brand`,
+`success`, `warning`, or `danger`. Values outside the range are clamped for the
+bar; surrounding content can show the original value when it exceeds the limit.
