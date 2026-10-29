@@ -56,13 +56,15 @@ function drawable<M extends TimelineMoment>(moment: M) {
   return moment.at != null && moment.valence != null && !Number.isNaN(Date.parse(moment.at))
 }
 
-/** A stable offset in [-0.5, 0.5) so moments sharing a day and a valence do not land on one point. */
+/**
+ * A stable offset in [-0.5, 0.5) so moments sharing a day and a valence do not land on one point.
+ * Integer arithmetic only: Math.sin differs in its last digits between engines, which breaks hydration.
+ */
 function spread(id: string | number) {
   const text = String(id)
-  let hash = 0
-  for (let i = 0; i < text.length; i++) hash = (hash * 31 + text.charCodeAt(i)) | 0
-  const hashed = Math.sin(hash) * 43758.5453
-  return hashed - Math.floor(hashed) - 0.5
+  let hash = 2166136261
+  for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 16777619)
+  return ((hash >>> 0) % 1000) / 1000 - 0.5
 }
 
 const clampValence = (v: number) => Math.max(-2, Math.min(2, v))

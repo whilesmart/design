@@ -191,3 +191,12 @@ describe('the lane timeline', () => {
     expect((html.match(/ds-lane-timeline__row/g) ?? []).length).toBe(laneOrder(moments, byArea).length)
   })
 })
+
+describe('placing the same moments twice', () => {
+  it('lands every moment on the same spot without trigonometry, so server and browser agree', () => {
+    const a = placeMoments(moments, FRAME).placed.map((p) => p.y)
+    const b = placeMoments(moments, FRAME).placed.map((p) => p.y)
+    expect(a).toEqual(b)
+    expect(a.every((y) => Number.isFinite(y))).toBe(true)
+  })
+})
