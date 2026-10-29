@@ -39,6 +39,11 @@
       "types": "./dist/composables/index.d.ts",
       "default": "./dist/composables.js"
     },
+    "./timelines": {
+      "types": "./dist/timelines/index.d.ts",
+      "default": "./dist/timelines.js"
+    },
+    "./timelines/style.css": "./dist/timelines.css",
     "./vite": {
       "types": "./dist/vite.d.ts",
       "default": "./dist/vite.js"

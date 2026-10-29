@@ -127,3 +127,20 @@ The workflow verifies the tag against `package.json`, runs `npm run check`, publ
 The document helper supplies the preview stylesheet using the shared design tokens. The frame supplies navigation, loading and error states, and a content slot. The content component displays supplied image, media, text, PDF, or HTML representations. The preview frame isolates supplied HTML in a sandbox without script execution and resizes after images load. HTML must be sanitized or trusted before it reaches the frame; sandboxing does not sanitize content.
 
 These components do not fetch files, convert documents, register renderers, or decide permissions. The calling app or viewing framework supplies content and handles emitted navigation actions.
+
+## Timelines
+
+`@whilesmart/design/timelines` is a separate entry, so an app that never imports it ships none of its code or styles. Import its styles once:
+
+```ts
+import { DsArcTimeline } from '@whilesmart/design/timelines'
+import '@whilesmart/design/timelines/style.css'
+```
+
+Each timeline is named for its shape. `DsArcTimeline` places moments by time across and by how they landed (valence, -2 to 2) up and down, sizes them by intensity, and draws arcs between moments that share a cue. It takes `moments` and binds `focus`, `period` and `kinds` with `v-model`:
+
+```vue
+<DsArcTimeline v-model:focus="focus" v-model:period="period" :moments="moments" :link-on="['area']" :colors="{ incident: 'rose' }" />
+```
+
+A moment is `{ id, label, kind, at, until?, valence, intensity?, cues?, actors?, icon?, detail? }`. One without `at` or `valence` is counted but not drawn. The layout functions (`placeMoments`, `timeTicks`, `chapters`, `linksFrom`, `placeLabels`) are exported for building side panels or other timeline shapes on the same scale.

@@ -9,7 +9,8 @@ export default defineConfig({
         index: 'src/index.ts',
         viewer: 'src/viewer.ts',
         layouts: 'src/layouts/index.ts',
-        composables: 'src/composables/index.ts'
+        composables: 'src/composables/index.ts',
+        timelines: 'src/timelines/index.ts'
       },
       formats: ['es']
     },
