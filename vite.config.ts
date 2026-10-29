@@ -10,12 +10,13 @@ export default defineConfig({
         viewer: 'src/viewer.ts',
         layouts: 'src/layouts/index.ts',
         composables: 'src/composables/index.ts',
-        timelines: 'src/timelines/index.ts'
+        timelines: 'src/timelines/index.ts',
+        canvas: 'src/canvas/index.ts'
       },
       formats: ['es']
     },
     rollupOptions: {
-      external: ['vue', 'vue-router', '@iconify/vue'],
+      external: ['vue', 'vue-router', '@iconify/vue', '@vue-flow/core'],
       output: { assetFileNames: 'style.css' }
     },
     cssCodeSplit: false,

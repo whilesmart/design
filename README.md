@@ -144,3 +144,14 @@ Each timeline is named for its shape. `DsArcTimeline` places moments by time acr
 ```
 
 A moment is `{ id, label, kind, at, until?, valence, intensity?, cues?, actors?, icon?, detail? }`. One without `at` or `valence` is counted but not drawn. The layout functions (`placeMoments`, `timeTicks`, `chapters`, `linksFrom`, `placeLabels`) are exported for building side panels or other timeline shapes on the same scale.
+
+## Canvas
+
+`@whilesmart/design/canvas` is a separate entry built on `@vue-flow/core`, an optional peer dependency that only apps importing the canvas need to install. Its stylesheet includes Vue Flow's base styles.
+
+```ts
+import { DsCanvas, DsCanvasCard } from '@whilesmart/design/canvas'
+import '@whilesmart/design/canvas/style.css'
+```
+
+`DsCanvas` lays cards out in named lanes from the data alone, so the same data draws the same picture on every visit. Pass `storageKey` to keep cards where a reader dragged them. Lines come from `edges`, and `createEdgeRegistry` merges several edge sources so one failing source costs only its own lines.

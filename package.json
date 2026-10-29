@@ -44,6 +44,11 @@
       "default": "./dist/timelines.js"
     },
     "./timelines/style.css": "./dist/timelines.css",
+    "./canvas": {
+      "types": "./dist/canvas/index.d.ts",
+      "default": "./dist/canvas.js"
+    },
+    "./canvas/style.css": "./dist/canvas.css",
     "./vite": {
       "types": "./dist/vite.d.ts",
       "default": "./dist/vite.js"
@@ -60,7 +65,8 @@
   },
   "peerDependencies": {
     "vue": "^3.5.0",
-    "vue-router": "^4.0.0"
+    "vue-router": "^4.0.0",
+    "@vue-flow/core": "^1.48.2"
   },
   "dependencies": {
     "@dicebear/core": "^10.7.0",
@@ -71,6 +77,7 @@
     "@iconify-json/material-symbols": "^1.2.90",
     "@iconify-json/solar": "^1.2.10",
     "@vitejs/plugin-vue": "^6.0.1",
+    "@vue-flow/core": "^1.48.2",
     "happy-dom": "^20.14.5",
     "typescript": "~5.9.3",
     "vite": "^7.3.6",
@@ -89,5 +96,10 @@
     "check": "node scripts/check-tokens.mjs && npm test && npm run build",
     "prepack": "npm run build",
     "prepare": "npm run build"
+  },
+  "peerDependenciesMeta": {
+    "@vue-flow/core": {
+      "optional": true
+    }
   }
 }
