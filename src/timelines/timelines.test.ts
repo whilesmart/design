@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import DsArcTimeline from './DsArcTimeline.vue'
+import DsLaneTimeline from './DsLaneTimeline.vue'
+import { laneOrder, placeInLanes } from './lanes'
 import {
   chapters,
   inLens,
@@ -149,5 +151,43 @@ describe('the arc timeline', () => {
     const dim = (html.match(/is-dim/g) ?? []).length
     const incidents = moments.filter((m) => m.kind === 'incident' && m.at).length
     expect(dim).toBe(60 - incidents)
+  })
+})
+
+describe('the lane timeline', () => {
+  const byArea = (m: TimelineMoment) => m.cues?.find((c) => c.kind === 'area')?.id ?? 'none'
+  const FRAME_L = { width: 1000, height: 300, left: 148, right: 20, top: 16, bottom: 40 }
+
+  it('orders lanes as given, then busiest first', () => {
+    const order = laneOrder(moments, byArea, ['api/'])
+    expect(order[0]!.id).toBe('api/')
+    const rest = order.slice(1).map((l) => l.count)
+    expect(rest).toEqual([...rest].sort((a, b) => b - a))
+  })
+
+  it('puts every dated moment in its own lane row and keeps time running left to right', () => {
+    const lanes = laneOrder(moments, byArea)
+    const { placed, undated } = placeInLanes(moments, lanes, byArea, FRAME_L)
+    expect(placed).toHaveLength(60)
+    expect(undated).toBe(1)
+    const rowOf = new Map(lanes.map((l, i) => [l.id, i]))
+    for (const p of placed) expect(Math.floor((p.y - FRAME_L.top) / ((FRAME_L.height - 56) / lanes.length))).toBe(rowOf.get(p.lane))
+    const sorted = [...placed].sort((a, b) => Date.parse(a.moment.at!) - Date.parse(b.moment.at!))
+    expect(sorted.map((p) => p.x)).toEqual([...sorted.map((p) => p.x)].sort((a, b) => a - b))
+  })
+
+  it('draws a moment with a duration as a span', () => {
+    const lanes = laneOrder(moments, byArea)
+    const span = placeInLanes(moments, lanes, byArea, FRAME_L).placed.find((p) => p.moment.until)!
+    expect(span.end!).toBeGreaterThan(span.x)
+  })
+
+  it('renders one row per lane and one mark per dated moment', async () => {
+    const html = await renderToString(
+      createSSRApp({ render: () => h(DsLaneTimeline, { moments, laneOf: byArea, lanes: [{ id: 'api/', label: 'Public API' }] }) }),
+    )
+    expect((html.match(/data-moment=/g) ?? []).length).toBe(60)
+    expect(html).toContain('Public API')
+    expect((html.match(/ds-lane-timeline__row/g) ?? []).length).toBe(laneOrder(moments, byArea).length)
   })
 })

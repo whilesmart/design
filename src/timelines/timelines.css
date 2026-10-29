@@ -150,3 +150,26 @@
 .ds-arc-timeline__swatch { width: 0.625rem; height: 0.625rem; border-radius: var(--ds-radius-full); }
 .ds-arc-timeline__count { color: var(--ds-text-muted); }
 .ds-arc-timeline__hint { margin-left: auto; color: var(--ds-text-muted); }
+
+.ds-lane-timeline {
+  min-width: 0;
+  border: 1px solid var(--ds-border-base);
+  border-radius: var(--ds-radius-card);
+  background: var(--ds-bg-surface);
+  overflow: hidden;
+  font-family: var(--ds-font-sans);
+}
+.ds-lane-timeline__svg { display: block; width: 100%; }
+.ds-lane-timeline__row { fill: transparent; }
+.ds-lane-timeline__row.is-alt { fill: var(--ds-bg-subtle); }
+.ds-lane-timeline__name { font-size: 12px; font-weight: 500; fill: var(--ds-text-primary); }
+.ds-lane-timeline__count { fill: var(--ds-text-muted); font-weight: 400; }
+.ds-lane-timeline__axis { pointer-events: none; font-size: 11px; fill: var(--ds-text-muted); }
+.ds-lane-timeline__grid { stroke: var(--ds-border-base); stroke-dasharray: 2 4; }
+.ds-lane-timeline__moment { cursor: pointer; }
+.ds-lane-timeline__dot,
+.ds-lane-timeline__span { fill-opacity: 0.85; transition: fill-opacity 0.15s ease; }
+.ds-lane-timeline__moment.is-dim .ds-lane-timeline__dot,
+.ds-lane-timeline__moment.is-dim .ds-lane-timeline__span { fill-opacity: 0.2; }
+.ds-lane-timeline__moment.is-focus .ds-lane-timeline__dot,
+.ds-lane-timeline__moment.is-focus .ds-lane-timeline__span { stroke: var(--ds-text-primary); stroke-width: 2; }

@@ -1,4 +1,6 @@
 export { default as DsArcTimeline } from './DsArcTimeline.vue'
+export { default as DsLaneTimeline } from './DsLaneTimeline.vue'
+export { laneOrder, placeInLanes, type Lane, type LanePlaced } from './lanes'
 export {
   arcPath,
   chapters,
