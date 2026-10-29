@@ -132,7 +132,18 @@ function pick(id: M['id']) {
           :fill="ink(p.moment.kind)"
           class="ds-lane-timeline__span"
         />
-        <circle v-else :cx="p.x" :cy="p.y" r="6" :fill="ink(p.moment.kind)" class="ds-lane-timeline__dot" />
+        <slot
+          v-else
+          name="mark"
+          :moment="p.moment"
+          :x="p.x"
+          :y="p.y"
+          :color="ink(p.moment.kind)"
+          :focused="p.moment.id === focus"
+          :dimmed="focus != null && p.moment.id !== focus"
+        >
+          <circle :cx="p.x" :cy="p.y" r="6" :fill="ink(p.moment.kind)" class="ds-lane-timeline__dot" />
+        </slot>
         <title>{{ p.moment.label }}</title>
       </g>
     </svg>

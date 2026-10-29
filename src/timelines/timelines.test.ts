@@ -200,3 +200,25 @@ describe('placing the same moments twice', () => {
     expect(a.every((y) => Number.isFinite(y))).toBe(true)
   })
 })
+
+describe('drawing marks with a slot', () => {
+  const byArea = (m: TimelineMoment) => m.cues?.find((c) => c.kind === 'area')?.id ?? 'none'
+  const mark = (p: { moment: { id: string | number }; x: number; y: number }) =>
+    h('rect', { class: 'custom-mark', 'data-for': p.moment.id, x: p.x, y: p.y })
+
+  it('lets the arc timeline draw each moment as the page wants and can leave out the card', async () => {
+    const focused = moments.find((m) => m.at && m.valence != null)!
+    const html = await renderToString(
+      createSSRApp({ render: () => h(DsArcTimeline, { moments, focus: focused.id, showCard: false }, { mark }) }),
+    )
+    expect((html.match(/custom-mark/g) ?? []).length).toBe(60)
+    expect(html).not.toContain('ds-arc-timeline__dot')
+    expect(html).not.toContain('ds-arc-timeline__card')
+  })
+
+  it('lets the lane timeline draw each point moment as the page wants', async () => {
+    const html = await renderToString(createSSRApp({ render: () => h(DsLaneTimeline, { moments, laneOf: byArea }, { mark }) }))
+    expect((html.match(/custom-mark/g) ?? []).length).toBe((html.match(/data-moment=/g) ?? []).length - (html.match(/ds-lane-timeline__span/g) ?? []).length)
+    expect(html).not.toContain('ds-lane-timeline__dot')
+  })
+})

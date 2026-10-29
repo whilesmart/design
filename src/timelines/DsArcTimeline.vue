@@ -26,6 +26,8 @@ export interface ArcTimelineProps<M extends TimelineMoment = TimelineMoment> {
   lit?: (string | number)[] | null
   /** A period to shade without narrowing to it, such as a hovered chapter. */
   shade?: Period | null
+  /** Show the floating card for the focused moment. Turn off when the page shows its own details. */
+  showCard?: boolean
   label?: string
   locale?: string
 }
@@ -35,6 +37,7 @@ const props = withDefaults(defineProps<ArcTimelineProps<M>>(), {
   linkOn: null,
   lit: null,
   shade: null,
+  showCard: true,
   label: 'Moments over time, by how they landed',
   locale: undefined,
 })
@@ -242,16 +245,27 @@ const card = computed(() => {
           <line v-if="p.until !== null" :x1="p.x" :x2="p.until" :y1="p.y" :y2="p.y" :stroke="ink(p.moment.kind)" class="ds-arc-timeline__held" />
           <line :x1="p.x" :x2="p.x" :y1="map.baseline" :y2="p.y" :stroke="ink(p.moment.kind)" class="ds-arc-timeline__stem" />
           <circle :cx="p.x" :cy="p.y" :r="p.r + 6" fill="transparent" />
-          <circle
-            :cx="p.x"
-            :cy="p.y"
+          <slot
+            name="mark"
+            :moment="p.moment"
+            :x="p.x"
+            :y="p.y"
             :r="p.r"
-            :fill="p.until !== null ? 'transparent' : ink(p.moment.kind)"
-            :stroke="ink(p.moment.kind)"
-            class="ds-arc-timeline__dot"
+            :color="ink(p.moment.kind)"
+            :held="p.until !== null"
+            :focused="p.moment.id === focus"
+            :dimmed="!lit.has(p.moment.id)"
           >
-            <title>{{ p.moment.label }}</title>
-          </circle>
+            <circle
+              :cx="p.x"
+              :cy="p.y"
+              :r="p.r"
+              :fill="p.until !== null ? 'transparent' : ink(p.moment.kind)"
+              :stroke="ink(p.moment.kind)"
+              class="ds-arc-timeline__dot"
+            />
+          </slot>
+          <title>{{ p.moment.label }}</title>
           <text
             v-if="labels.has(p.moment.id)"
             :x="labels.get(p.moment.id)!.x"
@@ -262,7 +276,7 @@ const card = computed(() => {
         </g>
       </svg>
 
-      <article v-if="focused && card" class="ds-arc-timeline__card" :style="card.style" role="dialog" :aria-label="focused.moment.label">
+      <article v-if="showCard && focused && card" class="ds-arc-timeline__card" :style="card.style" role="dialog" :aria-label="focused.moment.label">
         <header class="ds-arc-timeline__card-head">
           <span class="ds-arc-timeline__card-icon">
             <DsIcon v-if="focused.moment.icon" :name="focused.moment.icon as `solar:${string}`" />
