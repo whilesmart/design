@@ -8,6 +8,10 @@ export interface AssetSlot {
   src?: string | null
   /** What the asset is seen on: a light ground, a dark one, or a checkerboard when it could be either. */
   ground?: 'light' | 'dark' | 'check'
+  /** The frame's shape as a CSS aspect ratio, such as `2 / 3` for a portrait. */
+  aspect?: string
+  /** `cover` fills the frame edge to edge, for photos; `contain` shows all of it inside a margin, for logos. */
+  fit?: 'contain' | 'cover'
   /** False when a filled slot can only be removed, not uploaded over. */
   replaceable?: boolean
 }
@@ -30,7 +34,11 @@ function picked(id: string, event: Event): void {
 <template>
   <ul class="ds-assets" :aria-label="label">
     <li v-for="slot of slots" :key="slot.id" class="ds-assets__one">
-      <div class="ds-assets__ground" :class="`ds-assets__ground--${slot.ground ?? 'check'}`">
+      <div
+        class="ds-assets__ground"
+        :class="[`ds-assets__ground--${slot.ground ?? 'check'}`, { 'ds-assets__ground--cover': slot.fit === 'cover' }]"
+        :style="slot.aspect ? { aspectRatio: slot.aspect } : undefined"
+      >
         <img v-if="slot.src" :src="slot.src" :alt="slot.label" />
         <span v-else class="ds-assets__empty"><DsIcon name="solar:gallery-add-linear" /> Nothing yet</span>
       </div>
@@ -98,6 +106,14 @@ function picked(id: string, event: Event): void {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.ds-assets__ground--cover {
+  padding: 0;
+}
+
+.ds-assets__ground--cover img {
+  object-fit: cover;
 }
 
 .ds-assets__empty {

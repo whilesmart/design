@@ -53,6 +53,18 @@ describe('brand asset slots', () => {
     expect((html.match(/Remove/g) ?? []).length).toBe(1)
   })
 
+  it('fills a photo slot edge to edge at the shape it is given', async () => {
+    const html = await render(DsAssetSlots, { slots: [{ id: 'face', label: 'Face', src: '/face.png', aspect: '2 / 3', fit: 'cover' }] })
+    expect(html).toContain('ds-assets__ground--cover')
+    expect(html).toContain('aspect-ratio:2 / 3')
+  })
+
+  it('keeps a logo slot in its margin at the usual shape', async () => {
+    const html = await render(DsAssetSlots, { slots })
+    expect(html).not.toContain('ds-assets__ground--cover')
+    expect(html).not.toContain('aspect-ratio:')
+  })
+
   it('offers only removal for a filled slot that cannot be uploaded over', async () => {
     const html = await render(DsAssetSlots, { slots: [{ id: 'pose', label: 'Pose', src: '/p.svg', replaceable: false }], editable: true })
     expect(html).not.toContain('type="file"')
