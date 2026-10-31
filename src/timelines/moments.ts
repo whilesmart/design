@@ -237,7 +237,7 @@ export function arcPath(a: { x: number; y: number }, b: { x: number; y: number }
 
 /**
  * Label positions that do not collide: each label tries up to three rows above its mark and
- * is dropped when all are taken. Past `most` labels none are drawn, since a wall of text helps nobody.
+ * is dropped when all are taken. Past `most` labels none are drawn.
  */
 export function placeLabels<M extends TimelineMoment>(
   shown: PlacedMoment<M>[],
