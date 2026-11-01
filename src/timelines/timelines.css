@@ -337,6 +337,16 @@
 }
 .ds-stream-timeline__shelf-head:hover { color: var(--ds-text-primary); }
 .ds-stream-timeline__shelf-head.is-open { border-top-color: var(--ds-interactive-primary); }
+.ds-stream-timeline__shelf-lit { color: var(--ds-text-primary); font-weight: 500; }
+.ds-stream-timeline__strip {
+  display: flex;
+  gap: 1px;
+  height: 6px;
+  margin-top: 6px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.ds-stream-timeline__strip > span { flex: 1; min-width: 2px; transition: opacity 0.15s ease; }
 .ds-stream-timeline__shelf-name {
   overflow: hidden;
   font-weight: 500;

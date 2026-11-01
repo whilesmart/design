@@ -93,6 +93,8 @@ export interface StreamOptions<R extends TimelineRecord> {
   squeeze?: number | null
   /** How a thread runs from a card to its shelf. */
   lines?: StreamLines
+  /** Gather touched records into shelves under the cards. Defaults to true. */
+  shelves?: boolean
 }
 
 export type StreamLines = 'step' | 'straight' | 'curve'
@@ -196,7 +198,8 @@ export function layoutStream<E extends TimelineEvent, R extends TimelineRecord>(
 
   const cardsBottom = Math.max(axis, ...cards.map((c) => c.top + card.height))
   const LANE = 6
-  const shelfTop = cards.length ? cardsBottom + Math.max(sizes.drop, groups.size * LANE + 24) : 12
+  const shelving = options.shelves !== false
+  const shelfTop = !shelving ? cardsBottom + pad : cards.length ? cardsBottom + Math.max(sizes.drop, groups.size * LANE + 24) : 12
 
   const pull = new Map<string, { sum: number; n: number }>()
   for (const c of cards)
@@ -215,10 +218,10 @@ export function layoutStream<E extends TimelineEvent, R extends TimelineRecord>(
   const across = view ? Math.max(view.width - pad * 2, 0) : 0
   const docked = view ? Math.max(Math.min(across / Math.max(named.length, 1), across), Math.min(shelf.width, across)) : 0
   let edge = view ? view.x + pad : pad
-  const shelves: StreamShelf<R>[] = named.map(([name, inside]) => {
+  const shelves: StreamShelf<R>[] = (shelving ? named : []).map(([name, inside]) => {
     const open = options.open === name
-    const listed = open ? inside.length : Math.min(shelf.closed, inside.length)
-    const height = shelf.head + listed * shelf.line + (inside.length > listed ? shelf.more : 0)
+    const listed = open && shelf.closed > 0 ? inside.length : Math.min(shelf.closed, inside.length)
+    const height = shelf.head + listed * shelf.line + (shelf.closed > 0 && inside.length > listed ? shelf.more : 0)
     const w = view ? docked : shelf.width
     const wanted = !view && Number.isFinite(aim(name)) ? aim(name) - w / 2 : edge
     const left = Math.max(edge, wanted)
@@ -247,7 +250,7 @@ export function layoutStream<E extends TimelineEvent, R extends TimelineRecord>(
     })
   })
 
-  const height = Math.max(320, shelfTop + Math.max(0, ...shelves.map((s) => s.height)) + pad)
+  const height = !shelving ? cardsBottom + pad : Math.max(320, shelfTop + Math.max(0, ...shelves.map((s) => s.height)) + pad)
   const width = view ? minWidth : Math.max(minWidth, edge - card.gap + pad)
 
   return { width, height, x, first, last, breaks, cards, cardsBottom, shelfTop, shelves, threads, touched }

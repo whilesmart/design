@@ -196,7 +196,7 @@ function mount(component: unknown, props: () => Record<string, unknown>) {
 
 describe('the stream timeline', () => {
   it('renders on the server with one card per event and a shelf per group', async () => {
-    const html = await renderToString(createSSRApp({ render: () => h(DsStreamTimeline, { events, records }) }))
+    const html = await renderToString(createSSRApp({ render: () => h(DsStreamTimeline, { events, records, shelves: true }) }))
     expect((html.match(/ds-stream-timeline__card(?=[\s"])/g) ?? []).length).toBe(events.length)
     expect((html.match(/ds-stream-timeline__shelf(?=[\s"])/g) ?? []).length).toBe(new Set(records.map((r) => r.group)).size)
   })
@@ -206,6 +206,7 @@ describe('the stream timeline', () => {
     const root = mount(DsStreamTimeline, () => ({
       events,
       records,
+      listed: 6, shelves: true,
       focus: focus.value,
       'onUpdate:focus': (v: string | number | null) => (focus.value = v),
     }))
@@ -223,6 +224,7 @@ describe('the stream timeline', () => {
     const root = mount(DsStreamTimeline, () => ({
       events,
       records,
+      shelves: true,
       hidden: hidden.value,
       'onUpdate:hidden': (v: string[]) => (hidden.value = v),
       onOpen: (e: TimelineEvent) => opened.push(e),
@@ -240,11 +242,37 @@ describe('the stream timeline', () => {
     expect(opened.map((e) => e.id)).toEqual([events[0]!.id])
   })
 
+  it('draws only the event cards unless shelves are asked for', () => {
+    const root = mount(DsStreamTimeline, () => ({ events, records }))
+    expect(root.querySelectorAll('.ds-stream-timeline__card').length).toBeGreaterThan(0)
+    expect(root.querySelectorAll('.ds-stream-timeline__shelf')).toHaveLength(0)
+    expect(root.querySelectorAll('.ds-stream-timeline__thread')).toHaveLength(0)
+  })
+
+  it('keeps record lists off the canvas by default and hands the picked shelf to the page', async () => {
+    const shelf = ref<string | null>(null)
+    const root = mount(DsStreamTimeline, () => ({
+      events,
+      records,
+      shelves: true,
+      shelf: shelf.value,
+      'onUpdate:shelf': (v: string | null) => (shelf.value = v),
+    }))
+    expect(root.querySelectorAll('.ds-stream-timeline__record')).toHaveLength(0)
+    const head = root.querySelector<HTMLButtonElement>('.ds-stream-timeline__shelf-head')!
+    head.click()
+    await nextTick()
+    expect(shelf.value).toBe(head.getAttribute('title'))
+    head.click()
+    await nextTick()
+    expect(shelf.value).toBeNull()
+  })
+
   it('lets the page draw cards and records', async () => {
     const html = await renderToString(
       createSSRApp({
         render: () =>
-          h(DsStreamTimeline, { events, records }, {
+          h(DsStreamTimeline, { events, records, listed: 6, shelves: true }, {
             card: (p: { event: TimelineEvent }) => h('div', { class: 'my-card' }, p.event.title),
             record: (p: { record: TimelineRecord }) => h('span', { class: 'my-record' }, p.record.label),
           }),

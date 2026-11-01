@@ -31,6 +31,13 @@ export interface StreamTimelineProps<E extends TimelineEvent = TimelineEvent, R 
   maxZoom?: number
   /** How many of the latest days to open on. `all` opens on everything. */
   opening?: number | 'all'
+  /** Draw the shelves of touched records under the cards, with threads to them. */
+  shelves?: boolean
+  /**
+   * Records listed under each shelf on the canvas. At 0 a shelf shows only its name and
+   * counts, and picking it sets `v-model:shelf` so the page can list its records elsewhere.
+   */
+  listed?: number
   /** Days of empty time drawn before the rest of a quiet stretch is cut out. `null` keeps calendar scale. */
   squeeze?: number | null
   /** How threads run from cards to shelves. */
@@ -48,6 +55,8 @@ const props = withDefaults(defineProps<StreamTimelineProps<E, R>>(), {
   minZoom: 0.05,
   maxZoom: 2,
   opening: 14,
+  listed: 0,
+  shelves: false,
   squeeze: 3,
   lines: 'step',
   label: 'Events over time and what they touched',
@@ -60,7 +69,10 @@ const focus = defineModel<E['id'] | null>('focus', { default: null })
 const hidden = defineModel<string[]>('hidden', { default: () => [] })
 const opened = defineModel<string | null>('shelf', { default: null })
 
-const sizes = computed<StreamSizes>(() => ({ ...streamSizes, ...props.sizes }))
+const sizes = computed<StreamSizes>(() => {
+  const merged = { ...streamSizes, ...props.sizes }
+  return { ...merged, shelf: { ...merged.shelf, closed: props.listed, head: props.listed ? merged.shelf.head : 40 } }
+})
 const shown = computed(() => props.records.filter((r) => !hidden.value.includes(r.kind)))
 const seen = ref<{ x: number; width: number } | null>(null)
 const layout = computed(() =>
@@ -71,6 +83,7 @@ const layout = computed(() =>
     view: seen.value,
     squeeze: props.squeeze,
     lines: props.lines,
+    shelves: props.shelves,
   }),
 )
 const palette = computed(() => kindColors(props.records, props.colors))
@@ -149,6 +162,10 @@ function showMonth(month: { left: number; right: number }) {
 }
 
 async function expand(shelf: StreamShelf<R>) {
+  if (!props.listed) {
+    opened.value = opened.value === shelf.name ? null : shelf.name
+    return
+  }
   if (opened.value === shelf.name) return fit()
   opened.value = shelf.name
   await nextTick()
@@ -162,6 +179,11 @@ function pick(id: E['id']) {
 
 function toggle(kind: string) {
   hidden.value = hidden.value.includes(kind) ? hidden.value.filter((k) => k !== kind) : [...hidden.value, kind]
+}
+
+function litIn(records: R[]) {
+  const on = lit.value
+  return on ? records.filter((r) => on.has(r.id)).length : 0
 }
 
 function litFirst(records: R[]) {
@@ -211,7 +233,7 @@ defineExpose({ fit, show, zoomBy })
                 :x1="t.x"
                 :x2="t.x"
                 :y1="sizes.axis - 6"
-                :y2="layout.shelfTop - 24"
+                :y2="layout.shelves.length ? layout.shelfTop - 24 : layout.cardsBottom"
                 class="ds-stream-timeline__grid"
               />
               <g v-for="b in layout.breaks" :key="`break-${b.x}`" class="ds-stream-timeline__break">
@@ -308,16 +330,25 @@ defineExpose({ fit, show, zoomBy })
                 type="button"
                 class="ds-stream-timeline__shelf-head"
                 :class="{ 'is-open': s.open }"
-                :aria-expanded="s.open"
+                :aria-expanded="listed ? s.open : undefined"
+                :aria-pressed="listed ? undefined : s.open"
                 :title="s.name"
                 @click="expand(s)"
               >
-                <slot name="shelf" :shelf="s">
+                <slot name="shelf" :shelf="s" :lit="litIn(s.records)">
                   <span class="ds-stream-timeline__shelf-name">{{ s.name }}</span>
+                  <span v-if="lit && litIn(s.records)" class="ds-stream-timeline__shelf-lit">{{ litIn(s.records) }} of</span>
                   <span>{{ s.records.length }}</span>
                 </slot>
               </button>
-              <ul class="ds-stream-timeline__records">
+              <span v-if="!listed" class="ds-stream-timeline__strip" aria-hidden="true">
+                <span
+                  v-for="r in litFirst(s.records)"
+                  :key="r.id"
+                  :style="{ background: ink(r.kind), opacity: lit && !lit.has(r.id) ? 0.2 : 1 }"
+                />
+              </span>
+              <ul v-if="listed" class="ds-stream-timeline__records">
                 <li
                   v-for="r in litFirst(s.records).slice(0, s.listed)"
                   :key="r.id"
@@ -331,7 +362,7 @@ defineExpose({ fit, show, zoomBy })
                   </slot>
                 </li>
               </ul>
-              <button v-if="s.records.length > s.listed" type="button" class="ds-stream-timeline__more" @click="expand(s)">
+              <button v-if="listed && s.records.length > s.listed" type="button" class="ds-stream-timeline__more" @click="expand(s)">
                 {{ s.records.length - s.listed }} more
               </button>
             </div>

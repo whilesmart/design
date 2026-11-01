@@ -151,7 +151,7 @@ Pass `events` to draw them as pins by how they landed. Picking one, bound with `
 <DsArcTimeline v-model:event="picked" :moments="memories" :events="reviews" marks="face" />
 ```
 
-`DsStreamTimeline` lays events out as cards along time and gathers the records they touched into shelves underneath, with a thread from each card to each shelf it reached. It pans by dragging, zooms around the pointer, opens on the latest 14 days (`opening`) and fits everything from its toolbar. Quiet stretches longer than three days are cut out (`squeeze`, `null` keeps calendar scale), and threads run at right angles (`lines`: `step`, `straight` or `curve`). It binds `focus`, `hidden` (record kinds) and `shelf` (the open shelf), and emits `open` for an event with `parts`:
+`DsStreamTimeline` lays events out as cards along time. With `shelves` it also gathers the records they touched into shelves underneath, with a thread from each card to each shelf it reached; `listed` sets how many records each shelf lists on the canvas (0 shows only counts). It pans by dragging, zooms around the pointer, opens on the latest 14 days (`opening`) and fits everything from its toolbar. Quiet stretches longer than three days are cut out (`squeeze`, `null` keeps calendar scale), and threads run at right angles (`lines`: `step`, `straight` or `curve`). It binds `focus`, `hidden` (record kinds) and `shelf` (the open shelf), and emits `open` for an event with `parts`:
 
 ```vue
 <DsStreamTimeline v-model:focus="focus" :events="events" :records="memories" :group-of="(m) => m.folder" @open="drillInto" />
