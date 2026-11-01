@@ -52,7 +52,7 @@ export const streamSizes: StreamSizes = {
   pad: 16,
   axis: 32,
   day: 64,
-  drop: 72,
+  drop: 40,
   shelf: { width: 220, head: 30, line: 36, closed: 6, more: 24 },
 }
 
@@ -89,6 +89,63 @@ export interface StreamOptions<R extends TimelineRecord> {
   sizes?: StreamSizes
   /** The stretch of the drawing in view. Shelves spread across it, so they stay under what is shown. */
   view?: { x: number; width: number } | null
+  /** Days of empty time drawn before the rest of a quiet stretch is cut out. `null` keeps calendar scale. */
+  squeeze?: number | null
+  /** How a thread runs from a card to its shelf. */
+  lines?: StreamLines
+}
+
+export type StreamLines = 'step' | 'straight' | 'curve'
+
+export interface StreamBreak {
+  x: number
+  days: number
+}
+
+/**
+ * A time scale that keeps calendar spacing up to `squeeze` days between instants and cuts
+ * the rest of any quieter stretch, so months with nothing in them take no room. A cut
+ * stretch keeps at least `room` pixels, enough for one card to clear the next.
+ */
+export function squeezedScale(times: number[], day: number, squeeze: number | null, room = 0) {
+  const marks = [...new Set(times)].sort((a, b) => a - b)
+  const at: number[] = [0]
+  const breaks: { at: number; days: number }[] = []
+  for (let i = 1; i < marks.length; i++) {
+    const gap = marks[i]! - marks[i - 1]!
+    const kept = squeeze == null ? gap : Math.min(gap, Math.max(squeeze * DAY, (room / day) * DAY))
+    at.push(at[i - 1]! + (kept / DAY) * day)
+    if (gap - kept >= DAY) breaks.push({ at: at[i]!, days: Math.round((gap - kept) / DAY) })
+  }
+  const x = (time: number) => {
+    if (!marks.length) return 0
+    if (time <= marks[0]!) return ((time - marks[0]!) / DAY) * day
+    const last = marks.length - 1
+    if (time >= marks[last]!) return at[last]! + ((time - marks[last]!) / DAY) * day
+    let lo = 0
+    let hi = last
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1
+      if (marks[mid]! <= time) lo = mid
+      else hi = mid
+    }
+    const span = marks[hi]! - marks[lo]!
+    return at[lo]! + ((time - marks[lo]!) / span) * (at[hi]! - at[lo]!)
+  }
+  return { x, length: at[at.length - 1] ?? 0, breaks }
+}
+
+/** The path of a thread from the bottom of a card to the top of a shelf, turning at `via` when given. */
+export function threadPath(
+  from: { x: number; y: number },
+  to: { x: number; y: number },
+  lines: StreamLines = 'step',
+  via?: number,
+) {
+  if (lines === 'straight') return `M${from.x} ${from.y} L${to.x} ${to.y}`
+  const mid = via ?? from.y + (to.y - from.y) / 2
+  if (lines === 'curve') return `M${from.x} ${from.y} C${from.x} ${mid} ${to.x} ${mid} ${to.x} ${to.y}`
+  return `M${from.x} ${from.y} V${mid} H${to.x} V${to.y}`
 }
 
 /**
@@ -107,17 +164,23 @@ export function layoutStream<E extends TimelineEvent, R extends TimelineRecord>(
   const groupOf = options.groupOf ?? ((r: R) => r.group ?? 'Everywhere')
   const { card, pad, axis, shelf } = sizes
 
-  const times = events.flatMap((e) => [Date.parse(e.at), Date.parse(e.until ?? e.at)]).filter((t) => !Number.isNaN(t))
+  const times = events.map((e) => Date.parse(e.at)).filter((t) => !Number.isNaN(t))
   const first = times.length ? Math.min(...times) : 0
   const last = times.length ? Math.max(Math.max(...times), first + DAY) : DAY
-  const stretch = ((last - first) / DAY) * sizes.day + pad * 2 + card.width
+  const scale = squeezedScale(
+    times.length ? times : [first, last],
+    sizes.day,
+    options.squeeze === undefined ? 3 : options.squeeze,
+    card.width + card.gap * 3,
+  )
+  const stretch = Math.max(scale.length, sizes.day) + pad * 2 + card.width
 
   const groups = new Map<string, R[]>()
   for (const r of records) groups.set(groupOf(r), [...(groups.get(groupOf(r)) ?? []), r])
 
   const minWidth = Math.max(640, stretch)
-  const x = (time: number) => pad + ((time - first) / (last - first)) * (stretch - pad * 2 - card.width)
-
+  const x = (time: number) => pad + scale.x(time)
+  const breaks: StreamBreak[] = scale.breaks.map((b) => ({ x: pad + b.at - card.gap, days: b.days }))
 
   const ordered = [...events].filter((e) => !Number.isNaN(Date.parse(e.at))).sort((a, b) => Date.parse(a.at) - Date.parse(b.at))
   const lefts = ordered.map((e) => x(Date.parse(e.at)))
@@ -132,7 +195,8 @@ export function layoutStream<E extends TimelineEvent, R extends TimelineRecord>(
   const touched = (e: E) => (e.touches ?? []).flatMap((id) => byId.get(id) ?? [])
 
   const cardsBottom = Math.max(axis, ...cards.map((c) => c.top + card.height))
-  const shelfTop = cards.length ? cardsBottom + sizes.drop : 12
+  const LANE = 6
+  const shelfTop = cards.length ? cardsBottom + Math.max(sizes.drop, groups.size * LANE + 24) : 12
 
   const pull = new Map<string, { sum: number; n: number }>()
   for (const c of cards)
@@ -162,6 +226,7 @@ export function layoutStream<E extends TimelineEvent, R extends TimelineRecord>(
     return { name, records: inside, open, listed, height, left, width: w, center: left + w / 2 }
   })
   const shelfAt = new Map(shelves.map((s) => [s.name, s]))
+  const laneOf = new Map(shelves.map((s, i) => [s.name, cardsBottom + 14 + i * LANE]))
 
   const threads: StreamThread[] = cards.flatMap((c) => {
     const counts = new Map<string, number>()
@@ -170,14 +235,13 @@ export function layoutStream<E extends TimelineEvent, R extends TimelineRecord>(
       const to = shelfAt.get(name)
       if (!to) return []
       const from = { x: c.left + card.width / 2, y: c.top + card.height }
-      const bend = (shelfTop - from.y) / 2
       return [
         {
           key: `${c.event.id}>${name}`,
           event: c.event.id,
           shelf: name,
           count,
-          d: `M${from.x} ${from.y} C${from.x} ${from.y + bend} ${to.center} ${shelfTop - bend} ${to.center} ${shelfTop}`,
+          d: threadPath(from, { x: to.center, y: shelfTop }, options.lines, laneOf.get(name)),
         },
       ]
     })
@@ -186,7 +250,7 @@ export function layoutStream<E extends TimelineEvent, R extends TimelineRecord>(
   const height = Math.max(320, shelfTop + Math.max(0, ...shelves.map((s) => s.height)) + pad)
   const width = view ? minWidth : Math.max(minWidth, edge - card.gap + pad)
 
-  return { width, height, x, first, last, cards, cardsBottom, shelfTop, shelves, threads, touched }
+  return { width, height, x, first, last, breaks, cards, cardsBottom, shelfTop, shelves, threads, touched }
 }
 
 export interface StreamMonth {

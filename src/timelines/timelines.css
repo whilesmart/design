@@ -219,11 +219,13 @@
 .ds-stream-timeline__thread {
   fill: none;
   stroke: var(--ds-text-primary);
-  stroke-linecap: round;
-  stroke-opacity: 0.12;
+  stroke-linejoin: miter;
+  stroke-opacity: 0.1;
 }
-.ds-stream-timeline__thread.is-on { stroke-opacity: 0.6; }
+.ds-stream-timeline__thread.is-on { stroke-opacity: 0.7; }
 .ds-stream-timeline__thread.is-off { stroke-opacity: 0.03; }
+.ds-stream-timeline__break line { stroke: var(--ds-border-strong); stroke-dasharray: 1 3; }
+.ds-stream-timeline__break line { pointer-events: stroke; }
 
 .ds-stream-timeline__month {
   position: absolute;

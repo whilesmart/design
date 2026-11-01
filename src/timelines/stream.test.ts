@@ -3,7 +3,7 @@ import { createApp, createSSRApp, h, nextTick, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import DsArcTimeline from './DsArcTimeline.vue'
 import DsStreamTimeline from './DsStreamTimeline.vue'
-import { eventsWithin, layoutStream, streamMonths, streamSizes, type TimelineEvent, type TimelineRecord } from './events'
+import { eventsWithin, layoutStream, squeezedScale, streamMonths, streamSizes, threadPath, type TimelineEvent, type TimelineRecord } from './events'
 import { packRows, placeMoments, weightOf, type TimelineMoment } from './moments'
 import fixture from './fixtures/moments.json'
 
@@ -74,6 +74,45 @@ describe('packing boxes into rows', () => {
   })
 })
 
+describe('squeezing quiet time', () => {
+  const t0 = Date.parse('2026-01-01T00:00:00Z')
+  const times = [t0, t0 + DAY, t0 + 60 * DAY]
+
+  it('keeps calendar spacing for short gaps and cuts long ones down to the days kept', () => {
+    const { x, breaks } = squeezedScale(times, 10, 3)
+    expect(x(times[1]!) - x(times[0]!)).toBe(10)
+    expect(x(times[2]!) - x(times[1]!)).toBe(30)
+    expect(breaks).toEqual([{ at: x(times[2]!), days: 56 }])
+  })
+
+  it('leaves a cut gap room for a card', () => {
+    const { x } = squeezedScale(times, 10, 3, 200)
+    expect(x(times[2]!) - x(times[1]!)).toBe(200)
+  })
+
+  it('keeps calendar scale when asked', () => {
+    const { x, breaks } = squeezedScale(times, 10, null)
+    expect(x(times[2]!) - x(times[0]!)).toBe(600)
+    expect(breaks).toEqual([])
+  })
+
+  it('runs time left to right in between instants', () => {
+    const { x } = squeezedScale(times, 10, 3)
+    const between = [t0 + 2 * DAY, t0 + 30 * DAY, t0 + 59 * DAY].map(x)
+    expect(between).toEqual([...between].sort((a, b) => a - b))
+    expect(between.every((v) => v > x(times[1]!) && v < x(times[2]!))).toBe(true)
+  })
+})
+
+describe('drawing a thread', () => {
+  it('runs at right angles by default, or straight, or curved', () => {
+    expect(threadPath({ x: 0, y: 0 }, { x: 50, y: 40 })).toBe('M0 0 V20 H50 V40')
+    expect(threadPath({ x: 0, y: 0 }, { x: 50, y: 40 }, 'straight')).toBe('M0 0 L50 40')
+    expect(threadPath({ x: 0, y: 0 }, { x: 50, y: 40 }, 'curve')).toMatch(/^M0 0 C/)
+    expect(threadPath({ x: 0, y: 0 }, { x: 50, y: 40 }, 'step', 30)).toBe('M0 0 V30 H50 V40')
+  })
+})
+
 describe('laying out a stream', () => {
   const layout = layoutStream(events, records)
   const { card } = streamSizes
@@ -122,6 +161,16 @@ describe('laying out a stream', () => {
   it('groups records with the function given', () => {
     const byKind = layoutStream(events, records, { groupOf: (r) => r.kind })
     expect(new Set(byKind.shelves.map((s) => s.name))).toEqual(new Set(records.map((r) => r.kind)))
+  })
+
+  it('turns each shelf\'s threads on its own level so they do not run on top of each other', () => {
+    const level = (d: string) => Number(d.match(/V([\d.]+) H/)![1])
+    const byShelf = new Map<string, Set<number>>()
+    for (const t of layout.threads) byShelf.set(t.shelf, (byShelf.get(t.shelf) ?? new Set()).add(level(t.d)))
+    for (const levels of byShelf.values()) expect(levels.size).toBe(1)
+    const all = [...byShelf.values()].map((l) => [...l][0])
+    expect(new Set(all).size).toBe(all.length)
+    expect(Math.max(...(all as number[]))).toBeLessThan(layout.shelfTop)
   })
 
   it('names each month the axis crosses', () => {

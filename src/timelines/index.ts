@@ -4,8 +4,12 @@ export { default as DsStreamTimeline } from './DsStreamTimeline.vue'
 export {
   eventsWithin,
   layoutStream,
+  squeezedScale,
   streamMonths,
   streamSizes,
+  threadPath,
+  type StreamBreak,
+  type StreamLines,
   type StreamCard,
   type StreamMonth,
   type StreamOptions,

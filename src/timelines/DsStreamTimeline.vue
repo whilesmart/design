@@ -3,7 +3,16 @@ import { computed, nextTick, ref, watch } from 'vue'
 import DsAvatar from '../components/DsAvatar.vue'
 import DsIcon from '../components/DsIcon.vue'
 import type { AreaColor } from '../areas'
-import { layoutStream, streamMonths, streamSizes, type StreamShelf, type StreamSizes, type TimelineEvent, type TimelineRecord } from './events'
+import {
+  layoutStream,
+  streamMonths,
+  streamSizes,
+  type StreamLines,
+  type StreamShelf,
+  type StreamSizes,
+  type TimelineEvent,
+  type TimelineRecord,
+} from './events'
 import { kindColors, timeTicks } from './moments'
 import { usePanZoom } from './usePanZoom'
 
@@ -22,6 +31,10 @@ export interface StreamTimelineProps<E extends TimelineEvent = TimelineEvent, R 
   maxZoom?: number
   /** How many of the latest days to open on. `all` opens on everything. */
   opening?: number | 'all'
+  /** Days of empty time drawn before the rest of a quiet stretch is cut out. `null` keeps calendar scale. */
+  squeeze?: number | null
+  /** How threads run from cards to shelves. */
+  lines?: StreamLines
   label?: string
   locale?: string
 }
@@ -35,6 +48,8 @@ const props = withDefaults(defineProps<StreamTimelineProps<E, R>>(), {
   minZoom: 0.05,
   maxZoom: 2,
   opening: 14,
+  squeeze: 3,
+  lines: 'step',
   label: 'Events over time and what they touched',
   locale: undefined,
 })
@@ -49,7 +64,14 @@ const sizes = computed<StreamSizes>(() => ({ ...streamSizes, ...props.sizes }))
 const shown = computed(() => props.records.filter((r) => !hidden.value.includes(r.kind)))
 const seen = ref<{ x: number; width: number } | null>(null)
 const layout = computed(() =>
-  layoutStream(props.events, shown.value, { groupOf: props.groupOf, open: opened.value, sizes: sizes.value, view: seen.value }),
+  layoutStream(props.events, shown.value, {
+    groupOf: props.groupOf,
+    open: opened.value,
+    sizes: sizes.value,
+    view: seen.value,
+    squeeze: props.squeeze,
+    lines: props.lines,
+  }),
 )
 const palette = computed(() => kindColors(props.records, props.colors))
 const ink = (kind: string) => `var(--ds-area-${palette.value.get(kind) ?? 'slate'}-solid)`
@@ -89,13 +111,23 @@ const lit = computed(() => {
 const ticks = computed(() => {
   const { first, last, x } = layout.value
   if (!layout.value.cards.length) return []
-  return timeTicks(first, last, props.locale).map((t) => ({ ...t, x: x(t.at) }))
+  const out: { at: number; label: string; x: number }[] = []
+  for (const t of timeTicks(first, last, props.locale)) {
+    const at = x(t.at)
+    if (!out.length || at - out[out.length - 1]!.x >= 56) out.push({ ...t, x: at })
+  }
+  return out
 })
 
 const months = computed(() => {
   const { first, last, x } = layout.value
   if (!layout.value.cards.length) return []
-  return streamMonths(first, last, x, sizes.value.card.width).map((m) => ({
+  let edge = -Infinity
+  return streamMonths(first, last, x, sizes.value.card.width).filter((m) => {
+    if (m.left - edge < 72) return false
+    edge = m.left
+    return true
+  }).map((m) => ({
     ...m,
     label: new Date(m.at).toLocaleDateString(props.locale, { month: 'short', year: 'numeric', timeZone: 'UTC' }),
   }))
@@ -182,13 +214,17 @@ defineExpose({ fit, show, zoomBy })
                 :y2="layout.shelfTop - 24"
                 class="ds-stream-timeline__grid"
               />
+              <g v-for="b in layout.breaks" :key="`break-${b.x}`" class="ds-stream-timeline__break">
+                <line :x1="b.x" :x2="b.x" :y1="sizes.axis - 6" :y2="layout.cardsBottom" />
+                <title>{{ b.days }} quiet days left out</title>
+              </g>
               <path
                 v-for="t in layout.threads"
                 :key="t.key"
                 :d="t.d"
                 class="ds-stream-timeline__thread"
                 :class="{ 'is-on': active === t.event, 'is-off': active != null && active !== t.event }"
-                :stroke-width="Math.min(1 + t.count * 0.6, 5)"
+                :stroke-width="Math.min(1 + (t.count - 1) * 0.4, 3)"
               />
             </svg>
 
