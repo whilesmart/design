@@ -1,23 +1,35 @@
-<script setup lang="ts" generic="M extends TimelineMoment">
+<script setup lang="ts" generic="M extends TimelineMoment, E extends TimelineEvent = TimelineEvent">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import DsAvatar from '../components/DsAvatar.vue'
 import DsIcon from '../components/DsIcon.vue'
 import { areaStyle, type AreaColor } from '../areas'
+import { generatedAvatar } from '../avatar'
+import type { TimelineEvent } from './events'
 import {
   arcPath,
   inLens,
   kindColors,
   linksFrom,
+  packRows,
   placeLabels,
   placeMoments,
   tallyKinds,
   timeTicks,
+  type MomentWeight,
   type Period,
   type TimelineMoment,
 } from './moments'
 
-export interface ArcTimelineProps<M extends TimelineMoment = TimelineMoment> {
+export interface ArcTimelineProps<M extends TimelineMoment = TimelineMoment, E extends TimelineEvent = TimelineEvent> {
   moments: M[]
+  /** Events drawn as pins by how they landed. Picking one lights the moments it `touches`. */
+  events?: E[]
+  /** What sizes a mark. Defaults to importance, then intensity. */
+  weight?: MomentWeight<M>
+  /** Only this period is drawn. Defaults to everything. */
+  within?: Period | null
+  /** Draw each moment as a dot, or as the face of its first actor. */
+  marks?: 'dot' | 'face'
   /** Area colour per kind. Kinds left out take the palette in order. */
   colors?: Record<string, AreaColor>
   /** Cue kinds that draw an arc between moments. `null` links on every cue kind. */
@@ -32,7 +44,11 @@ export interface ArcTimelineProps<M extends TimelineMoment = TimelineMoment> {
   locale?: string
 }
 
-const props = withDefaults(defineProps<ArcTimelineProps<M>>(), {
+const props = withDefaults(defineProps<ArcTimelineProps<M, E>>(), {
+  events: () => [],
+  weight: 'importance',
+  within: null,
+  marks: 'dot',
   colors: () => ({}),
   linkOn: null,
   lit: null,
@@ -45,6 +61,7 @@ const props = withDefaults(defineProps<ArcTimelineProps<M>>(), {
 const focus = defineModel<M['id'] | null>('focus', { default: null })
 const period = defineModel<Period | null>('period', { default: null })
 const kinds = defineModel<string[]>('kinds', { default: () => [] })
+const event = defineModel<E['id'] | null>('event', { default: null })
 
 const MOODS = [
   { valence: 2, label: 'Good' },
@@ -66,7 +83,39 @@ onMounted(() => {
 onBeforeUnmount(() => watcher?.disconnect())
 
 const frame = computed(() => ({ ...size.value, left: 64, right: 24, top: 36, bottom: 36 }))
-const map = computed(() => placeMoments(props.moments, frame.value))
+const map = computed(() =>
+  placeMoments(props.moments, frame.value, {
+    weight: props.weight,
+    within: props.within,
+    alongside: props.events.map((e) => Date.parse(e.at)).filter((t) => !Number.isNaN(t)),
+  }),
+)
+
+const PIN = { width: 22, height: 24 }
+const pins = computed(() => {
+  const right = frame.value.width - frame.value.right
+  const placed = props.events
+    .map((e) => ({ event: e, x: map.value.x(Date.parse(e.at)), y: map.value.bandY(e.valence ?? 0) }))
+    .filter((p) => !Number.isNaN(p.x) && p.x >= frame.value.left - 1 && p.x <= right + 1)
+  for (const band of new Set(placed.map((p) => p.y))) {
+    const inBand = placed.filter((p) => p.y === band)
+    const rows = packRows(inBand.map((p) => p.x), PIN.width, 4)
+    const toward = band > map.value.baseline ? -1 : 1
+    inBand.forEach((p, i) => (p.y = band + toward * rows[i]! * PIN.height))
+  }
+  return placed
+})
+const picked = computed(() => props.events.find((e) => e.id === event.value) ?? null)
+
+function pickEvent(id: E['id']) {
+  event.value = event.value === id ? null : id
+  focus.value = null
+}
+
+const face = (moment: M) => {
+  const lead = moment.actors?.[0]
+  return lead ? lead.avatar || generatedAvatar(lead.name) : null
+}
 const palette = computed(() => kindColors(props.moments, props.colors))
 const tally = computed(() => tallyKinds(props.moments))
 
@@ -80,6 +129,7 @@ const links = computed(() =>
 )
 
 const lit = computed(() => {
+  if (picked.value) return new Set<M['id']>((picked.value.touches ?? []) as M['id'][])
   if (focused.value) return new Set<M['id']>([focused.value.moment.id, ...links.value.map((l) => l.to.moment.id)])
   const asked = props.lit ? new Set(props.lit) : null
   const lens = { kinds: kinds.value, period: period.value }
@@ -137,6 +187,7 @@ function endBrush() {
 
 function pick(id: M['id']) {
   focus.value = focus.value === id ? null : id
+  event.value = null
 }
 
 function toggleKind(kind: string) {
@@ -256,7 +307,23 @@ const card = computed(() => {
             :focused="p.moment.id === focus"
             :dimmed="!lit.has(p.moment.id)"
           >
+            <template v-if="marks === 'face' && face(p.moment)">
+              <clipPath :id="`ds-arc-face-${p.moment.id}`">
+                <circle :cx="p.x" :cy="p.y" :r="p.r + 3" />
+              </clipPath>
+              <image
+                :href="face(p.moment)!"
+                :x="p.x - p.r - 3"
+                :y="p.y - p.r - 3"
+                :width="(p.r + 3) * 2"
+                :height="(p.r + 3) * 2"
+                :clip-path="`url(#ds-arc-face-${p.moment.id})`"
+                class="ds-arc-timeline__face"
+              />
+              <circle :cx="p.x" :cy="p.y" :r="p.r + 3" fill="none" :stroke="ink(p.moment.kind)" class="ds-arc-timeline__ring" />
+            </template>
             <circle
+              v-else
               :cx="p.x"
               :cy="p.y"
               :r="p.r"
@@ -273,6 +340,33 @@ const card = computed(() => {
             text-anchor="middle"
             class="ds-arc-timeline__label"
           >{{ short(p.moment.label) }}</text>
+        </g>
+
+        <g v-if="pins.length" class="ds-arc-timeline__pins">
+          <g
+            v-for="p in pins"
+            :key="`pin-${p.event.id}`"
+            class="ds-arc-timeline__pin"
+            :class="{ 'is-focus': p.event.id === event, 'is-dim': event != null && p.event.id !== event }"
+            :data-event="p.event.id"
+            @click.stop="pickEvent(p.event.id)"
+          >
+            <slot name="pin" :event="p.event" :x="p.x" :y="p.y" :picked="p.event.id === event" :color="tone(p.event.valence ?? 0)">
+              <rect
+                :x="p.x - PIN.width / 2"
+                :y="p.y - PIN.height / 2 + 1"
+                :width="PIN.width"
+                :height="PIN.height - 2"
+                rx="5"
+                class="ds-arc-timeline__pin-box"
+                :stroke="tone(p.event.valence ?? 0)"
+              />
+              <foreignObject v-if="p.event.icon" :x="p.x - 7" :y="p.y - 7" width="14" height="14">
+                <DsIcon :name="p.event.icon as `solar:${string}`" class="ds-arc-timeline__pin-icon" />
+              </foreignObject>
+            </slot>
+            <title>{{ p.event.title }}</title>
+          </g>
         </g>
       </svg>
 

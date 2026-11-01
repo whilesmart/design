@@ -14,8 +14,9 @@ export interface TimelineActor {
 }
 
 /**
- * One thing that happened. `valence` runs from -2 (it hurt) to 2 (it went well) and
- * `intensity` from 1 to 5. A moment with no `at` or no `valence` is counted but not drawn.
+ * One thing that happened. `valence` runs from -2 (it hurt) to 2 (it went well), and
+ * `intensity` and `importance` from 1 to 5. A moment with no `at` or no `valence` is
+ * counted but not drawn.
  */
 export interface TimelineMoment {
   id: string | number
@@ -25,6 +26,7 @@ export interface TimelineMoment {
   until?: string | null
   valence: number | null
   intensity?: number | null
+  importance?: number | null
   cues?: TimelineCue[]
   actors?: TimelineActor[]
   icon?: string
@@ -69,15 +71,43 @@ function spread(id: string | number) {
 
 const clampValence = (v: number) => Math.max(-2, Math.min(2, v))
 
+/** What a mark's size reads from: a field, or a function returning 1 to 5. */
+export type MomentWeight<M extends TimelineMoment = TimelineMoment> =
+  | 'importance'
+  | 'intensity'
+  | ((moment: M) => number | null | undefined)
+
+export function weightOf<M extends TimelineMoment>(moment: M, by: MomentWeight<M> = 'importance') {
+  const raw =
+    typeof by === 'function' ? by(moment) : by === 'importance' ? (moment.importance ?? moment.intensity) : moment.intensity
+  return Math.max(1, Math.min(5, raw ?? 1))
+}
+
+export interface PlaceOptions<M extends TimelineMoment> {
+  /** What sizes a mark. Defaults to importance, then intensity. */
+  weight?: MomentWeight<M>
+  /** Other instants the time axis must reach, such as events drawn on the same chart. */
+  alongside?: number[]
+  /** Only moments inside this period are placed, and the axis spans exactly it. */
+  within?: Period | null
+}
+
 /**
  * Time runs left to right, valence from bad at the bottom to good at the top, and a mark
- * is as large as the moment was intense.
+ * is as large as the moment weighed.
  */
-export function placeMoments<M extends TimelineMoment>(moments: M[], frame: TimelineFrame) {
-  const dated = moments.filter(drawable)
-  const times = dated.map((m) => Date.parse(m.at!))
-  const first = dated.length ? Math.min(...times) : 0
-  const last = dated.length ? Math.max(...times) : 0
+export function placeMoments<M extends TimelineMoment>(
+  moments: M[],
+  frame: TimelineFrame,
+  options: PlaceOptions<M> = {},
+) {
+  const { within = null, alongside = [] } = options
+  const dated = moments.filter(
+    (m) => drawable(m) && (!within || (Date.parse(m.at!) >= within[0] && Date.parse(m.at!) <= within[1])),
+  )
+  const times = within ? [...within] : [...dated.map((m) => Date.parse(m.at!)), ...alongside]
+  const first = times.length ? Math.min(...times) : 0
+  const last = times.length ? Math.max(...times) : 0
   const span = Math.max(last - first, DAY)
   const across = frame.width - frame.left - frame.right
   const band = (frame.height - frame.top - frame.bottom) / 5
@@ -89,17 +119,17 @@ export function placeMoments<M extends TimelineMoment>(moments: M[], frame: Time
     moment,
     x: x(Date.parse(moment.at!)),
     y: y(moment.valence!) + spread(moment.id) * band * 0.7,
-    r: 3 + Math.max(1, Math.min(5, moment.intensity ?? 1)) * 1.6,
+    r: 3 + weightOf(moment, options.weight) * 1.6,
     until: moment.until ? Math.min(x(Date.parse(moment.until)), frame.width - frame.right) : null,
   }))
 
   return {
     placed,
-    undated: moments.length - dated.length,
+    undated: moments.filter((m) => !drawable(m)).length,
     baseline: y(0),
     bandY: y,
-    first: dated.length ? first : null,
-    last: dated.length ? last : null,
+    first: times.length ? first : null,
+    last: times.length ? last : null,
     x,
     timeAt: (px: number) => first + ((px - frame.left) / across) * span,
   }
@@ -166,13 +196,13 @@ export function chapters<M extends TimelineMoment>(moments: M[]): Chapter<M>[] {
         good: sign(1),
         neutral: sign(0),
         bad: sign(-1),
-        weightiest: [...inside].sort((a, b) => (b.intensity ?? 0) - (a.intensity ?? 0))[0]!,
+        weightiest: [...inside].sort((a, b) => weightOf(b) - weightOf(a))[0]!,
       }
     })
 }
 
 /** How many moments each kind holds, most first. */
-export function tallyKinds(moments: TimelineMoment[]) {
+export function tallyKinds(moments: { kind: string }[]) {
   const counted = new Map<string, number>()
   for (const m of moments) counted.set(m.kind, (counted.get(m.kind) ?? 0) + 1)
   return [...counted.entries()]
@@ -181,7 +211,7 @@ export function tallyKinds(moments: TimelineMoment[]) {
 }
 
 /** Gives each kind an area colour: the ones asked for first, then the palette in order of first appearance. */
-export function kindColors(moments: TimelineMoment[], given: Record<string, AreaColor> = {}) {
+export function kindColors(moments: { kind: string }[], given: Record<string, AreaColor> = {}) {
   const colors = new Map<string, AreaColor>(Object.entries(given))
   let next = 0
   for (const { kind } of moments) {
@@ -258,4 +288,18 @@ export function placeLabels<M extends TimelineMoment>(
     labels.set(p.moment.id, { x, y })
   }
   return labels
+}
+
+/** A row for each box laid along a line, so no two in one row overlap. The leftmost box is placed first. */
+export function packRows(lefts: number[], width: number, gap = 8) {
+  const ends: number[] = []
+  const rows = new Array<number>(lefts.length)
+  const order = lefts.map((x, i) => ({ x, i })).sort((a, b) => a.x - b.x)
+  for (const { x, i } of order) {
+    let row = ends.findIndex((end) => end + gap <= x)
+    if (row === -1) row = ends.length
+    ends[row] = x + width
+    rows[i] = row
+  }
+  return rows
 }
