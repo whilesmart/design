@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<StreamTimelineProps<E, R>>(), {
   sizes: () => ({}),
   minZoom: 0.05,
   maxZoom: 2,
-  opening: 30,
+  opening: 14,
   label: 'Events over time and what they touched',
   locale: undefined,
 })
