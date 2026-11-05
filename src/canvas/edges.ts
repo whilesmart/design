@@ -29,6 +29,8 @@ export interface DrawnEdge {
   class: string
   style: { strokeWidth: string }
   label?: string
+  labelBgPadding?: [number, number]
+  labelBgBorderRadius?: number
   markerEnd?: 'arrowclosed'
 }
 
@@ -56,7 +58,7 @@ export function drawEdges(edges: CanvasEdge[], { hidden, selected, nodeOf }: Dra
         .filter(Boolean)
         .join(' '),
       style: { strokeWidth: `${Math.min(1 + Math.log2(Math.max(e.weight ?? 1, 1)), 6)}px` },
-      label: e.label,
+      ...(e.label ? { label: e.label, labelBgPadding: [6, 3] as [number, number], labelBgBorderRadius: 6 } : {}),
       ...(e.directed ? { markerEnd: 'arrowclosed' as const } : {}),
     })
   }

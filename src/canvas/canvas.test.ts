@@ -202,6 +202,18 @@ describe('drawEdges', () => {
     expect(drawn.map(e => [e.id, e.label])).toEqual([['kept', '412 000 XAF']])
   })
 
+  it('pads a labelled line so its amount reads on top of the stroke', () => {
+    const [labelled, bare] = drawEdges(
+      [
+        { id: 'l', source: 'a', target: 'b', type: 't', label: '60 000 XAF' },
+        { id: 'b', source: 'a', target: 'b', type: 't' },
+      ],
+      on(['a', 'b']),
+    )
+    expect(labelled).toMatchObject({ label: '60 000 XAF', labelBgPadding: [6, 3], labelBgBorderRadius: 6 })
+    expect(bare).not.toHaveProperty('labelBgPadding')
+  })
+
   it('marks lines touching the selected card active', () => {
     const [edge] = drawEdges([{ id: 'e', source: 'a', target: 'b', type: 't' }], { ...on(['a', 'b']), selected: 'b' })
     expect(edge.class.split(' ')).toContain('is-active')
