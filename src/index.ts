@@ -206,3 +206,4 @@ export type { ChatHistoryItem } from './components/DsChatHistory.vue'
 
 export { DsViewerFrame, DsViewerContent, DsPreviewFrame } from './viewer'
 export { createPreviewDocument } from './preview-document'
+export { generatedAvatar } from './avatar'

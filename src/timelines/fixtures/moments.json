@@ -1,0 +1,2514 @@
+[
+ {
+  "id": 1,
+  "label": "Shipped instant search",
+  "type": "release",
+  "icon": "solar:rocket-linear",
+  "at": "2026-02-18T00:00:00Z",
+  "valence": 1,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "release",
+    "label": "release"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Shipped instant search. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 2,
+  "label": "Move invoices to a monthly run",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-02-16T00:00:00Z",
+  "valence": 0,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Move invoices to a monthly run. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 3,
+  "label": "Clients asked for PDF invoices",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-10-13T00:00:00Z",
+  "valence": -1,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Clients asked for PDF invoices. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 4,
+  "label": "Checkout failed for EU cards",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-10-20T00:00:00Z",
+  "valence": -1,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Checkout failed for EU cards. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 5,
+  "label": "Move invoices to a monthly run",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-08-27T00:00:00Z",
+  "valence": 1,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Move invoices to a monthly run. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 6,
+  "label": "Checkout failed for EU cards",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-08-18T00:00:00Z",
+  "valence": -1,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Checkout failed for EU cards. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 7,
+  "label": "Search planning",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-01-21T00:00:00Z",
+  "valence": 0,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Search planning. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 8,
+  "label": "Shipped API v2",
+  "type": "release",
+  "icon": "solar:rocket-linear",
+  "at": "2026-08-31T00:00:00Z",
+  "valence": 1,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "release",
+    "label": "release"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Shipped API v2. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 9,
+  "label": "Onboarding user interviews",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-07-01T00:00:00Z",
+  "valence": 0,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Onboarding user interviews. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 10,
+  "label": "Drop the legacy search index",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-07-20T00:00:00Z",
+  "valence": 0,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Drop the legacy search index. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 11,
+  "label": "Shipped instant search",
+  "type": "release",
+  "icon": "solar:rocket-linear",
+  "at": "2026-07-14T00:00:00Z",
+  "valence": 2,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "release",
+    "label": "release"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Shipped instant search. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 12,
+  "label": "Search timed out under load",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-04-04T00:00:00Z",
+  "valence": -2,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Search timed out under load. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 13,
+  "label": "Onboarding user interviews",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-10-14T00:00:00Z",
+  "valence": 0,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Onboarding user interviews. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 14,
+  "label": "Version the public API",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-04-17T00:00:00Z",
+  "valence": 0,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Version the public API. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 15,
+  "label": "Move invoices to a monthly run",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-01-14T00:00:00Z",
+  "valence": 1,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Move invoices to a monthly run. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 16,
+  "label": "Shipped guided onboarding",
+  "type": "release",
+  "icon": "solar:rocket-linear",
+  "at": "2026-09-07T00:00:00Z",
+  "valence": 2,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "release",
+    "label": "release"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Shipped guided onboarding. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 17,
+  "label": "Drop the legacy search index",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-03-24T00:00:00Z",
+  "valence": 1,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Drop the legacy search index. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 18,
+  "label": "Keep onboarding to three steps",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-07-02T00:00:00Z",
+  "valence": 1,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Keep onboarding to three steps. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 19,
+  "label": "Search timed out under load",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-09-10T00:00:00Z",
+  "valence": -1,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Search timed out under load. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 20,
+  "label": "Onboarding user interviews",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-06-28T00:00:00Z",
+  "valence": 0,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Onboarding user interviews. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 21,
+  "label": "API rate limit misfired",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-01-01T00:00:00Z",
+  "valence": -2,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "API rate limit misfired. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 22,
+  "label": "Version the public API",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-06-20T00:00:00Z",
+  "valence": 0,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Version the public API. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 23,
+  "label": "Drop the legacy search index",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-08-27T00:00:00Z",
+  "valence": 0,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Drop the legacy search index. Recorded from the team's tools with who was there and what it touched.",
+  "until": "2026-10-26T00:00:00Z"
+ },
+ {
+  "id": 24,
+  "label": "Users found search too strict",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-03-13T00:00:00Z",
+  "valence": 1,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Users found search too strict. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 25,
+  "label": "Shipped instant search",
+  "type": "release",
+  "icon": "solar:rocket-linear",
+  "at": "2026-10-06T00:00:00Z",
+  "valence": 1,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "release",
+    "label": "release"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Shipped instant search. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 26,
+  "label": "API partner sync",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-04-04T00:00:00Z",
+  "valence": 0,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "API partner sync. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 27,
+  "label": "Billing review with finance",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-10-14T00:00:00Z",
+  "valence": 0,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Billing review with finance. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 28,
+  "label": "Shipped usage-based billing",
+  "type": "release",
+  "icon": "solar:rocket-linear",
+  "at": "2026-08-15T00:00:00Z",
+  "valence": 2,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "release",
+    "label": "release"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Shipped usage-based billing. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 29,
+  "label": "API partner sync",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-03-12T00:00:00Z",
+  "valence": 0,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "API partner sync. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 30,
+  "label": "Shipped usage-based billing",
+  "type": "release",
+  "icon": "solar:rocket-linear",
+  "at": "2026-06-05T00:00:00Z",
+  "valence": 2,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "release",
+    "label": "release"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Shipped usage-based billing. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 31,
+  "label": "Signup emails delayed",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-02-18T00:00:00Z",
+  "valence": -2,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Signup emails delayed. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 32,
+  "label": "API rate limit misfired",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-07-02T00:00:00Z",
+  "valence": -1,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "API rate limit misfired. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 33,
+  "label": "Keep onboarding to three steps",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-06-19T00:00:00Z",
+  "valence": 0,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Keep onboarding to three steps. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 34,
+  "label": "Checkout failed for EU cards",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-04-03T00:00:00Z",
+  "valence": -2,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Checkout failed for EU cards. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 35,
+  "label": "Search planning",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-01-30T00:00:00Z",
+  "valence": 0,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Search planning. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 36,
+  "label": "Move invoices to a monthly run",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-05-16T00:00:00Z",
+  "valence": 0,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Move invoices to a monthly run. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 37,
+  "label": "Partners asked for webhooks",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-05-03T00:00:00Z",
+  "valence": 1,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Partners asked for webhooks. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 38,
+  "label": "Drop the legacy search index",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-04-16T00:00:00Z",
+  "valence": 1,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Drop the legacy search index. Recorded from the team's tools with who was there and what it touched.",
+  "until": "2026-06-15T00:00:00Z"
+ },
+ {
+  "id": 39,
+  "label": "Keep onboarding to three steps",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-09-16T00:00:00Z",
+  "valence": 0,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Keep onboarding to three steps. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 40,
+  "label": "Version the public API",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-04-21T00:00:00Z",
+  "valence": 1,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Version the public API. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 41,
+  "label": "API rate limit misfired",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-02-06T00:00:00Z",
+  "valence": -1,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "API rate limit misfired. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 42,
+  "label": "Version the public API",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-08-24T00:00:00Z",
+  "valence": 1,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Version the public API. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 43,
+  "label": "Shipped guided onboarding",
+  "type": "release",
+  "icon": "solar:rocket-linear",
+  "at": "2026-06-08T00:00:00Z",
+  "valence": 2,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "release",
+    "label": "release"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Shipped guided onboarding. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 44,
+  "label": "Keep onboarding to three steps",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-09-15T00:00:00Z",
+  "valence": 1,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Keep onboarding to three steps. Recorded from the team's tools with who was there and what it touched.",
+  "until": "2026-11-14T00:00:00Z"
+ },
+ {
+  "id": 45,
+  "label": "Drop the legacy search index",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-06-03T00:00:00Z",
+  "valence": 1,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Drop the legacy search index. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 46,
+  "label": "API rate limit misfired",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-03-16T00:00:00Z",
+  "valence": -1,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "API rate limit misfired. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 47,
+  "label": "Checkout failed for EU cards",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-03-10T00:00:00Z",
+  "valence": -2,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Checkout failed for EU cards. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 48,
+  "label": "Clients asked for PDF invoices",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-01-02T00:00:00Z",
+  "valence": 0,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Clients asked for PDF invoices. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 49,
+  "label": "Clients asked for PDF invoices",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-05-16T00:00:00Z",
+  "valence": -1,
+  "intensity": 2,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Clients asked for PDF invoices. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 50,
+  "label": "API partner sync",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-05-28T00:00:00Z",
+  "valence": 0,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "API partner sync. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 51,
+  "label": "Users found search too strict",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-10-18T00:00:00Z",
+  "valence": 1,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Users found search too strict. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 52,
+  "label": "Version the public API",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-09-08T00:00:00Z",
+  "valence": 0,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   }
+  ],
+  "detail": "Version the public API. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 53,
+  "label": "Drop the legacy search index",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-05-29T00:00:00Z",
+  "valence": 1,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Drop the legacy search index. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 54,
+  "label": "Search planning",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-09-26T00:00:00Z",
+  "valence": 0,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Search planning. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 55,
+  "label": "Trial users stalled at step two",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-09-06T00:00:00Z",
+  "valence": 0,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Trial users stalled at step two. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 56,
+  "label": "API partner sync",
+  "type": "meeting",
+  "icon": "solar:users-group-rounded-linear",
+  "at": "2026-06-26T00:00:00Z",
+  "valence": 0,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "api/",
+    "label": "api/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "meeting",
+    "label": "meeting"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "API partner sync. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 57,
+  "label": "Keep onboarding to three steps",
+  "type": "decision",
+  "icon": "solar:check-circle-linear",
+  "at": "2026-01-07T00:00:00Z",
+  "valence": 0,
+  "intensity": 1,
+  "cues": [
+   {
+    "type": "area",
+    "id": "onboarding/",
+    "label": "onboarding/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "dee",
+    "label": "Dee"
+   },
+   {
+    "type": "type",
+    "id": "decision",
+    "label": "decision"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "dee",
+    "name": "Dee"
+   }
+  ],
+  "detail": "Keep onboarding to three steps. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 58,
+  "label": "Clients asked for PDF invoices",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-05-24T00:00:00Z",
+  "valence": -1,
+  "intensity": 3,
+  "cues": [
+   {
+    "type": "area",
+    "id": "billing/",
+    "label": "billing/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Clients asked for PDF invoices. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 59,
+  "label": "Search timed out under load",
+  "type": "incident",
+  "icon": "solar:danger-triangle-linear",
+  "at": "2026-07-11T00:00:00Z",
+  "valence": -1,
+  "intensity": 4,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "type",
+    "id": "incident",
+    "label": "incident"
+   }
+  ],
+  "actors": [
+   {
+    "id": "ada",
+    "name": "Ada"
+   },
+   {
+    "id": "chi",
+    "name": "Chi"
+   }
+  ],
+  "detail": "Search timed out under load. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 60,
+  "label": "Users found search too strict",
+  "type": "feedback",
+  "icon": "solar:chat-round-line-linear",
+  "at": "2026-03-12T00:00:00Z",
+  "valence": 0,
+  "intensity": 5,
+  "cues": [
+   {
+    "type": "area",
+    "id": "search/",
+    "label": "search/"
+   },
+   {
+    "type": "person",
+    "id": "chi",
+    "label": "Chi"
+   },
+   {
+    "type": "person",
+    "id": "ben",
+    "label": "Ben"
+   },
+   {
+    "type": "person",
+    "id": "ada",
+    "label": "Ada"
+   },
+   {
+    "type": "type",
+    "id": "feedback",
+    "label": "feedback"
+   }
+  ],
+  "actors": [
+   {
+    "id": "chi",
+    "name": "Chi"
+   },
+   {
+    "id": "ben",
+    "name": "Ben"
+   },
+   {
+    "id": "ada",
+    "name": "Ada"
+   }
+  ],
+  "detail": "Users found search too strict. Recorded from the team's tools with who was there and what it touched."
+ },
+ {
+  "id": 61,
+  "label": "Undated note",
+  "type": "feedback",
+  "at": null,
+  "valence": null
+ }
+]
