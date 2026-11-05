@@ -137,13 +137,13 @@ import { DsArcTimeline } from '@whilesmart/design/timelines'
 import '@whilesmart/design/timelines/style.css'
 ```
 
-Each timeline is named for its shape. `DsArcTimeline` places moments by time across and by how they landed (valence, -2 to 2) up and down, sizes them by weight, and draws arcs between moments that share a cue. It takes `moments` and binds `focus`, `period` and `kinds` with `v-model`:
+Each timeline is named for its shape. `DsArcTimeline` places moments by time across and by how they landed (valence, -2 to 2) up and down, sizes them by weight, and draws arcs between moments that share a cue. It takes `moments` and binds `focus`, `period` and `types` with `v-model`:
 
 ```vue
 <DsArcTimeline v-model:focus="focus" v-model:period="period" :moments="moments" :link-on="['area']" :colors="{ incident: 'rose' }" />
 ```
 
-A moment is `{ id, label, kind, at, until?, valence, intensity?, importance?, cues?, actors?, icon?, detail? }`. One without `at` or `valence` is counted but not drawn. Its size reads `importance`, then `intensity`; `weight` picks another field or a function. `marks="face"` draws each moment as its first actor's face. `within` draws one period only.
+A moment is `{ id, label, type, at, until?, valence, intensity?, importance?, cues?, actors?, icon?, detail? }`. One without `at` or `valence` is counted but not drawn. Its size reads `importance`, then `intensity`; `weight` picks another field or a function. `marks="face"` draws each moment as its first actor's face. `within` draws one period only.
 
 Pass `events` to draw them as pins by how they landed. Picking one, bound with `v-model:event`, lights the moments it `touches`:
 
@@ -151,13 +151,13 @@ Pass `events` to draw them as pins by how they landed. Picking one, bound with `
 <DsArcTimeline v-model:event="picked" :moments="memories" :events="reviews" marks="face" />
 ```
 
-`DsStreamTimeline` lays events out as cards along time. With `shelves` it also gathers the records they touched into shelves underneath, with a thread from each card to each shelf it reached; `listed` sets how many records each shelf lists on the canvas (0 shows only counts). It pans by dragging, zooms around the pointer, opens on the latest 14 days (`opening`) and fits everything from its toolbar. Quiet stretches longer than three days are cut out (`squeeze`, `null` keeps calendar scale), and threads run at right angles (`lines`: `step`, `straight` or `curve`). It binds `focus`, `hidden` (record kinds) and `shelf` (the open shelf), and emits `open` for an event with `parts`:
+`DsStreamTimeline` lays events out as cards along time. With `shelves` it also gathers the records they touched into shelves underneath, with a thread from each card to each shelf it reached; `listed` sets how many records each shelf lists on the canvas (0 shows only counts). It pans by dragging, zooms around the pointer, opens on the latest 14 days (`opening`) and fits everything from its toolbar. Quiet stretches longer than three days are cut out (`squeeze`, `null` keeps calendar scale), and threads run at right angles (`lines`: `step`, `straight` or `curve`). It binds `focus`, `hidden` (record types) and `shelf` (the open shelf), and emits `open` for an event with `parts`:
 
 ```vue
 <DsStreamTimeline v-model:focus="focus" :events="events" :records="memories" :group-of="(m) => m.folder" @open="drillInto" />
 ```
 
-An event is `{ id, title, at, until?, kind?, icon?, place?, actors?, valence?, intensity?, importance?, touches?, parts?, count? }` and a record is `{ id, kind, label, group? }`. The `card`, `record`, `shelf` and `empty` slots draw those parts as the page wants; `pin` and `mark` do the same on the arc.
+An event is `{ id, title, at, until?, type?, icon?, place?, actors?, valence?, intensity?, importance?, touches?, parts?, count? }` and a record is `{ id, type, label, group? }`. The `card`, `record`, `shelf` and `empty` slots draw those parts as the page wants; `pin` and `mark` do the same on the arc.
 
 The layout functions (`placeMoments`, `layoutStream`, `packRows`, `timeTicks`, `chapters`, `linksFrom`, `placeLabels`) are exported for building side panels or other timeline shapes on the same scale. `usePanZoom` gives any scrolling box the same drag and wheel handling.
 

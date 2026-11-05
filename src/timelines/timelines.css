@@ -102,7 +102,7 @@
   background: var(--ds-area-fill, var(--ds-accent-fill));
   color: var(--ds-area-ink, var(--ds-accent-ink));
 }
-.ds-arc-timeline__card-kind { font-weight: 600; color: var(--ds-area-ink, var(--ds-text-primary)); }
+.ds-arc-timeline__card-type { font-weight: 600; color: var(--ds-area-ink, var(--ds-text-primary)); }
 .ds-arc-timeline__card-day { margin-left: auto; }
 .ds-arc-timeline__card-title { margin: var(--ds-space-2) 0 0; font-weight: 600; line-height: 1.35; }
 .ds-arc-timeline__card-detail {

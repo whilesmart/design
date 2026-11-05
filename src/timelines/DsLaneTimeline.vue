@@ -2,11 +2,11 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import type { AreaColor } from '../areas'
 import { laneOrder, placeInLanes } from './lanes'
-import { kindColors, timeTicks, type TimelineMoment } from './moments'
+import { typeColors, timeTicks, type TimelineMoment } from './moments'
 
 export interface LaneTimelineProps<M extends TimelineMoment = TimelineMoment> {
   moments: M[]
-  /** Which lane a moment runs in. Defaults to its kind. */
+  /** Which lane a moment runs in. Defaults to its type. */
   laneOf?: (moment: M) => string
   /** Lane order and labels. Lanes not listed follow, busiest first. */
   lanes?: { id: string; label: string }[]
@@ -19,7 +19,7 @@ export interface LaneTimelineProps<M extends TimelineMoment = TimelineMoment> {
 }
 
 const props = withDefaults(defineProps<LaneTimelineProps<M>>(), {
-  laneOf: (m: TimelineMoment) => m.kind,
+  laneOf: (m: TimelineMoment) => m.type,
   lanes: () => [],
   colors: () => ({}),
   window: null,
@@ -62,8 +62,8 @@ const frame = computed(() => ({
 const layout = computed(() =>
   placeInLanes(props.moments, order.value, props.laneOf, frame.value, props.window ?? undefined),
 )
-const palette = computed(() => kindColors(props.moments, props.colors))
-const ink = (kind: string) => `var(--ds-area-${palette.value.get(kind) ?? 'slate'}-solid)`
+const palette = computed(() => typeColors(props.moments, props.colors))
+const ink = (type: string) => `var(--ds-area-${palette.value.get(type) ?? 'slate'}-solid)`
 
 const ticks = computed(() => {
   const { first, last, x } = layout.value
@@ -129,7 +129,7 @@ function pick(id: M['id']) {
           :width="Math.max(p.end - p.x, 4)"
           height="14"
           rx="7"
-          :fill="ink(p.moment.kind)"
+          :fill="ink(p.moment.type)"
           class="ds-lane-timeline__span"
         />
         <slot
@@ -138,11 +138,11 @@ function pick(id: M['id']) {
           :moment="p.moment"
           :x="p.x"
           :y="p.y"
-          :color="ink(p.moment.kind)"
+          :color="ink(p.moment.type)"
           :focused="p.moment.id === focus"
           :dimmed="focus != null && p.moment.id !== focus"
         >
-          <circle :cx="p.x" :cy="p.y" r="6" :fill="ink(p.moment.kind)" class="ds-lane-timeline__dot" />
+          <circle :cx="p.x" :cy="p.y" r="6" :fill="ink(p.moment.type)" class="ds-lane-timeline__dot" />
         </slot>
         <title>{{ p.moment.label }}</title>
       </g>

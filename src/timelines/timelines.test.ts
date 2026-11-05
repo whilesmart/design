@@ -7,11 +7,11 @@ import { laneOrder, placeInLanes } from './lanes'
 import {
   chapters,
   inLens,
-  kindColors,
+  typeColors,
   linksFrom,
   placeLabels,
   placeMoments,
-  tallyKinds,
+  tallyTypes,
   timeTicks,
   type TimelineMoment,
 } from './moments'
@@ -59,7 +59,7 @@ describe('placing moments', () => {
   })
 
   it('draws nothing and does not throw when nothing is dated', () => {
-    const result = placeMoments([{ id: 1, label: 'x', kind: 'note', at: null, valence: null }], FRAME)
+    const result = placeMoments([{ id: 1, label: 'x', type: 'note', at: null, valence: null }], FRAME)
     expect(result.placed).toEqual([])
     expect(result.first).toBeNull()
   })
@@ -88,34 +88,34 @@ describe('reading the moments', () => {
     for (const c of told) expect(c.good + c.neutral + c.bad).toBe(c.moments.length)
   })
 
-  it('counts kinds, most first', () => {
-    const counts = tallyKinds(moments).map((t) => t.count)
+  it('counts types, most first', () => {
+    const counts = tallyTypes(moments).map((t) => t.count)
     expect(counts).toEqual([...counts].sort((a, b) => b - a))
   })
 
-  it('keeps colours that were asked for and gives every other kind one', () => {
-    const colors = kindColors(moments, { incident: 'rose' })
+  it('keeps colours that were asked for and gives every other type one', () => {
+    const colors = typeColors(moments, { incident: 'rose' })
     expect(colors.get('incident')).toBe('rose')
-    expect(new Set(tallyKinds(moments).map((t) => t.kind)).size).toBe(colors.size)
+    expect(new Set(tallyTypes(moments).map((t) => t.type)).size).toBe(colors.size)
   })
 
-  it('links only on the cue kinds asked for', () => {
+  it('links only on the cue types asked for', () => {
     const { placed } = placeMoments(moments, FRAME)
     const from = placed[0]!.moment
     const byArea = linksFrom(from, placed, ['area'])
     expect(byArea.length).toBeGreaterThan(0)
-    expect(byArea.every((l) => l.cue.kind === 'area')).toBe(true)
+    expect(byArea.every((l) => l.cue.type === 'area')).toBe(true)
     expect(linksFrom(from, placed, null).length).toBeGreaterThanOrEqual(byArea.length)
     expect(linksFrom(from, placed, ['nothing'])).toEqual([])
   })
 
-  it('narrows by kind and by period', () => {
+  it('narrows by type and by period', () => {
     const one = moments.find((m) => m.at)!
     const t = Date.parse(one.at!)
-    expect(inLens(one, { kinds: [], period: null })).toBe(true)
-    expect(inLens(one, { kinds: [one.kind], period: [t, t + 1] })).toBe(true)
-    expect(inLens(one, { kinds: ['nothing'], period: null })).toBe(false)
-    expect(inLens(one, { kinds: [], period: [t + 1, t + 2] })).toBe(false)
+    expect(inLens(one, { types: [], period: null })).toBe(true)
+    expect(inLens(one, { types: [one.type], period: [t, t + 1] })).toBe(true)
+    expect(inLens(one, { types: ['nothing'], period: null })).toBe(false)
+    expect(inLens(one, { types: [], period: [t + 1, t + 2] })).toBe(false)
   })
 
   it('keeps labels from overlapping and drops them all when too many are shown', () => {
@@ -146,16 +146,16 @@ describe('the arc timeline', () => {
     expect(html).toMatch(/<path d="M[\d.]+ [\d.]+ Q/)
   })
 
-  it('dims what falls outside the chosen kinds', async () => {
-    const html = await render({ moments, kinds: ['incident'] })
+  it('dims what falls outside the chosen types', async () => {
+    const html = await render({ moments, types: ['incident'] })
     const dim = (html.match(/is-dim/g) ?? []).length
-    const incidents = moments.filter((m) => m.kind === 'incident' && m.at).length
+    const incidents = moments.filter((m) => m.type === 'incident' && m.at).length
     expect(dim).toBe(60 - incidents)
   })
 })
 
 describe('the lane timeline', () => {
-  const byArea = (m: TimelineMoment) => m.cues?.find((c) => c.kind === 'area')?.id ?? 'none'
+  const byArea = (m: TimelineMoment) => m.cues?.find((c) => c.type === 'area')?.id ?? 'none'
   const FRAME_L = { width: 1000, height: 300, left: 148, right: 20, top: 16, bottom: 40 }
 
   it('orders lanes as given, then busiest first', () => {
@@ -202,7 +202,7 @@ describe('placing the same moments twice', () => {
 })
 
 describe('drawing marks with a slot', () => {
-  const byArea = (m: TimelineMoment) => m.cues?.find((c) => c.kind === 'area')?.id ?? 'none'
+  const byArea = (m: TimelineMoment) => m.cues?.find((c) => c.type === 'area')?.id ?? 'none'
   const mark = (p: { moment: { id: string | number }; x: number; y: number }) =>
     h('rect', { class: 'custom-mark', 'data-for': p.moment.id, x: p.x, y: p.y })
 

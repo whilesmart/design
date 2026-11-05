@@ -2,7 +2,7 @@ import { areaColors, type AreaColor } from '../areas'
 
 /** Something that can bring a moment back to mind: where it happened, who was there, what it touched. */
 export interface TimelineCue {
-  kind: string
+  type: string
   id: string
   label: string
 }
@@ -21,7 +21,7 @@ export interface TimelineActor {
 export interface TimelineMoment {
   id: string | number
   label: string
-  kind: string
+  type: string
   at: string | null
   until?: string | null
   valence: number | null
@@ -201,22 +201,22 @@ export function chapters<M extends TimelineMoment>(moments: M[]): Chapter<M>[] {
     })
 }
 
-/** How many moments each kind holds, most first. */
-export function tallyKinds(moments: { kind: string }[]) {
+/** How many moments each type holds, most first. */
+export function tallyTypes(moments: { type: string }[]) {
   const counted = new Map<string, number>()
-  for (const m of moments) counted.set(m.kind, (counted.get(m.kind) ?? 0) + 1)
+  for (const m of moments) counted.set(m.type, (counted.get(m.type) ?? 0) + 1)
   return [...counted.entries()]
-    .map(([kind, count]) => ({ kind, count }))
-    .sort((a, b) => b.count - a.count || a.kind.localeCompare(b.kind))
+    .map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count || a.type.localeCompare(b.type))
 }
 
-/** Gives each kind an area colour: the ones asked for first, then the palette in order of first appearance. */
-export function kindColors(moments: { kind: string }[], given: Record<string, AreaColor> = {}) {
+/** Gives each type an area colour: the ones asked for first, then the palette in order of first appearance. */
+export function typeColors(moments: { type: string }[], given: Record<string, AreaColor> = {}) {
   const colors = new Map<string, AreaColor>(Object.entries(given))
   let next = 0
-  for (const { kind } of moments) {
-    if (colors.has(kind)) continue
-    colors.set(kind, areaColors[next % areaColors.length]!)
+  for (const { type } of moments) {
+    if (colors.has(type)) continue
+    colors.set(type, areaColors[next % areaColors.length]!)
     next++
   }
   return colors
@@ -228,31 +228,31 @@ export interface MomentLink<M extends TimelineMoment> {
 }
 
 /**
- * The moments that share a cue with `from`, limited to the cue kinds worth a line.
- * A cue every moment carries joins everything and so says nothing; leave such kinds out.
+ * The moments that share a cue with `from`, limited to the cue types worth a line.
+ * A cue every moment carries joins everything and so says nothing; leave such types out.
  */
 export function linksFrom<M extends TimelineMoment>(
   from: M,
   placed: PlacedMoment<M>[],
-  kinds: string[] | null,
+  types: string[] | null,
 ): MomentLink<M>[] {
-  const counts = (c: TimelineCue) => !kinds || kinds.includes(c.kind)
-  const mine = new Map((from.cues ?? []).filter(counts).map((c) => [`${c.kind}:${c.id}`, c]))
+  const counts = (c: TimelineCue) => !types || types.includes(c.type)
+  const mine = new Map((from.cues ?? []).filter(counts).map((c) => [`${c.type}:${c.id}`, c]))
   if (!mine.size) return []
   return placed.flatMap((p) => {
     if (p.moment.id === from.id) return []
-    const shared = (p.moment.cues ?? []).find((c) => counts(c) && mine.has(`${c.kind}:${c.id}`))
+    const shared = (p.moment.cues ?? []).find((c) => counts(c) && mine.has(`${c.type}:${c.id}`))
     return shared ? [{ to: p, cue: shared }] : []
   })
 }
 
 export interface TimelineLens {
-  kinds: string[]
+  types: string[]
   period: Period | null
 }
 
 export function inLens(moment: TimelineMoment, lens: TimelineLens) {
-  if (lens.kinds.length && !lens.kinds.includes(moment.kind)) return false
+  if (lens.types.length && !lens.types.includes(moment.type)) return false
   if (lens.period) {
     const at = moment.at ? Date.parse(moment.at) : Number.NaN
     if (!(at >= lens.period[0] && at < lens.period[1])) return false

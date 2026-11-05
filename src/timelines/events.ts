@@ -16,7 +16,7 @@ export interface TimelineEvent {
   title: string
   at: string
   until?: string | null
-  kind?: string
+  type?: string
   icon?: string
   place?: TimelinePlace
   actors?: TimelineActor[]
@@ -31,7 +31,7 @@ export interface TimelineEvent {
 /** Something an event can touch, gathered into named groups under the events. */
 export interface TimelineRecord {
   id: string | number
-  kind: string
+  type: string
   label: string
   group?: string
 }

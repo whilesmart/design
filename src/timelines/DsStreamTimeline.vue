@@ -13,7 +13,7 @@ import {
   type TimelineEvent,
   type TimelineRecord,
 } from './events'
-import { kindColors, timeTicks } from './moments'
+import { typeColors, timeTicks } from './moments'
 import { usePanZoom } from './usePanZoom'
 
 export interface StreamTimelineProps<E extends TimelineEvent = TimelineEvent, R extends TimelineRecord = TimelineRecord> {
@@ -22,7 +22,7 @@ export interface StreamTimelineProps<E extends TimelineEvent = TimelineEvent, R 
   records?: R[]
   /** Which shelf a record sits on. Defaults to its `group`. */
   groupOf?: (record: R) => string
-  /** Area colour per record kind. Kinds left out take the palette in order. */
+  /** Area colour per record type. Types left out take the palette in order. */
   colors?: Record<string, AreaColor>
   /** Record ids to light, for example the ones an answer cited. */
   lit?: (string | number)[] | null
@@ -73,7 +73,7 @@ const sizes = computed<StreamSizes>(() => {
   const merged = { ...streamSizes, ...props.sizes }
   return { ...merged, shelf: { ...merged.shelf, closed: props.listed, head: props.listed ? merged.shelf.head : 40 } }
 })
-const shown = computed(() => props.records.filter((r) => !hidden.value.includes(r.kind)))
+const shown = computed(() => props.records.filter((r) => !hidden.value.includes(r.type)))
 const seen = ref<{ x: number; width: number } | null>(null)
 const layout = computed(() =>
   layoutStream(props.events, shown.value, {
@@ -86,8 +86,8 @@ const layout = computed(() =>
     shelves: props.shelves,
   }),
 )
-const palette = computed(() => kindColors(props.records, props.colors))
-const ink = (kind: string) => `var(--ds-area-${palette.value.get(kind) ?? 'slate'}-solid)`
+const palette = computed(() => typeColors(props.records, props.colors))
+const ink = (type: string) => `var(--ds-area-${palette.value.get(type) ?? 'slate'}-solid)`
 
 const content = computed(() => ({ width: layout.value.width, height: layout.value.height }))
 const { box, zoom, view, grabbing, fit: refit, zoomBy, show, handlers } = usePanZoom(content, {
@@ -148,7 +148,7 @@ const months = computed(() => {
 
 const counts = computed(() => {
   const n = new Map<string, number>()
-  for (const r of props.records) n.set(r.kind, (n.get(r.kind) ?? 0) + 1)
+  for (const r of props.records) n.set(r.type, (n.get(r.type) ?? 0) + 1)
   return [...n.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
 })
 
@@ -177,8 +177,8 @@ function pick(id: E['id']) {
   focus.value = focus.value === id ? null : id
 }
 
-function toggle(kind: string) {
-  hidden.value = hidden.value.includes(kind) ? hidden.value.filter((k) => k !== kind) : [...hidden.value, kind]
+function toggle(type: string) {
+  hidden.value = hidden.value.includes(type) ? hidden.value.filter((k) => k !== type) : [...hidden.value, type]
 }
 
 function litIn(records: R[]) {
@@ -198,7 +198,7 @@ watch(focus, (id) => {
   if (card) show({ x: card.left - 400, y: 0, width: w + 800, height: layout.value.cardsBottom + 16 })
 })
 
-const named = (kind: string) => kind.charAt(0).toUpperCase() + kind.slice(1).replace(/_/g, ' ')
+const named = (type: string) => type.charAt(0).toUpperCase() + type.slice(1).replace(/_/g, ' ')
 const day = (value?: string | null) =>
   value ? new Date(value).toLocaleDateString(props.locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }) : ''
 
@@ -302,7 +302,7 @@ defineExpose({ fit, show, zoomBy })
                         v-for="r in (touchedBy.get(c.event.id) ?? []).slice(0, 6)"
                         :key="r.id"
                         class="ds-stream-timeline__swatch"
-                        :style="{ background: ink(r.kind) }"
+                        :style="{ background: ink(r.type) }"
                       />
                       {{ (touchedBy.get(c.event.id) ?? []).length }}
                     </span>
@@ -345,7 +345,7 @@ defineExpose({ fit, show, zoomBy })
                 <span
                   v-for="r in litFirst(s.records)"
                   :key="r.id"
-                  :style="{ background: ink(r.kind), opacity: lit && !lit.has(r.id) ? 0.2 : 1 }"
+                  :style="{ background: ink(r.type), opacity: lit && !lit.has(r.id) ? 0.2 : 1 }"
                 />
               </span>
               <ul v-if="listed" class="ds-stream-timeline__records">
@@ -356,8 +356,8 @@ defineExpose({ fit, show, zoomBy })
                   :class="{ 'is-lit': lit?.has(r.id), 'is-dim': lit && !lit.has(r.id) }"
                   :title="r.label"
                 >
-                  <slot name="record" :record="r" :lit="Boolean(lit?.has(r.id))" :color="ink(r.kind)">
-                    <span class="ds-stream-timeline__swatch" :style="{ background: ink(r.kind) }" />
+                  <slot name="record" :record="r" :lit="Boolean(lit?.has(r.id))" :color="ink(r.type)">
+                    <span class="ds-stream-timeline__swatch" :style="{ background: ink(r.type) }" />
                     <span class="ds-stream-timeline__record-label">{{ r.label }}</span>
                   </slot>
                 </li>
@@ -388,18 +388,18 @@ defineExpose({ fit, show, zoomBy })
       </div>
     </div>
 
-    <div v-if="counts.length" class="ds-stream-timeline__legend" role="group" aria-label="Kinds">
+    <div v-if="counts.length" class="ds-stream-timeline__legend" role="group" aria-label="Types">
       <button
-        v-for="[kind, count] in counts"
-        :key="kind"
+        v-for="[type, count] in counts"
+        :key="type"
         type="button"
         class="ds-stream-timeline__kind"
-        :class="{ 'is-off': hidden.includes(kind) }"
-        :aria-pressed="!hidden.includes(kind)"
-        @click="toggle(kind)"
+        :class="{ 'is-off': hidden.includes(type) }"
+        :aria-pressed="!hidden.includes(type)"
+        @click="toggle(type)"
       >
-        <span class="ds-stream-timeline__swatch" :style="{ background: ink(kind) }" />
-        {{ named(kind) }}
+        <span class="ds-stream-timeline__swatch" :style="{ background: ink(type) }" />
+        {{ named(type) }}
         <span class="ds-stream-timeline__count">{{ count }}</span>
       </button>
     </div>

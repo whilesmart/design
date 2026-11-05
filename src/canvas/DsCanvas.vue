@@ -30,7 +30,7 @@ export interface CanvasProps<D> {
   lanes: Lane[]
   items: CanvasItem<D>[]
   edges?: CanvasEdge[]
-  /** The kinds of line a reader can switch off, shown as a legend. */
+  /** The types of line a reader can switch off, shown as a legend. */
   edgeTypes?: { type: string; label: string }[]
   /** Where dragged positions are kept. Without one, nothing is kept. */
   storageKey?: string

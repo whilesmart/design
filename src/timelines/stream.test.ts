@@ -11,8 +11,8 @@ const moments = fixture as TimelineMoment[]
 const FRAME = { width: 1000, height: 420, left: 64, right: 24, top: 36, bottom: 36 }
 const DAY = 86_400_000
 
-const areaOf = (m: TimelineMoment) => m.cues?.find((c) => c.kind === 'area')?.id ?? 'Everywhere'
-const records: TimelineRecord[] = moments.map((m) => ({ id: m.id, kind: m.kind, label: m.label, group: areaOf(m) }))
+const areaOf = (m: TimelineMoment) => m.cues?.find((c) => c.type === 'area')?.id ?? 'Everywhere'
+const records: TimelineRecord[] = moments.map((m) => ({ id: m.id, type: m.type, label: m.label, group: areaOf(m) }))
 
 const dated = moments.filter((m) => m.at)
 const events: TimelineEvent[] = dated.slice(0, 12).map((m, i) => ({
@@ -31,15 +31,15 @@ const events: TimelineEvent[] = dated.slice(0, 12).map((m, i) => ({
 
 describe('weighing a moment', () => {
   it('reads importance first, then intensity, and keeps it between 1 and 5', () => {
-    expect(weightOf({ id: 1, label: '', kind: 'k', at: null, valence: 0, importance: 4, intensity: 1 })).toBe(4)
-    expect(weightOf({ id: 1, label: '', kind: 'k', at: null, valence: 0, intensity: 2 })).toBe(2)
-    expect(weightOf({ id: 1, label: '', kind: 'k', at: null, valence: 0, importance: 9 })).toBe(5)
-    expect(weightOf({ id: 1, label: '', kind: 'k', at: null, valence: 0, importance: 4, intensity: 1 }, 'intensity')).toBe(1)
-    expect(weightOf({ id: 1, label: '', kind: 'k', at: null, valence: 0 }, () => 3)).toBe(3)
+    expect(weightOf({ id: 1, label: '', type: 'k', at: null, valence: 0, importance: 4, intensity: 1 })).toBe(4)
+    expect(weightOf({ id: 1, label: '', type: 'k', at: null, valence: 0, intensity: 2 })).toBe(2)
+    expect(weightOf({ id: 1, label: '', type: 'k', at: null, valence: 0, importance: 9 })).toBe(5)
+    expect(weightOf({ id: 1, label: '', type: 'k', at: null, valence: 0, importance: 4, intensity: 1 }, 'intensity')).toBe(1)
+    expect(weightOf({ id: 1, label: '', type: 'k', at: null, valence: 0 }, () => 3)).toBe(3)
   })
 
   it('draws a more important moment larger', () => {
-    const base = { kind: 'k', valence: 0, at: '2026-01-01T00:00:00Z' }
+    const base = { type: 'k', valence: 0, at: '2026-01-01T00:00:00Z' }
     const { placed } = placeMoments(
       [
         { ...base, id: 'small', label: 'a', importance: 1, intensity: 5 },
@@ -159,8 +159,8 @@ describe('laying out a stream', () => {
   })
 
   it('groups records with the function given', () => {
-    const byKind = layoutStream(events, records, { groupOf: (r) => r.kind })
-    expect(new Set(byKind.shelves.map((s) => s.name))).toEqual(new Set(records.map((r) => r.kind)))
+    const byKind = layoutStream(events, records, { groupOf: (r) => r.type })
+    expect(new Set(byKind.shelves.map((s) => s.name))).toEqual(new Set(records.map((r) => r.type)))
   })
 
   it('turns each shelf\'s threads on its own level so they do not run on top of each other', () => {
@@ -218,7 +218,7 @@ describe('the stream timeline', () => {
     expect(root.querySelectorAll('.ds-stream-timeline__record.is-lit').length).toBeGreaterThan(0)
   })
 
-  it('hides a kind from its legend button and asks to open an event made of parts', async () => {
+  it('hides a type from its legend button and asks to open an event made of parts', async () => {
     const opened: TimelineEvent[] = []
     const hidden = ref<string[]>([])
     const root = mount(DsStreamTimeline, () => ({
@@ -230,7 +230,7 @@ describe('the stream timeline', () => {
       onOpen: (e: TimelineEvent) => opened.push(e),
     }))
     const tally = new Map<string, number>()
-    for (const r of records) tally.set(r.kind, (tally.get(r.kind) ?? 0) + 1)
+    for (const r of records) tally.set(r.type, (tally.get(r.type) ?? 0) + 1)
     const most = [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]![0]
     root.querySelector<HTMLButtonElement>('.ds-stream-timeline__kind')!.click()
     await nextTick()

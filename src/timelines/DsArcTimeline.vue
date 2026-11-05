@@ -8,12 +8,12 @@ import type { TimelineEvent } from './events'
 import {
   arcPath,
   inLens,
-  kindColors,
+  typeColors,
   linksFrom,
   packRows,
   placeLabels,
   placeMoments,
-  tallyKinds,
+  tallyTypes,
   timeTicks,
   type MomentWeight,
   type Period,
@@ -30,9 +30,9 @@ export interface ArcTimelineProps<M extends TimelineMoment = TimelineMoment, E e
   within?: Period | null
   /** Draw each moment as a dot, or as the face of its first actor. */
   marks?: 'dot' | 'face'
-  /** Area colour per kind. Kinds left out take the palette in order. */
+  /** Area colour per type. Types left out take the palette in order. */
   colors?: Record<string, AreaColor>
-  /** Cue kinds that draw an arc between moments. `null` links on every cue kind. */
+  /** Cue types that draw an arc between moments. `null` links on every cue type. */
   linkOn?: string[] | null
   /** Moment ids to light, for example the ones an answer cited. Everything else dims. */
   lit?: (string | number)[] | null
@@ -60,7 +60,7 @@ const props = withDefaults(defineProps<ArcTimelineProps<M, E>>(), {
 
 const focus = defineModel<M['id'] | null>('focus', { default: null })
 const period = defineModel<Period | null>('period', { default: null })
-const kinds = defineModel<string[]>('kinds', { default: () => [] })
+const types = defineModel<string[]>('types', { default: () => [] })
 const event = defineModel<E['id'] | null>('event', { default: null })
 
 const MOODS = [
@@ -116,10 +116,10 @@ const face = (moment: M) => {
   const lead = moment.actors?.[0]
   return lead ? lead.avatar || generatedAvatar(lead.name) : null
 }
-const palette = computed(() => kindColors(props.moments, props.colors))
-const tally = computed(() => tallyKinds(props.moments))
+const palette = computed(() => typeColors(props.moments, props.colors))
+const tally = computed(() => tallyTypes(props.moments))
 
-const ink = (kind: string) => `var(--ds-area-${palette.value.get(kind) ?? 'slate'}-solid)`
+const ink = (type: string) => `var(--ds-area-${palette.value.get(type) ?? 'slate'}-solid)`
 const tone = (valence: number) =>
   valence > 0 ? 'var(--ds-status-success-text)' : valence < 0 ? 'var(--ds-status-error-text)' : 'var(--ds-text-muted)'
 
@@ -132,7 +132,7 @@ const lit = computed(() => {
   if (picked.value) return new Set<M['id']>((picked.value.touches ?? []) as M['id'][])
   if (focused.value) return new Set<M['id']>([focused.value.moment.id, ...links.value.map((l) => l.to.moment.id)])
   const asked = props.lit ? new Set(props.lit) : null
-  const lens = { kinds: kinds.value, period: period.value }
+  const lens = { types: types.value, period: period.value }
   return new Set<M['id']>(
     map.value.placed.filter((p) => (!asked || asked.has(p.moment.id)) && inLens(p.moment, lens)).map((p) => p.moment.id),
   )
@@ -190,12 +190,12 @@ function pick(id: M['id']) {
   event.value = null
 }
 
-function toggleKind(kind: string) {
-  kinds.value = kinds.value.includes(kind) ? kinds.value.filter((k) => k !== kind) : [...kinds.value, kind]
+function toggleType(type: string) {
+  types.value = types.value.includes(type) ? types.value.filter((k) => k !== type) : [...types.value, type]
 }
 
 const short = (text: string, n = 30) => (text.length > n ? `${text.slice(0, n - 1)}…` : text)
-const named = (kind: string) => kind.charAt(0).toUpperCase() + kind.slice(1)
+const named = (type: string) => type.charAt(0).toUpperCase() + type.slice(1)
 const day = (value?: string | null) =>
   value ? new Date(value).toLocaleDateString(props.locale, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : ''
 
@@ -205,7 +205,7 @@ const card = computed(() => {
   const flip = p.x > frame.value.width * 0.6
   return {
     style: {
-      ...areaStyle(palette.value.get(p.moment.kind)),
+      ...areaStyle(palette.value.get(p.moment.type)),
       left: `${(p.x / frame.value.width) * 100}%`,
       top: `${(p.y / frame.value.height) * 100}%`,
       transform: `translate(${flip ? 'calc(-100% - 14px)' : '14px'}, -50%)`,
@@ -293,8 +293,8 @@ const card = computed(() => {
           :data-moment="p.moment.id"
           @click.stop="pick(p.moment.id)"
         >
-          <line v-if="p.until !== null" :x1="p.x" :x2="p.until" :y1="p.y" :y2="p.y" :stroke="ink(p.moment.kind)" class="ds-arc-timeline__held" />
-          <line :x1="p.x" :x2="p.x" :y1="map.baseline" :y2="p.y" :stroke="ink(p.moment.kind)" class="ds-arc-timeline__stem" />
+          <line v-if="p.until !== null" :x1="p.x" :x2="p.until" :y1="p.y" :y2="p.y" :stroke="ink(p.moment.type)" class="ds-arc-timeline__held" />
+          <line :x1="p.x" :x2="p.x" :y1="map.baseline" :y2="p.y" :stroke="ink(p.moment.type)" class="ds-arc-timeline__stem" />
           <circle :cx="p.x" :cy="p.y" :r="p.r + 6" fill="transparent" />
           <slot
             name="mark"
@@ -302,7 +302,7 @@ const card = computed(() => {
             :x="p.x"
             :y="p.y"
             :r="p.r"
-            :color="ink(p.moment.kind)"
+            :color="ink(p.moment.type)"
             :held="p.until !== null"
             :focused="p.moment.id === focus"
             :dimmed="!lit.has(p.moment.id)"
@@ -320,15 +320,15 @@ const card = computed(() => {
                 :clip-path="`url(#ds-arc-face-${p.moment.id})`"
                 class="ds-arc-timeline__face"
               />
-              <circle :cx="p.x" :cy="p.y" :r="p.r + 3" fill="none" :stroke="ink(p.moment.kind)" class="ds-arc-timeline__ring" />
+              <circle :cx="p.x" :cy="p.y" :r="p.r + 3" fill="none" :stroke="ink(p.moment.type)" class="ds-arc-timeline__ring" />
             </template>
             <circle
               v-else
               :cx="p.x"
               :cy="p.y"
               :r="p.r"
-              :fill="p.until !== null ? 'transparent' : ink(p.moment.kind)"
-              :stroke="ink(p.moment.kind)"
+              :fill="p.until !== null ? 'transparent' : ink(p.moment.type)"
+              :stroke="ink(p.moment.type)"
               class="ds-arc-timeline__dot"
             />
           </slot>
@@ -375,7 +375,7 @@ const card = computed(() => {
           <span class="ds-arc-timeline__card-icon">
             <DsIcon v-if="focused.moment.icon" :name="focused.moment.icon as `solar:${string}`" />
           </span>
-          <span class="ds-arc-timeline__card-kind">{{ named(focused.moment.kind) }}</span>
+          <span class="ds-arc-timeline__card-type">{{ named(focused.moment.type) }}</span>
           <span class="ds-arc-timeline__card-day">{{ day(focused.moment.at) }}</span>
         </header>
         <p class="ds-arc-timeline__card-title">{{ focused.moment.label }}</p>
@@ -389,18 +389,18 @@ const card = computed(() => {
       </article>
     </div>
 
-    <div class="ds-arc-timeline__legend" role="group" aria-label="Kinds">
+    <div class="ds-arc-timeline__legend" role="group" aria-label="Types">
       <button
         v-for="t in tally"
-        :key="t.kind"
+        :key="t.type"
         type="button"
         class="ds-arc-timeline__kind"
-        :class="{ 'is-off': kinds.length && !kinds.includes(t.kind) }"
-        :aria-pressed="kinds.includes(t.kind)"
-        @click="toggleKind(t.kind)"
+        :class="{ 'is-off': types.length && !types.includes(t.type) }"
+        :aria-pressed="types.includes(t.type)"
+        @click="toggleType(t.type)"
       >
-        <span class="ds-arc-timeline__swatch" :style="{ background: ink(t.kind) }" />
-        {{ named(t.kind) }}
+        <span class="ds-arc-timeline__swatch" :style="{ background: ink(t.type) }" />
+        {{ named(t.type) }}
         <span class="ds-arc-timeline__count">{{ t.count }}</span>
       </button>
       <span class="ds-arc-timeline__hint">
