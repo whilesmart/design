@@ -25,6 +25,14 @@ copyTree(path.join(root, 'src/tokens'), path.join(dist, 'css/tokens'))
 copyTree(path.join(root, 'src/base'), path.join(dist, 'css/base'))
 copyTree(path.join(root, 'src/assets/app-icons'), path.join(dist, 'icons'))
 
+fs.copyFileSync(path.join(root, 'src/timelines/timelines.css'), path.join(dist, 'timelines.css'))
+
+const flowStyles = path.join(root, 'node_modules/@vue-flow/core/dist/style.css')
+fs.writeFileSync(
+  path.join(dist, 'canvas.css'),
+  [fs.readFileSync(flowStyles, 'utf8'), fs.readFileSync(path.join(root, 'src/canvas/canvas.css'), 'utf8')].join('\n'),
+)
+
 const componentStyles = path.join(dist, 'style.css')
 if (!fs.existsSync(componentStyles)) throw new Error('dist/style.css is missing, run the library build first')
 

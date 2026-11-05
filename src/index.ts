@@ -7,6 +7,7 @@ import DsChip from './components/DsChip.vue'
 import DsToolbar from './components/DsToolbar.vue'
 import DsIconButton from './components/DsIconButton.vue'
 import DsSegmented from './components/DsSegmented.vue'
+import DsCalendar from './components/DsCalendar.vue'
 import DsSidebar from './components/DsSidebar.vue'
 import DsSidebarItem from './components/DsSidebarItem.vue'
 import DsSidebarGroup from './components/DsSidebarGroup.vue'
@@ -55,6 +56,12 @@ import DsChatQuestion from './components/DsChatQuestion.vue'
 import DsChatProgress from './components/DsChatProgress.vue'
 import DsChatActivity from './components/DsChatActivity.vue'
 import DsChatComposer from './components/DsChatComposer.vue'
+import DsChatQuickActions from './components/DsChatQuickActions.vue'
+import DsChatThread from './components/DsChatThread.vue'
+import DsChatLayout from './components/DsChatLayout.vue'
+import DsChatHistory from './components/DsChatHistory.vue'
+import DsChatCanvas from './components/DsChatCanvas.vue'
+import DsChatCanvasCard from './components/DsChatCanvasCard.vue'
 import DsRankingList from './components/DsRankingList.vue'
 import DsTrendChart from './components/DsTrendChart.vue'
 import DsMenu from './components/DsMenu.vue'
@@ -75,6 +82,17 @@ export { useLayoutConfig, type NavbarItem } from './composables/useLayoutConfig'
 export { useAppSwitcher, resolveAppSwitcherApps, type AppDefinition, type AppSwitcherOptions } from './composables/useAppSwitcher'
 export { appUrl, conversationUrl, isLocalHostname, type ConversationLaunchOptions, type WhileSmartApp } from './composables/useAppUrls'
 export { areaColors, areaStyle, type AreaColor } from './areas'
+export {
+  dateKey,
+  monthGrid,
+  monthKey,
+  monthRange,
+  shiftMonth,
+  weekdayLabels,
+  type CalendarDay,
+  type CalendarEvent,
+  type CalendarTone,
+} from './calendar'
 export { resolveEcosystemApps, whileSmartEcosystemApps, type EcosystemApp } from './ecosystem'
 export { useConversationSheet, buildSheetRows, sheetKey, type SheetPost } from './composables/useConversationSheet'
 
@@ -92,6 +110,7 @@ export {
   DsSidebarGroup,
   DsSearchInput,
   DsSegmented,
+  DsCalendar,
   DsHeaderSearch,
   DsAutocompleteInput,
   DsTagInput,
@@ -136,6 +155,12 @@ export {
   DsChatProgress,
   DsChatActivity,
   DsChatComposer,
+  DsChatQuickActions,
+  DsChatThread,
+  DsChatLayout,
+  DsChatHistory,
+  DsChatCanvas,
+  DsChatCanvasCard,
   DsRankingList,
   DsTrendChart,
   DsMenu,
@@ -178,6 +203,9 @@ export type { ChatOption } from './components/DsChatQuestion.vue'
 export type { ChatStep } from './components/DsChatProgress.vue'
 export type { ChatActivityItem } from './components/DsChatActivity.vue'
 export type { ChatFileType, ChatSend } from './components/DsChatComposer.vue'
+export type { ChatQuickAction } from './components/DsChatQuickActions.vue'
+export type { ChatHistoryItem } from './components/DsChatHistory.vue'
 
 export { DsViewerFrame, DsViewerContent, DsPreviewFrame } from './viewer'
 export { createPreviewDocument } from './preview-document'
+export { generatedAvatar } from './avatar'
