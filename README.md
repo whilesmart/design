@@ -171,3 +171,10 @@ import '@whilesmart/design/canvas/style.css'
 ```
 
 `DsCanvas` lays cards out in named lanes from the data alone, so the same data draws the same picture on every visit. Pass `storageKey` to keep cards where a reader dragged them. Lines come from `edges`, and `createEdgeRegistry` merges several edge sources so one failing source costs only its own lines.
+
+### Progress indicator
+
+`DsProgress` displays a bounded progress bar with an accessible `label`. Pass
+`value` and an optional `max` (100 by default). Its `tone` accepts `brand`,
+`success`, `warning`, or `danger`. Values outside the range are clamped for the
+bar; surrounding content can show the original value when it exceeds the limit.

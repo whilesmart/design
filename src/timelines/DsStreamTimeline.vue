@@ -295,7 +295,7 @@ defineExpose({ fit, show, zoomBy })
                       <DsAvatar v-for="a in c.event.actors.slice(0, 4)" :key="a.id" :name="a.name" :src="a.avatar" size="sm" />
                     </span>
                     <span v-if="c.event.count != null" class="ds-stream-timeline__count">
-                      <DsIcon name="solar:chat-line-linear" />{{ c.event.count }}
+                      <DsIcon name="solar:chat-round-line-linear" />{{ c.event.count }}
                     </span>
                     <span v-if="(touchedBy.get(c.event.id) ?? []).length" class="ds-stream-timeline__touched">
                       <span
