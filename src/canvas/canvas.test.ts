@@ -6,7 +6,7 @@ import {
   readSavedPositions,
   savePosition,
 } from './layout'
-import { createEdgeRegistry } from './edges'
+import { createEdgeRegistry, drawEdges } from './edges'
 
 const lanes = [
   { id: 'src', label: 'src/' },
@@ -155,6 +155,56 @@ describe('createEdgeRegistry', () => {
     registry.register({ type: 'path', label: 'Old', load: () => [] })
     registry.register({ type: 'path', label: 'New', load: () => [] })
     expect(registry.sources().map(s => s.label)).toEqual(['New'])
+  })
+})
+
+describe('drawEdges', () => {
+  const on = (ids: string[]) => ({ hidden: new Set<string>(), selected: null, nodeOf: (id: string) => (ids.includes(id) ? id : null) })
+
+  it('points a directed line at its target and leaves the rest plain', () => {
+    const [paid, shared] = drawEdges(
+      [
+        { id: 'paid', source: 'wallet', target: 'shop', type: 'spend', directed: true },
+        { id: 'shared', source: 'wallet', target: 'shop', type: 'people' },
+      ],
+      on(['wallet', 'shop']),
+    )
+    expect(paid.markerEnd).toBe('arrowclosed')
+    expect(shared).not.toHaveProperty('markerEnd')
+  })
+
+  it('dashes a pending line', () => {
+    const [edge] = drawEdges([{ id: 'owed', source: 'a', target: 'b', type: 'exchange', pending: true }], on(['a', 'b']))
+    expect(edge.class.split(' ')).toContain('is-pending')
+  })
+
+  it('caps thickness for large weights and treats fractions as a single link', () => {
+    const [heavy, light] = drawEdges(
+      [
+        { id: 'heavy', source: 'a', target: 'b', type: 't', weight: 412000 },
+        { id: 'light', source: 'a', target: 'b', type: 't', weight: 0.2 },
+      ],
+      on(['a', 'b']),
+    )
+    expect(heavy.style.strokeWidth).toBe('6px')
+    expect(light.style.strokeWidth).toBe('1px')
+  })
+
+  it('drops lines whose type is hidden or whose ends are missing', () => {
+    const drawn = drawEdges(
+      [
+        { id: 'off', source: 'a', target: 'b', type: 'off' },
+        { id: 'gone', source: 'a', target: 'missing', type: 't' },
+        { id: 'kept', source: 'a', target: 'b', type: 't', label: '412 000 XAF' },
+      ],
+      { ...on(['a', 'b']), hidden: new Set(['off']) },
+    )
+    expect(drawn.map(e => [e.id, e.label])).toEqual([['kept', '412 000 XAF']])
+  })
+
+  it('marks lines touching the selected card active', () => {
+    const [edge] = drawEdges([{ id: 'e', source: 'a', target: 'b', type: 't' }], { ...on(['a', 'b']), selected: 'b' })
+    expect(edge.class.split(' ')).toContain('is-active')
   })
 })
 

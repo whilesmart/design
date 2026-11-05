@@ -14,4 +14,12 @@ export {
   type PlacedLane,
   type Point,
 } from './layout'
-export { createEdgeRegistry, type CanvasEdge, type CanvasEdgeSource, type EdgeRegistry } from './edges'
+export {
+  createEdgeRegistry,
+  drawEdges,
+  type CanvasEdge,
+  type CanvasEdgeSource,
+  type DrawnEdge,
+  type DrawOptions,
+  type EdgeRegistry,
+} from './edges'

@@ -12,7 +12,7 @@ import {
 } from '@vue-flow/core'
 import DsCanvasControls from './DsCanvasControls.vue'
 import { forgetPositions, layoutLanes, readSavedPositions, savePosition, type Lane, type Point } from './layout'
-import type { CanvasEdge } from './edges'
+import { drawEdges, type CanvasEdge } from './edges'
 
 /**
  * Cards in named columns, with lines between the ones that relate. Placement comes from the
@@ -101,25 +101,9 @@ function nodeOf(id: string) {
   return null
 }
 
-const edges = computed<Edge[]>(() => {
-  const drawn: Edge[] = []
-  for (const e of props.edges) {
-    const source = nodeOf(e.source)
-    const target = nodeOf(e.target)
-    if (hidden.value.has(e.type) || !source || !target || source === target) continue
-    const active = props.selected && (e.source === props.selected || e.target === props.selected)
-    drawn.push({
-      id: e.id,
-      source,
-      target,
-      type: 'smoothstep',
-      class: ['ds-canvas-edge', `ds-canvas-edge--${e.type}`, active ? 'is-active' : ''].join(' '),
-      style: { strokeWidth: `${Math.min(1 + Math.log2(e.weight ?? 1), 6)}px` },
-      label: e.label,
-    })
-  }
-  return drawn
-})
+const edges = computed<Edge[]>(() =>
+  drawEdges(props.edges, { hidden: hidden.value, selected: props.selected, nodeOf }),
+)
 
 function toggle(type: string) {
   const next = new Set(hidden.value)

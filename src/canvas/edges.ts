@@ -15,6 +15,52 @@ export interface CanvasEdge {
   label?: string
   /** How much it carries, drawn as thickness. One is a single link. */
   weight?: number
+  /** Draws an arrowhead at the target, for relations that run one way. */
+  directed?: boolean
+  /** Draws the line dashed, for a relation that is expected but not yet complete. */
+  pending?: boolean
+}
+
+export interface DrawnEdge {
+  id: string
+  source: string
+  target: string
+  type: 'smoothstep'
+  class: string
+  style: { strokeWidth: string }
+  label?: string
+  markerEnd?: 'arrowclosed'
+}
+
+export interface DrawOptions {
+  hidden: Set<string>
+  selected: string | null
+  /** The node an edge end attaches to, or null when there is none on the canvas. */
+  nodeOf(id: string): string | null
+}
+
+/** The edges the reader can see, in the shape the flow renderer takes. */
+export function drawEdges(edges: CanvasEdge[], { hidden, selected, nodeOf }: DrawOptions): DrawnEdge[] {
+  const drawn: DrawnEdge[] = []
+  for (const e of edges) {
+    const source = nodeOf(e.source)
+    const target = nodeOf(e.target)
+    if (hidden.has(e.type) || !source || !target || source === target) continue
+    const active = !!selected && (e.source === selected || e.target === selected)
+    drawn.push({
+      id: e.id,
+      source,
+      target,
+      type: 'smoothstep',
+      class: ['ds-canvas-edge', `ds-canvas-edge--${e.type}`, active ? 'is-active' : '', e.pending ? 'is-pending' : '']
+        .filter(Boolean)
+        .join(' '),
+      style: { strokeWidth: `${Math.min(1 + Math.log2(Math.max(e.weight ?? 1, 1)), 6)}px` },
+      label: e.label,
+      ...(e.directed ? { markerEnd: 'arrowclosed' as const } : {}),
+    })
+  }
+  return drawn
 }
 
 export interface CanvasEdgeSource<Subject> {

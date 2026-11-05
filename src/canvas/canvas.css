@@ -43,6 +43,7 @@
 
 .ds-canvas .ds-canvas-edge path { stroke: color-mix(in srgb, var(--ds-text-muted) 55%, transparent); }
 .ds-canvas .ds-canvas-edge.is-active path { stroke: var(--ds-interactive-primary); }
+.ds-canvas .ds-canvas-edge.is-pending path { stroke-dasharray: 6 5; }
 .ds-canvas .vue-flow__edge-textbg { fill: var(--ds-bg-surface); }
 .ds-canvas .vue-flow__edge-text { fill: var(--ds-text-muted); font-size: 11px; }
 
