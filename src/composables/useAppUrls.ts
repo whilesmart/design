@@ -1,3 +1,5 @@
+import { reactive } from 'vue'
+
 export type WhileSmartApp =
   | 'accounts'
   | 'calendar'
@@ -68,8 +70,20 @@ export function currentHostname(): string {
   return typeof window === 'undefined' ? '' : window.location.hostname
 }
 
+// A library build replaces import.meta.env when it is built, not where it is
+// installed, so an app outside this repository sets its addresses here. Reactive,
+// so a launcher already on screen follows addresses that arrive after it.
+const runtimeUrls = reactive<Partial<Record<WhileSmartApp, string>>>({})
+
+export function configureAppUrls(urls: Partial<Record<WhileSmartApp, string | undefined>>): void {
+  for (const [app, url] of Object.entries(urls) as [WhileSmartApp, string | undefined][]) {
+    if (url) runtimeUrls[app] = url
+    else delete runtimeUrls[app]
+  }
+}
+
 export function appUrl(app: WhileSmartApp, hostname = currentHostname()): string {
-  const configuredUrl = configuredUrls[app]
+  const configuredUrl = runtimeUrls[app] || configuredUrls[app]
   if (configuredUrl) return configuredUrl.replace(/\/$/, '')
   return isLocalHostname(hostname) ? localUrls[app] : productionUrls[app]
 }

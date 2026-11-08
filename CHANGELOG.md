@@ -10,6 +10,9 @@ All notable changes to the WhileSmart design system are documented in this file.
   it (`.ds-shell-page`), product wordmarks, the app launcher mark, and Meet, Docs, Slides and
   Mindpad in the launcher with Mindpad and Console kept last.
 - `DsWorkspaceSwitcher`: choose between personal and organisation workspaces from the rail.
+- `configureAppUrls()`: an app outside this repository sets where the launcher, the account
+  menu and `appUrl()` send people. `VITE_*_URL` variables are read when this package is
+  built, so they never reached an installed copy.
 - `DashboardLayout` takes an `assistant` slot, shown once someone is signed in, and makes
   room for it at the bottom of the page.
 - Dark theme status colours that keep their contrast on a dark ground.
