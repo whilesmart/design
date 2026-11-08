@@ -26,4 +26,10 @@ describe('the Desk shell', () => {
   it('opens the launcher from a labelled control', async () => {
     expect(await render({ user })).toContain('aria-label="Whilesmart apps"')
   })
+
+  it('gives the bar\'s middle back to its ends when nothing sits there', async () => {
+    expect(await render({ user })).toContain('navbar--plain')
+    const search = () => h('input', { type: 'search' })
+    expect(await render({ user }, { 'navbar-center': search })).not.toContain('navbar--plain')
+  })
 })

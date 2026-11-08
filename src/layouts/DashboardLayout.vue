@@ -94,6 +94,7 @@ const resolvedWorkspaceBranding = computed(() => ({
   ...props.workspaceBranding
 }))
 const slots = useSlots()
+const hasCenter = computed(() => Boolean(slots['navbar-center']) || centerNavbarItems.value.length > 0)
 const resolvedWorkspaceAppMark = computed(() => {
   const branding = resolvedWorkspaceBranding.value
   if (branding.appMarkUrl) return branding.appMarkUrl
@@ -173,7 +174,7 @@ onUnmounted(() => {
       :show-app-mark="false"
       :show-organization-mark="resolvedWorkspaceBranding.showOrganizationMark"
     />
-    <nav class="navbar">
+    <nav class="navbar" :class="{ 'navbar--plain': !hasCenter }">
       <div class="navbar-left">
         <a
           :href="layoutConfig.appHomeLink.value"
@@ -325,8 +326,17 @@ onUnmounted(() => {
   z-index: var(--ds-z-fixed);
 }
 
+.navbar--plain {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.navbar--plain .navbar-right {
+  grid-column: 2;
+}
+
 .navbar-left {
   grid-column: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: var(--ds-space-3);
@@ -669,6 +679,10 @@ onUnmounted(() => {
   .navbar {
     grid-template-columns: auto minmax(10rem, 1fr) auto;
     padding: 0 var(--ds-space-4);
+  }
+
+  .navbar--plain {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .brand-text,
