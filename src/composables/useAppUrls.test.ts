@@ -7,9 +7,10 @@ afterEach(() => configureAppUrls({ desk: undefined, files: undefined }))
 
 describe('app addresses set by the installing app', () => {
   it('replace the built-in address for that app only', () => {
+    const mail = appUrl('mail', 'pages.example.test')
     configureAppUrls({ desk: 'https://desk.example.test/' })
     expect(appUrl('desk', 'pages.example.test')).toBe('https://desk.example.test')
-    expect(appUrl('mail', 'pages.example.test')).toBe('https://mail.whilesmart.com')
+    expect(appUrl('mail', 'pages.example.test')).toBe(mail)
   })
 
   it('reach a launcher that is already on screen', () => {
@@ -21,8 +22,9 @@ describe('app addresses set by the installing app', () => {
   })
 
   it('fall back to the built-in address when cleared', () => {
+    const builtIn = appUrl('desk', 'pages.example.test')
     configureAppUrls({ desk: 'https://desk.example.test' })
     configureAppUrls({ desk: undefined })
-    expect(appUrl('desk', 'pages.example.test')).toBe('https://desk.whilesmart.com')
+    expect(appUrl('desk', 'pages.example.test')).toBe(builtIn)
   })
 })
