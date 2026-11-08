@@ -71,3 +71,32 @@ code {
   outline: 2px solid var(--ds-border-focus);
   outline-offset: 2px;
 }
+
+.ds-shell-page {
+  position: relative;
+  isolation: isolate;
+  margin: 0 var(--ds-shell-gutter) var(--ds-shell-gutter) 0;
+  border: 1px solid var(--ds-shell-edge);
+  border-radius: var(--ds-radius-card);
+  background: var(--ds-shell-page);
+  box-shadow: var(--ds-elevation-1), 0 0 0 4px color-mix(in srgb, var(--ds-shell-edge) 18%, transparent);
+  overflow: hidden;
+}
+
+.ds-shell-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ds-workspace-app-mark-image, none) center 58% / clamp(9rem, 19vw, 17rem) no-repeat;
+  opacity: var(--ds-workspace-app-mark-opacity);
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .ds-shell-page {
+    margin: 0;
+    border-width: 1px 0 0;
+    border-radius: 0;
+  }
+}

@@ -6,6 +6,14 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Added
 
+- The Desk shell as Desk ships it: navbar and rail on one ground with the page as a card on
+  it (`.ds-shell-page`), product wordmarks, the app launcher mark, and Meet, Docs, Slides and
+  Mindpad in the launcher with Mindpad and Console kept last.
+- `DsWorkspaceSwitcher`: choose between personal and organisation workspaces from the rail.
+- `DashboardLayout` takes an `assistant` slot, shown once someone is signed in, and makes
+  room for it at the bottom of the page.
+- Dark theme status colours that keep their contrast on a dark ground.
+
 - `DsChatQuickActions`: the things a chat can start with, as grouped cards with an icon,
   title and detail, or as pills that wrap or keep to one scrolling row; each takes an area
   colour and the one in use is marked.
@@ -66,6 +74,9 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Changed for existing installations
 
+- The Support button in `DashboardLayout` appears only when `supportUrl` is given, and links
+  there.
+- Files is named Drive in the launcher and the ecosystem strip.
 Nothing was removed from the public API. Three defaults changed.
 
 - The selected sidebar item is a light, translucent fill with a thin ring, and its icon tile

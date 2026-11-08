@@ -9,8 +9,8 @@
   --ds-bg-muted: var(--ds-color-neutral-100);
   --ds-bg-overlay: rgba(0, 0, 0, 0.5);
   --ds-workspace-bg: var(--ds-color-neutral-100);
-  --ds-workspace-app-mark-opacity: 0.075;
-  --ds-workspace-organization-mark-opacity: 0.055;
+  --ds-workspace-app-mark-opacity: 0.06;
+  --ds-workspace-organization-mark-opacity: 0.04;
   --ds-create-action-bg: var(--ds-interactive-primary);
   --ds-create-action-border: var(--ds-color-primary-700);
   --ds-viewer-backdrop: rgba(15, 23, 42, 0.56);
@@ -78,8 +78,8 @@
   --ds-bg-muted: var(--ds-color-neutral-700);
   --ds-bg-overlay: rgba(0, 0, 0, 0.7);
   --ds-workspace-bg: var(--ds-color-neutral-900);
-  --ds-workspace-app-mark-opacity: 0.11;
-  --ds-workspace-organization-mark-opacity: 0.09;
+  --ds-workspace-app-mark-opacity: 0.09;
+  --ds-workspace-organization-mark-opacity: 0.06;
   --ds-create-action-bg: var(--ds-interactive-primary);
   --ds-create-action-border: var(--ds-color-primary-300);
   --ds-viewer-backdrop: rgba(2, 6, 23, 0.74);
@@ -102,6 +102,16 @@
   --ds-interactive-primary: var(--ds-color-primary-400);
   --ds-interactive-primary-hover: var(--ds-color-primary-300);
   --ds-interactive-primary-active: var(--ds-color-primary-200);
+
+  /* Status */
+  --ds-status-success-bg: color-mix(in srgb, var(--ds-color-success-500) 18%, var(--ds-color-neutral-900));
+  --ds-status-success-text: var(--ds-color-success-300);
+  --ds-status-warning-bg: color-mix(in srgb, var(--ds-color-warning-500) 18%, var(--ds-color-neutral-900));
+  --ds-status-warning-text: var(--ds-color-warning-300);
+  --ds-status-error-bg: color-mix(in srgb, var(--ds-color-error-500) 20%, var(--ds-color-neutral-900));
+  --ds-status-error-text: var(--ds-color-error-100);
+  --ds-status-info-bg: color-mix(in srgb, var(--ds-color-info-500) 18%, var(--ds-color-neutral-900));
+  --ds-status-info-text: var(--ds-color-info-100);
 
   --ds-chat-sidebar-ink: var(--ds-chat-sidebar-read-ink);
   --ds-chat-sidebar-ink-unread: var(--ds-chat-unread-ink);

@@ -7,6 +7,7 @@ export type WhileSmartApp =
   | 'files'
   | 'mail'
   | 'mailadmin'
+  | 'meet'
   | 'mindpad'
   | 'moments'
   | 'platform'
@@ -17,9 +18,10 @@ const productionUrls: Record<WhileSmartApp, string> = {
   chat: 'https://chat.whilesmart.com',
   console: 'https://console.whilesmart.com',
   desk: 'https://desk.whilesmart.com',
-  files: 'https://files.whilesmart.com',
+  files: 'https://drive.whilesmart.com',
   mail: 'https://mail.whilesmart.com',
   mailadmin: 'https://mailadmin.whilesmart.com',
+  meet: 'https://meet.whilesmart.com',
   mindpad: 'https://mindpad.whilesmart.com',
   moments: 'https://moments.whilesmart.com',
   platform: 'https://platform.whilesmart.com'
@@ -34,7 +36,8 @@ const localUrls: Record<WhileSmartApp, string> = {
   files: 'http://localhost:3004',
   mail: 'http://localhost:3002',
   mailadmin: 'http://localhost:8088',
-  mindpad: productionUrls.mindpad,
+  meet: 'http://localhost:3011',
+  mindpad: 'http://localhost:3009',
   moments: 'http://localhost:3006',
   platform: 'http://localhost:3008'
 }
@@ -48,6 +51,7 @@ const configuredUrls: Partial<Record<WhileSmartApp, string>> = {
   files: import.meta.env.VITE_FILES_URL,
   mail: import.meta.env.VITE_MAIL_URL,
   mailadmin: import.meta.env.VITE_MAILADMIN_URL,
+  meet: import.meta.env.VITE_MEET_URL,
   mindpad: import.meta.env.VITE_MINDPAD_URL,
   moments: import.meta.env.VITE_MOMENTS_URL,
   platform: import.meta.env.VITE_PLATFORM_URL

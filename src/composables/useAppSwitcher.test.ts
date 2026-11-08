@@ -26,6 +26,15 @@ describe('resolveAppSwitcherApps', () => {
     expect(apps.some(app => app.id === 'mail')).toBe(true)
   })
 
+  it('offers Docs from Drive and Drive from Docs', () => {
+    const fromDrive = resolveAppSwitcherApps({ currentAppId: 'files' })
+    const fromDocs = resolveAppSwitcherApps({ currentAppId: 'docs' })
+
+    expect(fromDrive.find(app => app.id === 'docs')?.url).toMatch(/\/docs$/)
+    expect(fromDocs.some(app => app.id === 'files')).toBe(true)
+    expect(fromDocs.some(app => app.id === 'docs')).toBe(false)
+  })
+
   it('can retain the current app', () => {
     const apps = resolveAppSwitcherApps({ currentAppId: 'files', includeCurrentApp: true })
 
@@ -48,5 +57,11 @@ describe('resolveAppSwitcherApps', () => {
 
     expect(apps.find(app => app.id === 'mail')).toEqual(replacement)
     expect(apps.filter(app => app.id === 'mail')).toHaveLength(1)
+  })
+
+  it('keeps Mindpad second to last and Console last, after custom apps', () => {
+    const ids = resolveAppSwitcherApps({ additionalApps: [customApp] }).map(app => app.id)
+
+    expect(ids.slice(-3)).toEqual(['crm', 'mindpad', 'console'])
   })
 })

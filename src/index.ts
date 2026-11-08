@@ -70,6 +70,7 @@ import DsMenuItem from './components/DsMenuItem.vue'
 import DsMenuSeparator from './components/DsMenuSeparator.vue'
 import DsAccountMenu from './components/DsAccountMenu.vue'
 import DsWorkspaceMenu from './components/DsWorkspaceMenu.vue'
+import DsWorkspaceSwitcher from './components/DsWorkspaceSwitcher.vue'
 import DsTabs from './components/DsTabs.vue'
 
 // Layouts
@@ -169,6 +170,7 @@ export {
   DsMenuSeparator,
   DsAccountMenu,
   DsWorkspaceMenu,
+  DsWorkspaceSwitcher,
   DsTabs,
 }
 export { ConsoleLayout, DashboardLayout, PublicLayout }
@@ -181,6 +183,7 @@ export type { SearchFilterOption, SearchProvider, SearchSuggestion } from './com
 export type { TagInputValue } from './components/DsTagInput.vue'
 export type { DataTableColumn } from './components/DsDataTable.vue'
 export type { WorkspaceOption } from './components/workspaceMenu'
+export type { WorkspaceOwner } from './components/DsWorkspaceSwitcher.vue'
 export type { ProductLandingItem, ProductLandingSpecimen } from './components/DsProductLanding.vue'
 export type { WorkspaceBrandingConfig } from './components/DsWorkspaceBackdrop.vue'
 export type { ConversationParticipant, ConversationContextItem } from './components/DsConversationContext.vue'
@@ -209,3 +212,4 @@ export type { ChatHistoryItem } from './components/DsChatHistory.vue'
 export { DsViewerFrame, DsViewerContent, DsPreviewFrame } from './viewer'
 export { createPreviewDocument } from './preview-document'
 export { generatedAvatar } from './avatar'
+export { appWordmarks, type WordmarkProduct } from './assets/wordmarks'

@@ -3,7 +3,7 @@ import { resolveEcosystemApps, whileSmartEcosystemApps } from './ecosystem'
 
 describe('resolveEcosystemApps', () => {
   it('lists apps without treating the Desk suite as an app', () => {
-    expect(whileSmartEcosystemApps.map((app) => app.id)).toEqual(['mail', 'files', 'calendar', 'chat', 'moments'])
+    expect(whileSmartEcosystemApps.map((app) => app.id)).toEqual(['mail', 'files', 'calendar', 'meet', 'chat', 'moments', 'mindpad'])
   })
 
   it('omits the current app and resolves every remaining destination', () => {

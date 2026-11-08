@@ -17,8 +17,8 @@ withDefaults(defineProps<{
 }>(), {
   appMarkUrl: undefined,
   organizationMarkUrl: '/whilesmart-icon.svg',
-  organizationName: 'WhileSmart',
-  showAppMark: true,
+  organizationName: 'Whilesmart',
+  showAppMark: false,
   showOrganizationMark: true
 })
 </script>
@@ -60,6 +60,11 @@ withDefaults(defineProps<{
   opacity: var(--ds-workspace-app-mark-opacity);
   transform: translate(-50%, -50%);
   filter: saturate(0.88) contrast(1.08);
+  mix-blend-mode: multiply;
+}
+
+:global([data-theme="dark"] .workspace-backdrop__app-mark) {
+  mix-blend-mode: screen;
 }
 
 .workspace-backdrop__organization {
@@ -76,6 +81,11 @@ withDefaults(defineProps<{
   height: 100%;
   object-fit: contain;
   filter: saturate(0.82) contrast(1.04);
+  mix-blend-mode: multiply;
+}
+
+:global([data-theme="dark"] .workspace-backdrop__organization img) {
+  mix-blend-mode: screen;
 }
 
 @media (max-width: 768px) {

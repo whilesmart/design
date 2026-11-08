@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted, useSlots } from 'vue'
 import { useLayoutConfig } from '../composables/useLayoutConfig'
 import { resolveAppSwitcherApps, type AppDefinition } from '../composables/useAppSwitcher'
 import DsIcon from '../components/DsIcon.vue'
 import DsAvatar from '../components/DsAvatar.vue'
 import DsButton from '../components/DsButton.vue'
 import DsWorkspaceBackdrop, { type WorkspaceBrandingConfig } from '../components/DsWorkspaceBackdrop.vue'
+const launcherIcon = new URL('../assets/launcher.svg', import.meta.url).href
+import { appWordmarks } from '../assets/wordmarks'
 
 export interface User {
   first_name: string
@@ -24,6 +26,7 @@ interface Props {
   currentAppId?: string
   brandIconUrl?: string
   workspaceBranding?: WorkspaceBrandingConfig
+  supportUrl?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -34,7 +37,8 @@ const props = withDefaults(defineProps<Props>(), {
   includeCurrentApp: false,
   currentAppId: undefined,
   brandIconUrl: undefined,
-  workspaceBranding: undefined
+  workspaceBranding: undefined,
+  supportUrl: undefined
 })
 
 const emit = defineEmits<{
@@ -63,6 +67,12 @@ const allApps = computed(() => resolveAppSwitcherApps({
 const isIconifyIcon = (icon: string): icon is `solar:${string}` | `material-symbols:${string}` =>
   icon.startsWith('solar:') || icon.startsWith('material-symbols:')
 
+const brandWordmark = computed(() =>
+  !props.brandIconUrl && props.currentAppId && props.currentAppId in appWordmarks
+    ? appWordmarks[props.currentAppId as keyof typeof appWordmarks]
+    : undefined
+)
+
 const resolvedBrandIconUrl = computed(() => {
   if (props.brandIconUrl) return props.brandIconUrl
   if (props.currentAppId) {
@@ -83,6 +93,7 @@ const resolvedWorkspaceBranding = computed(() => ({
   ...runtimeBranding.value,
   ...props.workspaceBranding
 }))
+const slots = useSlots()
 const resolvedWorkspaceAppMark = computed(() => {
   const branding = resolvedWorkspaceBranding.value
   if (branding.appMarkUrl) return branding.appMarkUrl
@@ -90,6 +101,10 @@ const resolvedWorkspaceAppMark = computed(() => {
   if (props.currentAppId) return allApps.value.find(app => app.id === props.currentAppId)?.icon
   return undefined
 })
+
+const workspaceMarkStyle = computed(() => resolvedWorkspaceBranding.value.showAppMark !== false && resolvedWorkspaceAppMark.value
+  ? { '--ds-workspace-app-mark-image': `url("${resolvedWorkspaceAppMark.value}")` }
+  : undefined)
 
 const userName = computed(() => props.user ? `${props.user.first_name} ${props.user.last_name}`.trim() : 'User')
 
@@ -150,12 +165,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="layout">
+  <div class="layout" :style="workspaceMarkStyle">
     <DsWorkspaceBackdrop
       :app-mark-url="resolvedWorkspaceAppMark"
       :organization-mark-url="resolvedWorkspaceBranding.organizationMarkUrl"
       :organization-name="resolvedWorkspaceBranding.organizationName"
-      :show-app-mark="resolvedWorkspaceBranding.showAppMark"
+      :show-app-mark="false"
       :show-organization-mark="resolvedWorkspaceBranding.showOrganizationMark"
     />
     <nav class="navbar">
@@ -165,8 +180,15 @@ onUnmounted(() => {
           class="brand"
           @click.prevent="handleNavigateHome"
         >
-          <img :src="resolvedBrandIconUrl" alt="WhileSmart" class="brand-icon" />
-          <span class="brand-text">{{ layoutConfig.appName.value }}</span>
+          <template v-if="brandWordmark">
+            <img :src="brandWordmark.light" :alt="`Whilesmart ${layoutConfig.appName.value}`" class="brand-wordmark brand-wordmark--light" />
+            <img :src="brandWordmark.dark" alt="" class="brand-wordmark brand-wordmark--dark" />
+            <img :src="resolvedBrandIconUrl" :alt="`Whilesmart ${layoutConfig.appName.value}`" class="brand-icon brand-icon--compact" />
+          </template>
+          <template v-else>
+            <img :src="resolvedBrandIconUrl" alt="Whilesmart" class="brand-icon" />
+            <span class="brand-text">{{ layoutConfig.appName.value }}</span>
+          </template>
         </a>
         <slot name="navbar-left" />
         <component
@@ -193,17 +215,21 @@ onUnmounted(() => {
           :is="item.component"
         />
 
-        <button class="icon-btn help-btn" title="Support">
+        <a v-if="supportUrl" class="icon-btn help-btn" :href="supportUrl" title="Support" aria-label="Support">
           <DsIcon name="solar:question-circle-linear" />
-        </button>
+        </a>
 
         <div class="apps-menu-container">
           <button
+            type="button"
             class="icon-btn apps-btn"
+            :class="{ 'apps-btn--open': appsMenuOpen }"
+            :aria-expanded="appsMenuOpen"
+            aria-label="Whilesmart apps"
+            title="Whilesmart apps"
             @click.stop="appsMenuOpen = !appsMenuOpen"
-            title="WhileSmart Apps"
           >
-            <DsIcon name="solar:widget-4-bold-duotone" />
+            <img :src="launcherIcon" alt="" class="apps-btn__icon" width="24" height="24" />
           </button>
 
           <div v-if="appsMenuOpen" class="apps-dropdown">
@@ -229,7 +255,7 @@ onUnmounted(() => {
           <button
             class="user-btn"
             @click.stop="userMenuOpen = !userMenuOpen"
-            :title="`WhileSmart Account\n${user.email}`"
+            :title="`Whilesmart Account\n${user.email}`"
           >
             <DsAvatar :src="user.avatar_url || user.avatar" :name="userName" />
           </button>
@@ -244,9 +270,12 @@ onUnmounted(() => {
                 <div class="user-email">{{ user.email }}</div>
               </div>
             </div>
+            <div v-if="$slots['user-menu']" class="user-dropdown-section">
+              <slot name="user-menu" :close="() => { userMenuOpen = false }" />
+            </div>
             <div class="user-dropdown-actions">
               <DsButton variant="secondary" full-width @click="handleNavigateToApp('accounts')">
-                Manage your WhileSmart Account
+                Manage your Whilesmart Account
               </DsButton>
             </div>
             <div class="user-dropdown-footer">
@@ -257,10 +286,11 @@ onUnmounted(() => {
       </div>
     </nav>
 
-    <main :class="['main-content', { 'full-width': layoutConfig.fullWidth.value }]">
+    <main :class="['main-content', { 'full-width': layoutConfig.fullWidth.value, 'main-content--assisted': !!slots.assistant }]">
       <slot />
     </main>
 
+    <slot v-if="user" name="assistant" />
     <footer v-if="layoutConfig.showFooter.value" class="footer">
       <div class="footer-links">
         <a href="#">Privacy Policy</a>
@@ -274,7 +304,7 @@ onUnmounted(() => {
 <style scoped>
 .layout {
   min-height: 100vh;
-  background: var(--ds-bg-surface);
+  background: var(--ds-shell-ground);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -285,8 +315,7 @@ onUnmounted(() => {
   position: sticky;
   top: 0;
   height: var(--ds-navbar-height);
-  background: color-mix(in srgb, var(--ds-bg-elevated) 86%, transparent);
-  backdrop-filter: blur(16px);
+  background: var(--ds-shell-ground);
   display: grid;
   grid-template-columns: minmax(10rem, 1fr) minmax(20rem, var(--ds-header-search-max-width)) minmax(10rem, 1fr);
   gap: clamp(var(--ds-space-3), 2vw, var(--ds-space-6));
@@ -294,8 +323,6 @@ onUnmounted(() => {
   justify-content: space-between;
   padding: 0 var(--ds-space-6);
   z-index: var(--ds-z-fixed);
-  border-bottom: 1px solid var(--ds-border-base);
-  box-shadow: var(--ds-elevation-1);
 }
 
 .navbar-left {
@@ -332,6 +359,25 @@ onUnmounted(() => {
   height: 2rem;
 }
 
+.brand-wordmark {
+  display: block;
+  width: auto;
+  height: 2.5rem;
+}
+
+.brand-wordmark--dark,
+.brand-icon--compact {
+  display: none;
+}
+
+:global([data-theme="dark"] .brand-wordmark--light) {
+  display: none;
+}
+
+:global([data-theme="dark"] .brand-wordmark--dark) {
+  display: block;
+}
+
 .brand-text {
   font-size: 1.375rem;
   font-weight: var(--ds-font-weight-normal);
@@ -342,15 +388,16 @@ onUnmounted(() => {
   grid-column: 3;
   display: flex;
   align-items: center;
-  gap: var(--ds-space-2);
+  gap: var(--ds-space-1);
   justify-content: flex-end;
 }
 
 .icon-btn {
   background: none;
   border: none;
-  padding: var(--ds-space-3);
-  border-radius: var(--ds-radius-full);
+  padding: var(--ds-space-2);
+  border-radius: var(--ds-radius-control);
+  font-size: 1.25rem;
   color: var(--ds-text-secondary);
   cursor: pointer;
   transition: background var(--ds-transition-fast);
@@ -360,11 +407,21 @@ onUnmounted(() => {
 }
 
 .icon-btn:hover {
-  background: var(--ds-bg-surface);
+  background: var(--ds-shell-hover);
 }
 
 .apps-menu-container {
   position: relative;
+}
+
+.apps-btn__icon {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.apps-btn--open {
+  background: var(--ds-shell-hover);
 }
 
 .apps-dropdown {
@@ -408,6 +465,10 @@ onUnmounted(() => {
   background: var(--ds-bg-surface);
 }
 
+.app-item {
+  border-radius: var(--ds-radius-control);
+}
+
 .app-icon-wrapper {
   width: 3rem;
   height: 3rem;
@@ -433,7 +494,7 @@ onUnmounted(() => {
 
 .user-menu {
   position: relative;
-  margin-left: var(--ds-space-2);
+  margin-left: var(--ds-space-1);
 }
 
 .user-btn {
@@ -517,6 +578,11 @@ onUnmounted(() => {
   text-overflow: ellipsis;
 }
 
+.user-dropdown-section {
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-border-base);
+}
+
 .user-dropdown-actions {
   padding: var(--ds-space-4);
   border-bottom: 1px solid var(--ds-border-base);
@@ -545,13 +611,23 @@ onUnmounted(() => {
 
 .main-content {
   flex: 1;
-  max-width: 1200px;
+  max-width: 90rem;
   width: 100%;
   margin: 0 auto;
   padding: var(--ds-space-6);
   position: relative;
   z-index: 1;
   overflow-x: hidden;
+}
+
+.main-content--assisted {
+  padding-bottom: calc(var(--ds-space-6) + var(--ds-assistant-clearance));
+}
+
+.main-content :deep(.ds-sidebar) {
+  --ds-bg-hover: var(--ds-shell-hover);
+  border-right: 0;
+  background: var(--ds-shell-ground);
 }
 
 .main-content.full-width {
@@ -596,8 +672,14 @@ onUnmounted(() => {
   }
 
   .brand-text,
-  .help-btn {
+  .help-btn,
+  .brand-wordmark,
+  :global([data-theme="dark"] .brand-wordmark--dark) {
     display: none;
+  }
+
+  .brand-icon--compact {
+    display: block;
   }
 
   .main-content {

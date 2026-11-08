@@ -21,57 +21,22 @@ export interface AppSwitcherOptions {
 
 function defaultApps(): AppDefinition[] {
   return [
-  {
-    id: 'mail',
-    name: 'Mail',
-    url: appUrl('mail'),
-    icon: appIcons.mail,
-    description: 'Email management'
-  },
-  {
-    id: 'console',
-    name: 'Console',
-    url: appUrl('console'),
-    icon: appIcons.console,
-    description: 'Organization management'
-  },
-  {
-    id: 'files',
-    name: 'Files',
-    url: appUrl('files'),
-    icon: appIcons.files,
-    description: 'File storage and sharing'
-  },
-  {
-    id: 'calendar',
-    name: 'Calendar',
-    url: appUrl('calendar'),
-    icon: appIcons.calendar,
-    description: 'Events and scheduling'
-  },
-  {
-    id: 'chat',
-    name: 'Chat',
-    url: appUrl('chat'),
-    icon: appIcons.chat,
-    description: 'Workplace conversations'
-  },
-  {
-    id: 'moments',
-    name: 'Moments',
-    url: appUrl('moments'),
-    icon: appIcons.moments,
-    description: 'Capture and share memories'
-  },
-  {
-    id: 'accounts',
-    name: 'Account',
-    url: appUrl('accounts'),
-    icon: appIcons.accounts,
-    description: 'Manage your account'
-  }
-]
+    { id: 'meet', name: 'Meet', url: appUrl('meet'), icon: appIcons.meet, description: 'Video meetings and shared notes' },
+    { id: 'mail', name: 'Mail', url: appUrl('mail'), icon: appIcons.mail, description: 'Email management' },
+    { id: 'files', name: 'Drive', url: appUrl('files'), icon: appIcons.files, description: 'File storage and sharing' },
+    { id: 'docs', name: 'Docs', url: `${appUrl('files')}/docs`, icon: appIcons.docs, description: 'Documents and spreadsheets' },
+    { id: 'slides', name: 'Slides', url: `${appUrl('files')}/slides`, icon: appIcons.slides, description: 'Presentations and slide decks' },
+    { id: 'calendar', name: 'Calendar', url: appUrl('calendar'), icon: appIcons.calendar, description: 'Events and scheduling' },
+    { id: 'chat', name: 'Chat', url: appUrl('chat'), icon: appIcons.chat, description: 'Workplace conversations' },
+    { id: 'moments', name: 'Moments', url: appUrl('moments'), icon: appIcons.moments, description: 'Capture and share memories' },
+    { id: 'accounts', name: 'Account', url: appUrl('accounts'), icon: appIcons.accounts, description: 'Manage your account' },
+    { id: 'mindpad', name: 'Mindpad', url: appUrl('mindpad'), icon: appIcons.mindpad, description: 'Notes and collaborative pads' },
+    { id: 'console', name: 'Console', url: appUrl('console'), icon: appIcons.console, description: 'Organization management' }
+  ]
 }
+
+// Added apps join before these, so the suite's own tools stay at the end of the launcher.
+const trailingAppIds = ['mindpad', 'console']
 
 export function resolveAppSwitcherApps(options: AppSwitcherOptions = {}): AppDefinition[] {
   const merged = [...(options.apps || defaultApps())]
@@ -83,7 +48,10 @@ export function resolveAppSwitcherApps(options: AppSwitcherOptions = {}): AppDef
 
   const excluded = new Set(options.excludeAppIds || [])
   if (!options.includeCurrentApp && options.currentAppId) excluded.add(options.currentAppId)
-  return merged.filter(app => !excluded.has(app.id))
+  const rank = (app: AppDefinition) => trailingAppIds.indexOf(app.id)
+  return merged
+    .filter(app => !excluded.has(app.id))
+    .sort((a, b) => rank(a) - rank(b))
 }
 
 export function useAppSwitcher(options: AppDefinition[] | AppSwitcherOptions = {}) {
