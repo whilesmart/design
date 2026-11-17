@@ -49,6 +49,13 @@ function close() {
   open.value = false
 }
 
+// Opening a menu that lives in the drawer must not close the drawer under it;
+// choosing an item from that menu still does.
+function closeUnlessMenu(event: MouseEvent) {
+  if ((event.target as Element | null)?.closest?.('.ds-menu__trigger')) return
+  close()
+}
+
 function lockScroll(locked: boolean) {
   if (typeof document === 'undefined') return
   document.body.style.overflow = locked ? 'hidden' : ''
@@ -106,7 +113,7 @@ onBeforeUnmount(() => lockScroll(false))
         </button>
       </template>
 
-      <div v-if="slots.create" class="ds-console__create" @click="close">
+      <div v-if="slots.create" class="ds-console__create" @click="closeUnlessMenu">
         <slot name="create" :collapsed="folded" />
       </div>
 
@@ -115,7 +122,7 @@ onBeforeUnmount(() => lockScroll(false))
       </div>
 
       <template #footer>
-        <div class="ds-console__foot" @click="close">
+        <div class="ds-console__foot" @click="closeUnlessMenu">
           <slot name="rail-footer" :collapsed="folded" />
         </div>
         <button
