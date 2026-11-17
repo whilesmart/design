@@ -5,6 +5,7 @@ import DsConsoleShell from './DsConsoleShell.vue'
 import DsSidebarGroup from './DsSidebarGroup.vue'
 import DsSidebarItem from './DsSidebarItem.vue'
 import ConsoleLayout from '../layouts/ConsoleLayout.vue'
+import DsCreateButton from './DsCreateButton.vue'
 
 const render = (props: Record<string, unknown> = {}, slots: Record<string, () => unknown> = {}) =>
   renderToString(createSSRApp({ render: () => h(DsConsoleShell, props, slots) }))
@@ -133,6 +134,13 @@ describe('a collapsible rail', () => {
     expect(html).toContain('>Requests<')
     expect(html).toContain('ds-sidebar-group--folded')
     expect(html).toContain('>Compliance<')
+  })
+
+  it('shrinks the create button to its plus and keeps its name', async () => {
+    const html = await layout({ collapsible: true, collapsed: true }, { create: () => h(DsCreateButton, { label: 'Create' }) })
+    expect(html).toContain('ds-create-button--folded')
+    expect(html).toContain('title="Create"')
+    expect(html).toContain('>Create<')
   })
 
   it('tells the brand, create and footer slots whether the rail is folded', async () => {
