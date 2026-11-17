@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import DsIcon from './DsIcon.vue'
 import { areaStyle, type AreaColor } from '../areas'
+import { railCollapsedKey } from '../rail'
 
 const props = withDefaults(defineProps<{
   active?: boolean
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<{
 
 defineEmits<{ click: [] }>()
 
+const folded = inject(railCollapsedKey, ref(false))
 const tag = computed(() => (props.to ? RouterLink : props.href ? 'a' : 'button'))
 const style = computed(() => areaStyle(props.area))
 // One object, so RouterLink never gets an href: even undefined, it replaces the resolved one.
@@ -41,11 +43,12 @@ const target = computed(() => (props.to ? { to: props.to } : props.href ? { href
   <component
     :is="tag"
     class="ds-sidebar-item"
-    :class="{ 'ds-sidebar-item--active': active, 'ds-sidebar-item--area': area, 'ds-sidebar-item--tile': tile }"
+    :class="{ 'ds-sidebar-item--active': active, 'ds-sidebar-item--area': area, 'ds-sidebar-item--tile': tile, 'ds-sidebar-item--folded': folded }"
     :style="style"
     v-bind="target"
     :type="tag === 'button' ? 'button' : undefined"
     :aria-current="active ? 'page' : undefined"
+    :title="folded && label ? label : undefined"
     @click="$emit('click')"
   >
     <span v-if="$slots.icon || icon" class="ds-sidebar-item__icon">
@@ -61,6 +64,7 @@ const target = computed(() => (props.to ? { to: props.to } : props.href ? { href
 
 <style scoped>
 .ds-sidebar-item {
+  position: relative;
   display: flex;
   width: 100%;
   align-items: center;
@@ -177,5 +181,33 @@ const target = computed(() => (props.to ? { to: props.to } : props.href ? { href
   font-size: 0.6875rem;
   font-weight: 700;
   text-align: center;
+}
+
+/* Folded to its icon: the words stay for assistive tech, and a count becomes a
+   dot on the icon so the row keeps its width. */
+.ds-sidebar-item--folded {
+  justify-content: center;
+  padding-inline: 0.5rem;
+}
+
+.ds-sidebar-item--folded .ds-sidebar-item__said {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ds-sidebar-item--folded .ds-sidebar-item__badge {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 0.5rem;
+  min-width: 0;
+  height: 0.5rem;
+  padding: 0;
+  overflow: hidden;
+  color: transparent;
 }
 </style>
