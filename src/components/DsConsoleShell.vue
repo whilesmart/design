@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref, useSlots, watch } from 'vue'
+import { computed, onBeforeUnmount, provide, ref, useId, useSlots, watch } from 'vue'
+import { railCollapsedKey } from '../rail'
 import DsIcon from './DsIcon.vue'
 import DsSidebar from './DsSidebar.vue'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   navLabel?: string
   railWidth?: string
   menuLabel?: string
@@ -13,6 +14,12 @@ withDefaults(defineProps<{
   // that ground which scrolls by itself.
   frame?: 'flush' | 'boxed'
   width?: 'contained' | 'full'
+  // Lets the rail fold to its icons above the breakpoint. Below it the rail is
+  // a drawer, which has nothing to fold.
+  collapsible?: boolean
+  collapsedWidth?: string
+  collapseLabel?: string
+  expandLabel?: string
 }>(), {
   navLabel: 'Sections',
   railWidth: '16rem',
@@ -20,10 +27,21 @@ withDefaults(defineProps<{
   railClass: '',
   frame: 'flush',
   width: 'contained',
+  collapsible: false,
+  collapsedWidth: '4.25rem',
+  collapseLabel: 'Collapse sidebar',
+  expandLabel: 'Expand sidebar',
 })
+
+const collapsed = defineModel<boolean>('collapsed', { default: false })
 
 const slots = useSlots()
 const open = ref(false)
+const railId = useId()
+const folded = computed(() => props.collapsible && collapsed.value)
+const currentWidth = computed(() => (folded.value ? props.collapsedWidth : props.railWidth))
+
+provide(railCollapsedKey, folded)
 
 // The rail is a drawer below the breakpoint, so navigating inside it has to close it;
 // a route change does not unmount the shell.
@@ -47,9 +65,9 @@ onBeforeUnmount(() => lockScroll(false))
     :class="[
       `ds-console--${frame}`,
       `ds-console--${width}`,
-      { 'ds-console--barred': !!slots.bar || !!slots['bar-start'] || !!slots['bar-search'], 'ds-console--searched': !!slots['bar-search'] },
+      { 'ds-console--barred': !!slots.bar || !!slots['bar-start'] || !!slots['bar-search'], 'ds-console--searched': !!slots['bar-search'], 'ds-console--collapsed': folded, 'ds-console--collapsible': collapsible },
     ]"
-    :style="{ '--rail-width': railWidth }"
+    :style="{ '--rail-width': currentWidth }"
   >
     <header class="ds-console__bar">
       <button class="ds-console__menu" type="button" :aria-label="menuLabel" @click="open = true">
@@ -58,7 +76,7 @@ onBeforeUnmount(() => lockScroll(false))
 
       <!-- The rail is a drawer below the breakpoint, so the bar carries the
            brand until it is opened. -->
-      <div class="ds-console__bar-brand"><slot name="brand" /></div>
+      <div class="ds-console__bar-brand"><slot name="brand" :collapsed="false" /></div>
 
       <div v-if="slots['bar-start']" class="ds-console__bar-start">
         <slot name="bar-start" />
@@ -75,20 +93,21 @@ onBeforeUnmount(() => lockScroll(false))
     <div v-if="open" class="ds-console__scrim" @click="close" />
 
     <DsSidebar
+      :id="railId"
       class="ds-console__rail"
       :class="[railClass, { 'is-open': open }]"
-      :width="railWidth"
+      :width="currentWidth"
       :aria-label="navLabel"
     >
       <template #head>
-        <slot name="brand" />
+        <slot name="brand" :collapsed="folded" />
         <button class="ds-console__close" type="button" aria-label="Close" @click="close">
           <DsIcon name="solar:close-circle-linear" />
         </button>
       </template>
 
       <div v-if="slots.create" class="ds-console__create" @click="close">
-        <slot name="create" />
+        <slot name="create" :collapsed="folded" />
       </div>
 
       <div class="ds-console__nav" @click="close">
@@ -97,8 +116,21 @@ onBeforeUnmount(() => lockScroll(false))
 
       <template #footer>
         <div class="ds-console__foot" @click="close">
-          <slot name="rail-footer" />
+          <slot name="rail-footer" :collapsed="folded" />
         </div>
+        <button
+          v-if="collapsible"
+          class="ds-console__fold"
+          type="button"
+          :aria-controls="railId"
+          :aria-expanded="!folded"
+          :aria-label="folded ? expandLabel : collapseLabel"
+          :title="folded ? expandLabel : collapseLabel"
+          @click="collapsed = !collapsed"
+        >
+          <DsIcon :name="folded ? 'solar:double-alt-arrow-right-linear' : 'solar:double-alt-arrow-left-linear'" />
+          <span class="ds-console__fold-label">{{ collapseLabel }}</span>
+        </button>
       </template>
     </DsSidebar>
 
@@ -258,6 +290,63 @@ onBeforeUnmount(() => lockScroll(false))
   gap: var(--ds-space-2);
 }
 
+.ds-console__fold {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: 0;
+  border-radius: var(--ds-radius-control);
+  background: none;
+  color: var(--ds-text-secondary);
+  font-family: inherit;
+  font-size: var(--ds-text-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.ds-console__fold:hover {
+  background: var(--ds-bg-hover);
+  color: var(--ds-text-primary);
+}
+
+.ds-console__fold:focus-visible {
+  outline: 2px solid var(--ds-border-focus);
+  outline-offset: 2px;
+}
+
+.ds-console__fold .ds-icon {
+  flex: none;
+  font-size: 1.125rem;
+}
+
+.ds-console--collapsible {
+  transition: grid-template-columns var(--ds-transition-base);
+}
+
+.ds-console--collapsed .ds-console__rail {
+  padding-inline: var(--ds-space-2);
+}
+
+.ds-console--collapsed .ds-console__rail :deep(.ds-sidebar__head) {
+  justify-content: center;
+  padding: 0;
+}
+
+.ds-console--collapsed .ds-console__fold {
+  justify-content: center;
+}
+
+.ds-console--collapsed .ds-console__fold-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .ds-console__main {
   grid-area: main;
   min-width: 0;
@@ -406,6 +495,10 @@ onBeforeUnmount(() => lockScroll(false))
     transform: translateX(0);
   }
 
+  .ds-console__fold {
+    display: none;
+  }
+
   .ds-console--flush .ds-console__page {
     padding: var(--ds-space-5) var(--ds-space-4);
   }
@@ -429,6 +522,7 @@ onBeforeUnmount(() => lockScroll(false))
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ds-console--collapsible,
   .ds-console__rail {
     transition: none;
   }

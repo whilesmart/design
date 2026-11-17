@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { inject, ref } from 'vue'
 import DsIcon from './DsIcon.vue'
+import { railCollapsedKey } from '../rail'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   label?: string
   expanded?: boolean
 }>(), {
@@ -12,12 +14,16 @@ withDefaults(defineProps<{
 defineEmits<{
   click: [event: MouseEvent]
 }>()
+
+const folded = inject(railCollapsedKey, ref(false))
 </script>
 
 <template>
   <button
     class="ds-create-button"
+    :class="{ 'ds-create-button--folded': folded }"
     type="button"
+    :title="folded ? props.label : undefined"
     aria-haspopup="menu"
     :aria-expanded="expanded"
     @click="$emit('click', $event)"
@@ -87,5 +93,26 @@ defineEmits<{
   grid-column: 4;
   justify-self: end;
   color: var(--ds-text-secondary);
+}
+
+.ds-create-button--folded {
+  grid-template-columns: 2rem;
+  justify-content: center;
+  padding: var(--ds-space-1);
+  min-height: 2.5rem;
+}
+
+.ds-create-button--folded .ds-create-button__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ds-create-button--folded .ds-create-button__icons,
+.ds-create-button--folded .ds-create-button__chevron {
+  display: none;
 }
 </style>

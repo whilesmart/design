@@ -82,6 +82,7 @@ export { useLayoutConfig, type NavbarItem } from './composables/useLayoutConfig'
 export { useAppSwitcher, resolveAppSwitcherApps, type AppDefinition, type AppSwitcherOptions } from './composables/useAppSwitcher'
 export { appUrl, conversationUrl, isLocalHostname, type ConversationLaunchOptions, type WhileSmartApp } from './composables/useAppUrls'
 export { areaColors, areaStyle, type AreaColor } from './areas'
+export { railCollapsedKey } from './rail'
 export {
   dateKey,
   monthGrid,

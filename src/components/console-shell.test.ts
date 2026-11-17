@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import DsConsoleShell from './DsConsoleShell.vue'
+import DsSidebarGroup from './DsSidebarGroup.vue'
+import DsSidebarItem from './DsSidebarItem.vue'
+import ConsoleLayout from '../layouts/ConsoleLayout.vue'
+import DsCreateButton from './DsCreateButton.vue'
 
 const render = (props: Record<string, unknown> = {}, slots: Record<string, () => unknown> = {}) =>
   renderToString(createSSRApp({ render: () => h(DsConsoleShell, props, slots) }))
@@ -91,3 +95,67 @@ describe('a search on the bar', () => {
   })
 })
 
+
+describe('a collapsible rail', () => {
+  const nav = () => [
+    h(DsSidebarGroup, { label: 'Compliance' }, () => [
+      h(DsSidebarItem, { label: 'Requests', icon: 'solar:inbox-linear', badge: 3, to: '' }),
+    ]),
+  ]
+  const layout = (props: Record<string, unknown>, slots: Record<string, unknown> = {}) =>
+    renderToString(createSSRApp({ render: () => h(ConsoleLayout, props, { nav, ...slots }) }))
+
+  it('offers no fold control unless asked', async () => {
+    const html = await layout({})
+    expect(html).not.toContain('ds-console__fold')
+    expect(html).not.toContain('ds-console--collapsed')
+  })
+
+  it('ignores a collapsed value when the rail cannot fold', async () => {
+    expect(await layout({ collapsed: true })).not.toContain('ds-console--collapsed')
+  })
+
+  it('starts open with a control that says it will collapse the rail', async () => {
+    const html = await layout({ collapsible: true })
+    expect(html).toMatch(/class="ds-console__fold"[^>]*aria-expanded="true"/)
+    expect(html).toContain('aria-label="Collapse sidebar"')
+    expect(html).toContain('--rail-width:16rem')
+    expect(html).not.toContain('ds-sidebar-item--folded')
+  })
+
+  it('folds to its icons, keeping each name for tooltips and assistive tech', async () => {
+    const html = await layout({ collapsible: true, collapsed: true, collapsedWidth: '4rem' })
+    expect(html).toContain('ds-console--collapsed')
+    expect(html).toContain('--rail-width:4rem')
+    expect(html).toMatch(/aria-expanded="false"/)
+    expect(html).toContain('aria-label="Expand sidebar"')
+    expect(html).toContain('ds-sidebar-item--folded')
+    expect(html).toContain('title="Requests"')
+    expect(html).toContain('>Requests<')
+    expect(html).toContain('ds-sidebar-group--folded')
+    expect(html).toContain('>Compliance<')
+  })
+
+  it('shrinks the create button to its plus and keeps its name', async () => {
+    const html = await layout({ collapsible: true, collapsed: true }, { create: () => h(DsCreateButton, { label: 'Create' }) })
+    expect(html).toContain('ds-create-button--folded')
+    expect(html).toContain('title="Create"')
+    expect(html).toContain('>Create<')
+  })
+
+  it('tells the brand, create and footer slots whether the rail is folded', async () => {
+    const html = await layout(
+      { collapsible: true, collapsed: true },
+      {
+        brand: ({ collapsed }: { collapsed: boolean }) => (collapsed ? 'mark' : 'wordmark'),
+        create: ({ collapsed }: { collapsed: boolean }) => (collapsed ? 'plus' : 'New request'),
+        'rail-footer': ({ collapsed }: { collapsed: boolean }) => (collapsed ? 'avatar' : 'Ada Lovelace'),
+      },
+    )
+    expect(html).toContain('mark')
+    expect(html).toContain('wordmark')
+    expect(html).toContain('plus')
+    expect(html).toContain('avatar')
+    expect(html).not.toContain('Ada Lovelace')
+  })
+})
