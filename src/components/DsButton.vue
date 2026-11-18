@@ -83,9 +83,14 @@ const target = computed(() => {
   border-radius: var(--ds-radius-lg);
   font-weight: var(--ds-font-medium);
   cursor: pointer;
-  transition: all var(--ds-transition-fast);
+  transition: background-color var(--ds-transition-fast), border-color var(--ds-transition-fast), color var(--ds-transition-fast), box-shadow var(--ds-transition-fast);
   position: relative;
   text-decoration: none;
+}
+
+.ds-button:focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: 2px;
 }
 
 .ds-button[aria-disabled='true'] {
@@ -94,7 +99,6 @@ const target = computed(() => {
 
 .ds-button:disabled,
 .ds-button[aria-disabled='true'] {
-  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -117,45 +121,59 @@ const target = computed(() => {
 }
 
 .ds-button--primary {
-  background: var(--ds-interactive-primary);
-  color: var(--ds-on-interactive-primary);
+  background: var(--ds-action-primary-bg);
+  color: var(--ds-action-primary-text);
 }
 
 .ds-button--primary:hover:not(:disabled) {
-  background: var(--ds-interactive-primary-hover);
+  background: var(--ds-action-primary-hover);
 }
 
 .ds-button--primary:active:not(:disabled) {
-  background: var(--ds-interactive-primary-active);
+  background: var(--ds-action-primary-active);
 }
 
 .ds-button--secondary {
-  background: var(--ds-bg-surface);
-  color: var(--ds-text-primary);
-  border-color: var(--ds-border-base);
+  background: var(--ds-action-secondary-bg);
+  color: var(--ds-action-secondary-text);
+  border-color: var(--ds-action-secondary-border);
 }
 
 .ds-button--secondary:hover:not(:disabled) {
-  background: var(--ds-bg-base);
-  border-color: var(--ds-border-strong);
+  background: var(--ds-action-secondary-hover);
 }
 
 .ds-button--ghost {
   background: transparent;
-  color: var(--ds-text-primary);
+  color: var(--ds-action-ghost-text);
 }
 
 .ds-button--ghost:hover:not(:disabled) {
-  background: var(--ds-bg-surface);
+  background: var(--ds-action-ghost-hover);
 }
 
 .ds-button--danger {
-  background: var(--ds-color-error-500);
-  color: white;
+  background: var(--ds-action-danger-bg);
+  color: var(--ds-action-danger-text);
 }
 
 .ds-button--danger:hover:not(:disabled) {
-  background: var(--ds-color-error-600);
+  background: var(--ds-action-danger-hover);
+}
+
+/* Disabled actions read as flat grey rather than a faded colour, so they never look like a weaker primary. */
+:is(.ds-button--primary, .ds-button--secondary, .ds-button--danger):is(:disabled, [aria-disabled='true']):not(.ds-button--loading) {
+  background: var(--ds-action-disabled-bg);
+  border-color: transparent;
+  color: var(--ds-action-disabled-text);
+}
+
+.ds-button--ghost:is(:disabled, [aria-disabled='true']):not(.ds-button--loading) {
+  color: var(--ds-action-disabled-text);
+}
+
+.ds-button--loading:disabled {
+  cursor: progress;
 }
 
 .ds-button--full-width {

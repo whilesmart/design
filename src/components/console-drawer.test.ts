@@ -32,9 +32,9 @@ describe('the drawer on a phone', () => {
     root.querySelector<HTMLButtonElement>('.ds-workspace__card')!.click()
     await nextTick()
     expect(rail.classList.contains('is-open')).toBe(true)
-    expect(root.querySelector('.ds-menu__panel')).not.toBeNull()
+    expect(document.querySelector('.ds-menu__list')).not.toBeNull()
 
-    root.querySelectorAll<HTMLButtonElement>('.ds-workspace__row')[1]!.click()
+    document.querySelectorAll<HTMLButtonElement>('.ds-workspace__row')[1]!.click()
     await nextTick()
     expect(rail.classList.contains('is-open')).toBe(false)
   })

@@ -135,4 +135,56 @@ for (const [theme, tokens] of Object.entries(themes)) {
 
 if (failures.length) throw new Error(`Text contrast below 4.5:1: ${JSON.stringify(failures, null, 2)}`)
 
-console.log(`Verified ${sourceFiles.length} source files, icon names, and ${textPairs.length + (chatPairs.length + areaPairs.length) * 2} theme contrast pairs.`)
+// Semantic tokens in theme.css point at palette tokens through var(); each pair is resolved to the hex the browser paints.
+const themeSource = fs.readFileSync(path.join(root, 'src/tokens/theme.css'), 'utf8')
+const declarations = (source) => Object.fromEntries([...source.matchAll(/--([\w-]+):\s*([^;]+);/g)].map((match) => [match[1], match[2].trim()]))
+const themeDarkAt = themeSource.indexOf('[data-theme="dark"]')
+const lightSemantic = declarations(themeSource.slice(0, themeDarkAt))
+const semantic = { light: lightSemantic, dark: { ...lightSemantic, ...declarations(themeSource.slice(themeDarkAt)) } }
+function resolveToken(theme, name, depth = 0) {
+  const value = semantic[theme][name] ?? themes[theme][name]
+  if (!value || depth > 8) throw new Error(`Contrast pair token does not resolve to a hex colour: --${name} (${theme})`)
+  if (value.startsWith('#')) return value
+  const reference = value.match(/^var\(--([\w-]+)\)$/)
+  if (!reference) throw new Error(`Contrast pair token is not a plain colour: --${name} = ${value} (${theme})`)
+  return resolveToken(theme, reference[1], depth + 1)
+}
+const ratioOf = (foreground, background) => {
+  const values = [luminance(foreground), luminance(background)].sort((a, b) => b - a)
+  return (values[0] + 0.05) / (values[1] + 0.05)
+}
+const surfacePairs = [
+  ['ds-action-primary-text', 'ds-action-primary-bg', 4.5],
+  ['ds-action-primary-text', 'ds-action-primary-hover', 4.5],
+  ['ds-action-secondary-text', 'ds-bg-elevated', 4.5],
+  ['ds-action-secondary-text', 'ds-action-secondary-hover', 4.5],
+  ['ds-action-ghost-text', 'ds-bg-elevated', 4.5],
+  ['ds-action-ghost-text', 'ds-action-ghost-hover', 4.5],
+  ['ds-action-danger-text', 'ds-action-danger-bg', 4.5],
+  ['ds-action-danger-text', 'ds-action-danger-hover', 4.5],
+  ['ds-action-disabled-text', 'ds-action-disabled-bg', 3],
+  ['ds-action-secondary-border', 'ds-bg-elevated', 2.5],
+  ['ds-action-secondary-border', 'ds-bg-base', 2.5],
+  ['ds-text-primary', 'ds-bg-elevated', 4.5],
+  ['ds-text-secondary', 'ds-bg-elevated', 4.5],
+  ['ds-text-muted', 'ds-bg-elevated', 4.5],
+  ['ds-text-secondary', 'ds-bg-base', 4.5],
+  ['ds-text-muted', 'ds-bg-base', 4.5],
+  ['ds-text-secondary', 'ds-bg-surface', 4.5],
+  ['ds-text-muted', 'ds-bg-surface', 4.5],
+  ['ds-text-primary', 'ds-bg-hover', 4.5],
+  ['ds-status-error-text', 'ds-bg-elevated', 4.5],
+  ['ds-status-success-text', 'ds-bg-elevated', 4.5],
+  ['ds-status-warning-text', 'ds-bg-elevated', 4.5],
+  ['ds-status-info-text', 'ds-bg-elevated', 4.5],
+  ['ds-focus-ring', 'ds-bg-elevated', 3],
+  ['ds-focus-ring', 'ds-bg-base', 3],
+]
+const surfaceFailures = []
+for (const theme of ['light', 'dark']) for (const [foreground, background, minimum] of surfacePairs) {
+  const ratio = ratioOf(resolveToken(theme, foreground), resolveToken(theme, background))
+  if (ratio < minimum) surfaceFailures.push({ theme, foreground, background, minimum, ratio: Number(ratio.toFixed(2)) })
+}
+if (surfaceFailures.length) throw new Error(`Theme contrast below its minimum: ${JSON.stringify(surfaceFailures, null, 2)}`)
+
+console.log(`Verified ${sourceFiles.length} source files, icon names, and ${textPairs.length + (chatPairs.length + areaPairs.length + surfacePairs.length) * 2} theme contrast pairs.`)

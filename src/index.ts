@@ -18,6 +18,7 @@ import DsTagInput from './components/DsTagInput.vue'
 import DsNotFound from './components/DsNotFound.vue'
 import DsIcon from './components/DsIcon.vue'
 import DsModal from './components/DsModal.vue'
+import DsConfirmDialog from './components/DsConfirmDialog.vue'
 import DsAvatar from './components/DsAvatar.vue'
 import DsDataTable from './components/DsDataTable.vue'
 import DsProductLanding from './components/DsProductLanding.vue'
@@ -67,6 +68,7 @@ import DsTrendChart from './components/DsTrendChart.vue'
 import DsMenu from './components/DsMenu.vue'
 import DsPageHero from './components/DsPageHero.vue'
 import DsMenuItem from './components/DsMenuItem.vue'
+import DsMenuGroup from './components/DsMenuGroup.vue'
 import DsMenuSeparator from './components/DsMenuSeparator.vue'
 import DsAccountMenu from './components/DsAccountMenu.vue'
 import DsWorkspaceMenu from './components/DsWorkspaceMenu.vue'
@@ -118,6 +120,7 @@ export {
   DsNotFound,
   DsIcon,
   DsModal,
+  DsConfirmDialog,
   DsAvatar,
   DsDataTable,
   DsProductLanding,
@@ -166,6 +169,7 @@ export {
   DsTrendChart,
   DsMenu,
   DsMenuItem,
+  DsMenuGroup,
   DsPageHero,
   DsMenuSeparator,
   DsAccountMenu,
