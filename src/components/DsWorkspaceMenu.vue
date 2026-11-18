@@ -33,7 +33,7 @@ const emit = defineEmits<{ choose: [WorkspaceOption] }>()
 </script>
 
 <template>
-  <DsMenu align="start" class="ds-workspace" :class="{ 'ds-workspace--rail': placement === 'rail', 'ds-workspace--folded': placement === 'rail' && folded }">
+  <DsMenu align="start" :label="heading || placeholder" class="ds-workspace" :class="{ 'ds-workspace--rail': placement === 'rail', 'ds-workspace--folded': placement === 'rail' && folded }">
     <template #trigger>
       <button v-if="placement === 'rail'" type="button" class="ds-workspace__card" :title="label" :aria-label="folded ? label : undefined">
         <span class="ds-workspace__tile" aria-hidden="true">{{ initialsOf(label) || '?' }}</span>

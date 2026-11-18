@@ -113,7 +113,7 @@ onBeforeUnmount(() => lockScroll(false))
         </button>
       </template>
 
-      <div v-if="slots.create" class="ds-console__create" @click="closeUnlessMenu">
+      <div v-if="slots.create" class="ds-console__create" @click="closeUnlessMenu" @ds-menu-choose="close">
         <slot name="create" :collapsed="folded" />
       </div>
 
@@ -122,7 +122,7 @@ onBeforeUnmount(() => lockScroll(false))
       </div>
 
       <template #footer>
-        <div class="ds-console__foot" @click="closeUnlessMenu">
+        <div class="ds-console__foot" @click="closeUnlessMenu" @ds-menu-choose="close">
           <slot name="rail-footer" :collapsed="folded" />
         </div>
         <button

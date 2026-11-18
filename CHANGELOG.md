@@ -6,6 +6,15 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Added
 
+- `DsConfirmDialog`: a yes or no question with a cancel action and one confirm action,
+  red when the action cannot be undone. It stays open while its action runs.
+- `DsMenuGroup`: a labelled group of menu items.
+- Action tokens (`--ds-action-*`) for each button kind in both themes, and `--ds-focus-ring`.
+- `DsMenuItem` takes a description line, an `icon` slot for a custom tile, an `end` slot,
+  links, and radio or checkbox items.
+- `DsModal` takes `busy`, which keeps it open while its action runs.
+- `npm run check` measures every action, text and focus colour against the surfaces it
+  sits on, in both themes.
 - `DsChatQuickActions`: the things a chat can start with, as grouped cards with an icon,
   title and detail, or as pills that wrap or keep to one scrolling row; each takes an area
   colour and the one in use is marked.
@@ -49,6 +58,11 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Fixed
 
+- The danger button and error text meet 4.5:1 contrast in both themes. Dark mode gains its
+  own status colours instead of reusing the light ones.
+- Muted text on dialogs and menus meets 4.5:1 in dark mode, and the dialog border shows.
+- A dialog that is open when it first renders gets its backdrop and closes on Escape.
+- Date pickers, checkboxes and scrollbars follow the dark theme.
 - The chat composer shows focus on its frame, and a host's focus ring no longer draws a box
   inside it.
 - The console's create action lines up with the navigation items below it.
@@ -66,7 +80,23 @@ All notable changes to the WhileSmart design system are documented in this file.
 
 ### Changed for existing installations
 
-Nothing was removed from the public API. Three defaults changed.
+`DsModal` no longer takes `icon`; the prop is ignored. The other changes are to defaults.
+
+- Buttons: primary is solid ink (near black in light theme, near white in dark), secondary
+  is outlined, ghost is text only, and danger is solid red. Disabled buttons are flat grey
+  instead of faded. The brand colour stays for links, selection, the create action and the
+  focus ring.
+- `DsModal`: the title and footer stay in view and only the body scrolls, and only when its
+  content is taller than the space. Opening focuses the first field, or the dialog itself
+  when it has none, so Enter never confirms by accident. On a phone the dialog opens from
+  the bottom. Stacked dialogs answer only at the top.
+- In dark theme `--ds-bg-elevated` is `neutral-800`, the same as `--ds-bg-surface`.
+- `DsMenu` renders its list on the body, so a scrolling container cannot clip it, and it
+  flips above its trigger near the bottom of the screen. Arrow keys, Home and End move
+  between items, Escape returns focus to the trigger, and a menu closes when a dialog
+  opens. `label` names the list. Choosing any button or link in the list closes it, and
+  containers around the menu hear the choice as a `ds-menu-choose` event. `DsMenuItem`
+  emits `select`; a `click` listener still works.
 
 - The selected sidebar item is a light, translucent fill with a thin ring, and its icon tile
   is tinted rather than solid. Areas keep their colours.

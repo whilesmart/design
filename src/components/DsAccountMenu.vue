@@ -17,7 +17,7 @@ withDefaults(
 </script>
 
 <template>
-  <DsMenu align="end" class="ds-account">
+  <DsMenu align="end" class="ds-account" :label="label">
     <template #trigger>
       <button type="button" class="ds-account__trigger" :aria-label="label">
         <DsAvatar :name="name" :src="src" size="sm" />
