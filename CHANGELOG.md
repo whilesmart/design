@@ -63,6 +63,7 @@ All notable changes to the WhileSmart design system are documented in this file.
 - Muted text on dialogs and menus meets 4.5:1 in dark mode, and the dialog border shows.
 - A dialog that is open when it first renders gets its backdrop and closes on Escape.
 - Date pickers, checkboxes and scrollbars follow the dark theme.
+- Chips keep their size in a row that scrolls instead of being squashed.
 - The chat composer shows focus on its frame, and a host's focus ring no longer draws a box
   inside it.
 - The console's create action lines up with the navigation items below it.

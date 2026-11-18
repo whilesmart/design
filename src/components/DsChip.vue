@@ -52,6 +52,7 @@ defineEmits<{
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
+  flex-shrink: 0;
   border-radius: 1rem;
   font-weight: 500;
   border: 1px solid transparent;
